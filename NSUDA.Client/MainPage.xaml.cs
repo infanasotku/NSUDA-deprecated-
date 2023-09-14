@@ -2,23 +2,46 @@
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
 
 	public MainPage()
 	{
 		InitializeComponent();
 	}
 
-	private void OnConnectClicked(object sender, EventArgs e)
+	private async void OnConnectButtonClicked(object sender, EventArgs e)
 	{
-		count++;
-
-		if (count == 1)
-			ConnectBtn.Text = $"Clicked {count} time";
+		if (ConnectButton.Text == "Say yes")
+		{
+			await Connect();
+		}
 		else
-			ConnectBtn.Text = $"Clicked {count} times";
+		{
+			await Disconnect();
+		}
+	}
+	private async Task Connect()
+	{
+		// here we use connection scenario
+		bool scenarioResult = true;
 
-		SemanticScreenReader.Announce(ConnectBtn.Text);
+		if (scenarioResult)
+		{
+			ConnectButton.Text = "Disconnect";
+			NSUYesLabel.Text = "You said yes!";
+			SemanticScreenReader.Announce(ConnectButton.Text);
+			SemanticScreenReader.Announce(NSUYesLabel.Text);
+		}		
+		else
+		{
+			await DisplayAlert("Error", "Connection not established!",
+				"Ok");
+		}
+	}
+
+	private async Task Disconnect()
+	{
+			ConnectButton.Text = "Say yes";
+			NSUYesLabel.Text = "NSUDA - Say NSU da!";
 	}
 }
 
