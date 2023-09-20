@@ -1,28 +1,43 @@
 ﻿namespace NSUDA.Client;
-
 public partial class MainPage : ContentPage
 {
-
 	public MainPage()
 	{
 		InitializeComponent();
 	}
 
+	private async Task TestRunXray()
+	{
+		await CopyFileToAppDataDirectory("config.json", "Xray/Config");
+		await CopyFileToAppDataDirectory("xray", "Xray/Executer");
+		await CopyFileToAppDataDirectory("geoip.dat", "Xray/Executer");
+		await CopyFileToAppDataDirectory("geosite.dat", "Xray/Executer");
+		await CopyFileToAppDataDirectory("run.sh", "Xray/Executer");
+		string command1 = FileSystem.Current.AppDataDirectory + "/Xray/Executer/xray" + " -c " + FileSystem.Current.AppDataDirectory +
+				"/Xray/Config/client_config.json";
+
+        MacShell.Term("chmod u+x " + FileSystem.Current.AppDataDirectory + "/Xray/Executer/xray");
+        MacShell.Term(command1);
+	}
+
+	
+
 	private async void OnConnectButtonClicked(object sender, EventArgs e)
 	{
+
 		if (ConnectButton.Text == "Say yes")
 		{
 			await Connect();
 		}
 		else
 		{
-			await Disconnect();
+			Disconnect();
 		}
 	}
 	private async Task Connect()
 	{
-		// here we use connection scenario
 		bool scenarioResult = true;
+		Task run = Task.Run(()=>TestRunXray());
 
 		if (scenarioResult)
 		{
@@ -31,17 +46,18 @@ public partial class MainPage : ContentPage
 			SemanticScreenReader.Announce(ConnectButton.Text);
 			SemanticScreenReader.Announce(NSUYesLabel.Text);
 		}		
-		else
+		else	
 		{
 			await DisplayAlert("Error", "Connection not established!",
 				"Ok");
 		}
 	}
 
-	private async Task Disconnect()
+	private void Disconnect()
 	{
-			ConnectButton.Text = "Say yes";
-			NSUYesLabel.Text = "NSUDA - Say NSU da!";
+		MacShell.Kill();
+		ConnectButton.Text = "Say yes";
+		NSUYesLabel.Text = "NSUDA - Say NSU da!";
 	}
 }
 
