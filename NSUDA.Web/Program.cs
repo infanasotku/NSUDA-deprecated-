@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.HttpOverrides;
+using NSUDA.Handler;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -12,12 +13,8 @@ if (!app.Environment.IsDevelopment())
 }       
 
 
+RegistrationHandler.RegistrateAll(app);
 
-app.Map("/", async(context) => 
-{
-    context.Response.ContentType = "text/html; charset=utf-8";
-    await context.Response.SendFileAsync("wwwroot/index.html");
-});
 
 app.UseStaticFiles();
 app.Run();
