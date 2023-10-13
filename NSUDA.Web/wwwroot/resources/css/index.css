@@ -81,7 +81,7 @@
 .show
 {   
     animation-name: slideIn;
-    animation-duration: 1s;
+    animation-duration: 1.5s;
     animation-fill-mode: forwards;
 }
 
@@ -250,8 +250,8 @@
 
 .content .skill_block
 {
-    margin-top: 5%;
     width: 100%;
+    margin-top: 4%;
     display: flex;
     flex-direction: column;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -261,6 +261,8 @@
 .content .skill_block h1
 {
     font-weight: 650;
+    margin-top: 1% !important;
+    margin-bottom: 1% !important;
 }
 
 .content .skill_block ul li:before 
@@ -293,6 +295,29 @@
         font-weight: 650;
         font-size: 32px;
     }
+    .content .skill_block ul span
+    {
+        font-size: 10px !important;
+    }
+    .content .skill_block .ul_experience h2
+    {
+        font-size: 15px !important;
+    }
+}
+
+.content .skill_block .ul_experience
+{
+    width: 100% !important;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+
+.content .skill_block .ul_experience h2
+{
+    margin: 0;
 }
 
 .content .skill_block ul
@@ -303,6 +328,54 @@
 .content .skill_block ul li
 {
     font-size: 30px;
+}
+
+.content .skill_block ul span
+{
+    font-size: 20px;
+    color: gray;
+}
+
+.content .skill_block ul li.out
+{
+    animation-name: slideRight;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+.content .skill_block ul li.over
+{
+    animation-name: slideLeft;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideLeft {
+    from
+    {
+        transform: translateX(0px);
+    }
+    to
+    {
+        transform: translateX(-20px);
+    }
+}
+
+@keyframes slideRight {
+    from
+    {
+        transform: translateX(-20px);
+    }
+    to
+    {
+        transform: translateX(0vh);
+    }
+}
+
+.skill_block .separator
+{
+    width: 100%;
+    border: 1px solid black;
 }
 
 .content .contact_block

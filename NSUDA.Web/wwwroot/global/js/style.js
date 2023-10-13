@@ -11,8 +11,14 @@ function scaleFunction()
 
 scaleFunction();
 
+var scaleFuncs = [];
+scaleFuncs.push(scaleFunction);
+
 window.onzoom = function(e) {
-  scaleFunction();
+  console.log(scaleFuncs);
+  scaleFuncs.forEach(element => {
+    element();
+  });
 }
 
 
