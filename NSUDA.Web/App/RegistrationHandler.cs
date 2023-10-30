@@ -5,15 +5,16 @@ namespace NSUDA.Handler
     /// <summary>
     /// Provides functional for register <see cref="RequestDelegate"/> methods.
     /// </summary>
-    internal static class RegistrationHandler
+    internal static partial class RegistrationHandler
     {
         /// <summary>
         /// Register the all methods with HandlerPath attribute.
+        /// Start the all register methods from this class.
         /// </summary>
         internal static void RegistrateAll(WebApplication application)
         {
             MethodInfo[] handlers = typeof(Handler).GetMethods(
-                BindingFlags.Instance | BindingFlags.NonPublic
+                BindingFlags.NonPublic
                 | BindingFlags.Static
             );
 
@@ -28,6 +29,27 @@ namespace NSUDA.Handler
                         object[] param = new object[] { context };
                         await (Task)handler?.Invoke(null, param)!;
                     });
+                }
+            }
+
+            MethodInfo[] registrationHandlers = 
+                typeof(RegistrationHandler).GetMethods(
+                BindingFlags.NonPublic
+                | BindingFlags.Static);
+
+            foreach (var handler in registrationHandlers)
+            {
+                if (handler.Name != "RegistrateAll")
+                {
+                    object[] param = new object[] { application };
+                    try
+                    {
+                        handler?.Invoke(null, param);
+                    }
+                    catch
+                    {
+                        throw new ArgumentException("Bad resgistrate function");
+                    }
                 }
             }
         }
