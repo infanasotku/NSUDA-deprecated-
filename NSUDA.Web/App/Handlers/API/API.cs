@@ -18,7 +18,7 @@ namespace NSUDA.API
 
         public async Task InvokeAsync(HttpContext context)
         {
-
+            await APIBuilder.Build(context).HandleRequest(context);
         }
     }
 
