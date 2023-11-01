@@ -11,10 +11,10 @@ namespace NSUDA.Handler
         /// <summary>
         /// Processing path.
         /// </summary>
-        internal string path { get; set; }
+        internal string Path { get; set; }
         internal HandlerPathAttribute(string path)
         {
-            this.path = path;
+            Path = path;
         }
     }
 }

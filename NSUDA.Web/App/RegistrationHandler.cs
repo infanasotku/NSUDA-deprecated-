@@ -21,35 +21,15 @@ namespace NSUDA.Handler
             foreach (var handler in handlers)
             {
                 Attribute? attribute = 
-                    Attribute.GetCustomAttribute(handler, typeof(HandlerPathAttribute));
+                    Attribute.GetCustomAttribute(handler, 
+                        typeof(HandlerPathAttribute));
                 if (attribute is HandlerPathAttribute attr)
                 {
-                    application.Map(attr.path, async(context) => 
+                    application.Map(attr.Path, async(context) => 
                     {
                         object[] param = new object[] { context };
                         await (Task)handler?.Invoke(null, param)!;
                     });
-                }
-            }
-
-            MethodInfo[] registrationHandlers = 
-                typeof(RegistrationHandler).GetMethods(
-                BindingFlags.NonPublic
-                | BindingFlags.Static);
-
-            foreach (var handler in registrationHandlers)
-            {
-                if (handler.Name != "RegistrateAll")
-                {
-                    object[] param = new object[] { application };
-                    try
-                    {
-                        handler?.Invoke(null, param);
-                    }
-                    catch
-                    {
-                        throw new ArgumentException("Bad resgistrate function");
-                    }
                 }
             }
         }
