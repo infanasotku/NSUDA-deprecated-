@@ -26,11 +26,17 @@ namespace NSUDA.API
         /// Compares and returns api handler with specified <paramref name="path"/>.
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        private static IAPI GetHandler(string path) => path switch
+        private static IAPI GetHandler(PathString path)
         {
-            "/NSUDA/" => new NSUDAAPI(),
-            _ => throw new ArgumentException("Handlers with this path is not exist, "
-                + $"path: {path}")
-        };
+            if (path.StartsWithSegments("/NSUDA"))
+            {
+                return new NSUDAAPI();
+            }
+            else
+            {
+                throw new ArgumentException("Handlers with this path is not exist, "
+                    + $"path: {path}");
+            }
+        }
     }
 }

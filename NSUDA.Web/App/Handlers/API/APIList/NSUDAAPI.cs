@@ -1,17 +1,27 @@
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
-
 namespace NSUDA.API
 {
+    /// <summary>
+    /// Provides api handlers for NSUDA app.
+    /// </summary>
     internal class NSUDAAPI : IAPI
     {
         async Task IAPI.HandleRequest(HttpContext context)
         {
-            throw new NotImplementedException();
+            context.Request.Path.
+                StartsWithSegments("/api/NSUDA", out PathString requestName);
+            if (requestName == "/GetConfig" && context.Request.Method == "GET")
+            {
+                await GetConfig(context);
+            }
+            else
+            {
+                await context.Response.WriteAsync("Hello, NSUDA!");
+            }
         }
 
-        private async Task GetConfig(string email)
+        private async Task GetConfig(HttpContext context)
         {
-            throw new NotImplementedException();
+            await context.Response.WriteAsync("Hello, NSUDA!");
         }
     }
 }
