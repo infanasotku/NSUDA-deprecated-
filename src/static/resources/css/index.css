@@ -1,0 +1,448 @@
+/*head_content section */
+.head_content
+{
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+}
+
+.head_content .main_discription
+{
+    justify-self: self-end;
+}
+
+.head_content .main_header
+{
+    display: flex;
+    flex-direction: column;
+    height: 30%;
+}
+
+.head_content .main_header h1
+{
+    font-size: 50px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 650;
+}
+
+.head_content .main_header h4
+{
+    padding-top: 10%;
+}
+
+@media only screen and (max-width: 600px) {
+    .head_content .main_avatar
+    {
+        margin-top: 10vh;
+        margin-bottom: 10vh;
+        width: 60% !important;
+    }
+}
+
+.head_content .main_avatar
+{
+    transform: translateY(-5vh);
+    width: 30%;
+    height: 30%;
+    animation-duration: 5s;
+    animation-timing-function:ease-in-out;
+    animation-name: computer_sliding;
+    animation-iteration-count: infinite;
+}
+
+@keyframes computer_sliding {
+    50%
+    {
+        transform: translateY(5vh);
+    }
+    100%
+    {
+        transform: translateY(-5vh);
+    }
+}
+
+.head_content .main_avatar img
+{
+    width: 100%;
+    height: auto;
+}
+/*end head_content section */
+
+/*content section*/
+
+@keyframes slideIn {
+    to
+    {
+        transform: translateY(0vh);
+        opacity: 1;
+    }
+}
+
+.show
+{   
+    animation-name: slideIn;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+}
+
+.hidden
+{
+    opacity: 0;
+    transform: translateY(20vh);
+    transition-duration: 1s;
+}
+
+.content .project_block
+{
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content .project_block .project_mes
+{
+    display: flex;
+    justify-content: center;
+}
+
+.content .project_block .project_mes h1
+{
+    font-weight: 800;
+}
+
+.content .project_block .project_list
+{
+    gap: 5%;
+    margin-top: 60px;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .content .project_block .project_list img
+    {
+        width: 90% !important;
+    }
+}
+
+.content .project_block .project_list img
+{
+    width: 50%;
+}
+
+.content .project_block .project_list h4
+{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.content .project_block .project_list .project
+{
+    width: 30%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+}
+
+.content .project_block .project_list .project a
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 2%;
+}
+
+.content .project_block .project_list .project img:hover{
+    animation-name: scale;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.25s;
+}
+
+.content .about_block
+{
+    width: 100%;
+    background-color: black;
+    color: white;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content .about_block .about_mes
+{
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+}
+
+@keyframes scale {
+    to
+    {
+        scale: 110%;
+    }
+}
+
+.content .about_block .about_mes h1
+{
+    font-weight: 800;    
+}
+
+@media only screen and (max-width: 1153px) {
+    .content .about_block .row
+    {
+        flex-direction: column;
+        margin: 0%;
+    }   
+    .content .about_block .row .col
+    {
+        margin-top: 5%;
+        padding: 0%;
+        width: 86%;
+    }
+    .content .about_block .row .col img
+    {
+        width: 50% !important;
+        height: auto !important;
+    }
+}
+
+.content .about_block .row
+{
+    width: 100%;
+    margin-top: 5%;
+    margin-left: 0%;
+    margin-right: 0%;
+    margin-bottom: 80px;
+    align-items: center;
+}
+
+.content .about_block .row .col
+{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.content .about_block .row .avatar img
+{
+    width: 50%;
+    max-height: 100%;
+    border-radius: 50%;
+}
+
+.content .about_block .row .avatar
+{
+    height: 100%;
+}
+
+.content .about_block .row .about_description span
+{
+    font-size: 30px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 500;
+
+}
+
+.content .skill_block
+{
+    width: 100%;
+    margin-top: 4%;
+    display: flex;
+    flex-direction: column;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    align-items: center;
+}
+
+.content .skill_block h1
+{
+    font-weight: 650;
+    margin-top: 1% !important;
+    margin-bottom: 1% !important;
+}
+
+.content .skill_block ul li:before 
+{
+    content: "";
+    background-repeat: no-repeat;
+    width: 30%;
+    margin-right: 10px;
+    background-size: 30px;
+    background-position-y: 7px;
+    transform: translateX(-30px);
+    position: absolute;
+    height: 30px;
+    background-image: url(../data/image/angle-small-right.png);
+}
+
+@media only screen and (max-width: 600px) {
+    .content .skill_block ul li
+    {
+        font-size: 20px !important;
+    }
+    .content .skill_block ul li:before 
+    {
+        background-size: 24px;
+        background-position-y: 3px;
+        transform: translateX(-25px);
+    }
+    .content .skill_block h1
+    {
+        font-weight: 650;
+        font-size: 32px;
+    }
+    .content .skill_block ul span
+    {
+        font-size: 10px !important;
+    }
+    .content .skill_block .ul_experience h2
+    {
+        font-size: 15px !important;
+    }
+}
+
+.content .skill_block .ul_experience
+{
+    width: 100% !important;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+
+.content .skill_block .ul_experience h2
+{
+    margin: 0;
+}
+
+.content .skill_block ul
+{
+    list-style-type: none;
+}
+
+.content .skill_block ul li
+{
+    font-size: 30px;
+}
+
+.content .skill_block ul span
+{
+    font-size: 20px;
+    color: gray;
+}
+
+.content .skill_block ul li.out
+{
+    animation-name: slideRight;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+.content .skill_block ul li.over
+{
+    animation-name: slideLeft;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideLeft {
+    from
+    {
+        transform: translateX(0px);
+    }
+    to
+    {
+        transform: translateX(-20px);
+    }
+}
+
+@keyframes slideRight {
+    from
+    {
+        transform: translateX(-20px);
+    }
+    to
+    {
+        transform: translateX(0vh);
+    }
+}
+
+.skill_block .separator
+{
+    width: 100%;
+    border: 1px solid black;
+}
+
+.content .contact_block
+{
+    margin-top: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    min-height: 20vh;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    height: auto;
+    background-color: black;
+}
+
+@media only screen and (max-width: 600px) {
+    .content .contact_block h1
+    {
+        font-weight: 650;
+        font-size: 32px;
+    }
+    .content .contact_block img
+    {
+        width: 70px !important;
+        height: auto;
+    }
+}
+
+.content .contact_block h1
+{
+    font-weight: 650;
+}
+
+.content .contact_block img
+{
+    width: 100px;
+    height: auto;
+}
+
+.content .contact_block .contacts
+{
+    width: 100%;
+    margin-top: 2%;
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+}
+
+.content .contact_block .contacts img:hover{
+    animation-name: scale;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.25s;
+}
+
+/*end content section*/
+
+/*footer*/
+.footer .external_source
+{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 5%;
+}
+
+
+/*end footer*/
