@@ -1,5 +1,6 @@
 namespace NSUDA.API
 {
+    using Newtonsoft.Json;
     /// <summary>
     /// Provides api handlers for NSUDA app.
     /// </summary>
@@ -21,7 +22,17 @@ namespace NSUDA.API
 
         private async Task GetConfig(HttpContext context)
         {
+            string email = context.Request.Query["email"].ToString();
+            CreateClientConfig(email);
             await context.Response.WriteAsync("Hello, NSUDA!");
+        }
+
+        private string CreateClientConfig(string email)
+        {
+            string configStr = File.ReadAllText("config/client_config.json");
+            dynamic config = JsonConvert.DeserializeObject(configStr)!;
+            dynamic outbounds = config.GetType().GetProperty("ChildrenTokens").GetValue(config, null);
+            return "";
         }
     }
 }
