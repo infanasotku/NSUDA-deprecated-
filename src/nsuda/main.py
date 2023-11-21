@@ -16,3 +16,6 @@ app.mount(
 
 from nsuda.routers import roots
 app.include_router(roots.router)
+
+from nsuda.routers import users
+app.include_router(users.router)
