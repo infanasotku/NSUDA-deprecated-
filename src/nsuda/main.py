@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from gpt_module import main
 
 app = FastAPI()
 
@@ -13,6 +13,11 @@ app.mount(
     name="static"
 )
 
+app.mount(
+    "/gpt",
+    main.app,
+    "gpt"
+)
 
 from nsuda.routers import roots
 app.include_router(roots.router)
