@@ -18,5 +18,5 @@ async def nsuda(request: Request):
     return templates.TemplateResponse("NSUDA.html", {"request": request})
 
 @router.get("/downloads", response_class=HTMLResponse)
-async def nsuda(request: Request):
+async def donwload(request: Request):
     return templates.TemplateResponse("download.html", {"request": request})
