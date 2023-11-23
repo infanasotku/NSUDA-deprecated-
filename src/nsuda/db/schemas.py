@@ -8,9 +8,10 @@ class User(UserBase):
     id: int
     email: str
     days_left: int
+    password_hash: str
 
 class UserCreate(BaseModel):
     email: str
     days_left: int
- 
+    password_hash: str
 
