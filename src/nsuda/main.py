@@ -19,3 +19,6 @@ app.include_router(roots.router)
 
 from nsuda.routers import users
 app.include_router(users.router)
+
+from nsuda.internal import admin
+app.include_router(admin.router)
