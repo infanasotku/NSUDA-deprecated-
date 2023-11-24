@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        
+        <!-- and it's easy to individually load additional languages -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+        
+        <script>hljs.highlightAll();</script>
+    </head>
     <body>
-        <p>
-            {% for line in lines %}
-                {{ line }}<br>
-            {% endfor %}
-        </p>
+        {%- for line in lines -%}
+            {%- if "```python" in line -%}
+        <pre><code class="language-python">
+            {%- elif "```" in line -%}
+        </code></pre>
+            {%- else %}
+{{ line }}
+            {% endif %}
+        {%- endfor -%}
     </body>
 
 </html>
