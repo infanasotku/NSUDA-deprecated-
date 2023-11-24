@@ -10,15 +10,18 @@
         <script>hljs.highlightAll();</script>
     </head>
     <body>
-        {%- for line in lines -%}
-            {%- if "```python" in line -%}
+        {%- for i in range(lines|length) -%}
+        {%- if "```python" in lines[i] -%}
         <pre><code class="language-python">
-            {%- elif "```" in line -%}
+            {%- elif "```" in lines[i] -%}
         </code></pre>
-            {%- else %}
-{{ line }}
-            {% endif %}
+            {%- elif i > 0 and "```python" in lines[i - 1] -%}
+{{ lines[i] }}
+            {% else %}
+{{ lines[i] }}
+            {%- endif -%}
         {%- endfor -%}
+
     </body>
 
 </html>
