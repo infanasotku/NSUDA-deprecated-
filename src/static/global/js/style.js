@@ -4,9 +4,8 @@ const headWrapper  = document. querySelector(".head_wrapper");
 function scaleFunction()
 {
 	const height = headerSection.offsetHeight;
-  headWrapper.style.marginTop = height - 1 + "px"
-  headWrapper.style.minHeight = Math.max(headerSection.offsetWidth / 1.96, 725) + "px";
-  console.log(headWrapper.style.minHeight);
+  headWrapper.style.marginTop = height - 3 + "px"
+  headWrapper.style.minHeight = Math.max(headerSection.offsetWidth / 1.96, 725) + 1 + "px";
 }
 
 scaleFunction();

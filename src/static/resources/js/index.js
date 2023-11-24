@@ -16,7 +16,6 @@ observer.observe(projectBlockTrigger);
 
 $(".content .skill_block ul li").hover(
     function () {
-        console.log('kek');
         $(this).removeClass('out').addClass('over');
     },
     function () {
