@@ -17,8 +17,3 @@ async def get_config(email: str,  db: Session = Depends(crud.get_db)):
     else:
         return { "error": f'User: {email} - is not exist' }
     return "config...."
-
-@router.get("/create_config")
-async def create_config(email: str,  db: Session = Depends(crud.get_db)):
-    user = schemas.UserCreate(email=email, days_left=1, password_hash="")
-    return crud.create_user(db=db, user=user)

@@ -14,21 +14,41 @@ async def index(response: Response, request: Request,
                 password: str = None, db: Session = Depends(crud.get_db), 
                 email: str = None,
                 added_days: int = None):
+    message = None
     if email: # Email setted up by form
-        return email
+        db_user = crud.get_user_by_email(db, email=email)
+        if db_user:
+            db_user.days_left += added_days
+            crud.update_user(db, user=db_user)
+        else:
+            new_user = schemas.UserCreate(email=email, 
+                                          days_left=added_days, password_hash="")
+            crud.create_user(db, user=new_user)
+        message = "User created successful!"
     db_user = crud.get_user(db, user_id=1)
     if db_user:
         if not password:
             response.status_code = status.HTTP_404_NOT_FOUND
-        elif db_user.password_hash == "":
-            db_user.password_hash = sha256(password.encode('utf-8 ')).hexdigest()
-            crud.update_user(db, user=db_user)
-            return "New password set!"
         elif sha256(password.encode('utf-8 ')).hexdigest() == db_user.password_hash:
-            return templates.TemplateResponse("admin.html", {"request": request, "password": password})
+            return templates.TemplateResponse("admin.html", 
+                                              { "request": request, 
+                                               "password": password,
+                                                "message": message })
         else:
             response.status_code = status.HTTP_404_NOT_FOUND
     else:
-        response.status_code = status.HTTP_404_NOT_FOUND
+        if not password:
+            response.status_code = status.HTTP_404_NOT_FOUND
+        else:
+            hash = sha256(password.encode('utf-8 ')).hexdigest()
+            new_user = schemas.UserCreate(email="Admin", 
+                                          days_left=-1, 
+                                          password_hash=hash)
+            message = "Admin created successful!"
+            crud.create_user(db, user=new_user)
+            return templates.TemplateResponse("admin.html", 
+                                              { "request": request, 
+                                               "password": password,
+                                                "message": message })
     return "Page not found"
 
