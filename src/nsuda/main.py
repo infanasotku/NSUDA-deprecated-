@@ -1,4 +1,6 @@
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI
+from fastapi_utils.tasks import repeat_every
+
 
 app = FastAPI()
 
@@ -34,11 +36,11 @@ app.include_router(users.router)
 from nsuda.internal import admin
 app.include_router(admin.router)
 
-# Inits and starts xray
+
+# Connects xray updating event
 from nsuda.xray import handler
-handler.HandlerBuilder.init_handler()
 
-# Connects xray handler
-
-#BackgroundTasks().add_task(handler.update_uuid) 
-
+@app.on_event("startup")
+@repeat_every(seconds=3600 * 24)
+async def update_server():
+    await (await handler.HandlerBuilder.get_instanse()).update_uuid()
