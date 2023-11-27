@@ -7,30 +7,24 @@ import pathlib
 import sys
 
 class XrayHandler:
-
-    def __init__(self):
+    @classmethod
+    async def create(cls):
         '''
         1) Inits xray path by args\n
-        2) Inits all fieild and generate first uuid\n
-        3) Loads client config\n
-        4) Loads server config\n
-        5) Starts xray
+        2) Loads client config\n
+        3) Loads server config\n
         '''
+        self = cls()
+
         self._xray_path: str = sys.argv[1]
         self.cur_uuid: str = None
         self.server_config: str = None
         self.client_config: str = None
         self._xray_executor: Process = None
 
-        init_loop = asyncio.get_event_loop()
-
-        init_tasks = list()
-        init_tasks.append(init_loop.create_task(self._load_client_config()))
-        init_tasks.append(init_loop.create_task(self._load_server_config()))
-        init_tasks.append(init_loop.create_task(self.update_uuid()))
-
-        init_loop.run_until_complete(asyncio.wait(init_tasks))
-
+        await self._load_client_config()
+        await self._load_server_config()
+        
     async def update_uuid(self):
         async with asyncio.Lock():
             self.cur_uuid = str(uuid.uuid4())
@@ -77,7 +71,10 @@ class XrayHandler:
                 self.client_config = f.read()
 
     def _execute(config, path):
-        sproc.run(path.encode(), input=config.encode())
+        try:
+            sproc.run(path.encode(), input=config.encode())
+        except Exception as e:
+            print(f"Xray have an error: {e}")
 
     def _reload_xray(self):
         if self._xray_executor:
@@ -98,15 +95,7 @@ class HandlerBuilder:
     _instanse: XrayHandler= None
 
     @staticmethod
-    def get_instanse():
+    async def get_instanse():
         if not HandlerBuilder._instanse:
-            HandlerBuilder._instanse = XrayHandler()
+            HandlerBuilder._instanse = await XrayHandler.create()
         return HandlerBuilder._instanse
-    
-    @staticmethod
-    def init_handler():
-        '''
-        Inits handler if is not inited earlier.
-        '''
-        if not HandlerBuilder._instanse:
-            HandlerBuilder._instanse = XrayHandler()
