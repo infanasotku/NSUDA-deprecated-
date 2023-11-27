@@ -30,7 +30,6 @@ class XrayHandler:
         init_tasks.append(init_loop.create_task(self.update_uuid()))
 
         init_loop.run_until_complete(asyncio.wait(init_tasks))
-        print(self.cur_uuid)
 
     async def update_uuid(self):
         async with asyncio.Lock():
