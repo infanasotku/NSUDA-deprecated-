@@ -4,19 +4,19 @@ import subprocess as sproc
 from multiprocessing import Process
 import json
 import pathlib
-
+import sys
 
 class XrayHandler:
 
     def __init__(self):
         '''
-        1) Inits xray path by input\n
+        1) Inits xray path by args\n
         2) Inits all fieild and generate first uuid\n
         3) Loads client config\n
         4) Loads server config\n
         5) Starts xray
         '''
-        self._xray_path: str = input()
+        self._xray_path: str = sys.argv[1]
         self.cur_uuid: str = None
         self.server_config: str = None
         self.client_config: str = None
