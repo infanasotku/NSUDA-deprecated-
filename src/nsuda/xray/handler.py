@@ -24,6 +24,8 @@ class XrayHandler:
 
         await self._load_client_config()
         await self._load_server_config()
+
+        return self
         
     async def update_uuid(self):
         async with asyncio.Lock():
