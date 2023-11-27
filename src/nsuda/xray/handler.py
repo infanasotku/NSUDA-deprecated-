@@ -98,7 +98,6 @@ class HandlerBuilder:
     '''
     _instanse: XrayHandler= None
 
-    @property
     @staticmethod
     def get_instanse():
         if not HandlerBuilder._instanse:
