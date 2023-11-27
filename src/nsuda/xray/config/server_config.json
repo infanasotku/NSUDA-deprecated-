@@ -8,7 +8,7 @@
   },
   "inbounds": [
     {
-      "port": 443,
+      "port": 442,
       "protocol": "vless",
       "tag": "vless_tls",
       "settings": {
