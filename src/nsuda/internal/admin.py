@@ -59,6 +59,19 @@ async def get_uuid(password: str, response: Response,
     db_user = crud.get_user(db, user_id=1)
     if not password:
         response.status_code = status.HTTP_404_NOT_FOUND
+        return "Page not found"
     else:
         if sha256(password.encode('utf-8 ')).hexdigest() == db_user.password_hash:
             return handler.HandlerBuilder.get_instanse().cur_uuid
+        
+@router.get("/get_users")
+async def get_users(password: str, response: Response, 
+                   db: Session = Depends(crud.get_db)):
+    db_user = crud.get_user(db, user_id=1)
+    if not password:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return "Page not found"
+    else:
+        if sha256(password.encode('utf-8 ')).hexdigest() == db_user.password_hash:
+            temp = crud.get_all_users(db)
+            return crud.get_all_users(db)
