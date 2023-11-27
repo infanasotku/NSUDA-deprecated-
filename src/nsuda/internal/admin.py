@@ -59,7 +59,7 @@ async def get_uuid(password: str, response: Response,
     db_user = crud.get_user(db, user_id=1)
     if password:
         if sha256(password.encode('utf-8 ')).hexdigest() == db_user.password_hash:
-            return handler.HandlerBuilder.get_instanse().cur_uuid
+            return (await handler.HandlerBuilder.get_instanse()).cur_uuid
     response.status_code = status.HTTP_404_NOT_FOUND
     return "Page not found"
         
