@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta charset="utf-8">
         
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/resources/css/NSUDA.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/global/css/style.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/global/css/bootstrap.css') }}">
         <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='/global/resources/image/avatar.ico') }}">
@@ -29,9 +30,29 @@
     
                 
                 <div class="head_content">
-                    <div class="notify">
-                        <h1>In progress</h1>
+                    <div class="main_header">
+                        <div class="nsuda_wrapper">
+                            <h1>
+                                NSUDA
+                            </h1>
+                            <img src="{{ url_for('static', path='/resources/data/gif/flying.gif') }}">
+                        </div>
+                        <h4>
+                            Cross-platform proxy app.
+                        </h4>
                     </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="about_project">
+                    <h1>About NSUDA</h1>
+                    <div class="description">
+
+                    </div>
+                    <h1>
+                        In process...
+                    </h1>
                 </div>
             </div>
         </div>
