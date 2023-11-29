@@ -5,6 +5,7 @@ from multiprocessing import Process
 import json
 import pathlib
 import sys
+from datetime import datetime
 
 class XrayHandler:
     @classmethod
@@ -21,6 +22,7 @@ class XrayHandler:
         self.server_config: str = None
         self.client_config: str = None
         self._xray_executor: Process = None
+        self.last_update: datetime = None
 
         await self._load_client_config()
         await self._load_server_config()
@@ -32,6 +34,7 @@ class XrayHandler:
             self.cur_uuid = str(uuid.uuid4())
             await self._update_config()
             self._reload_xray()
+            self.last_update = datetime.now()
             
 
     async def _update_config(self):
