@@ -1,12 +1,13 @@
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, WebSocket
 from sqlalchemy.orm import Session
 
-from ..db import crud, schemas
+from ..db import crud
 
 
 router = APIRouter()
 
 
+from nsuda.xray import handler
 
 @router.get("/get_config")
 async def get_config(email: str,  db: Session = Depends(crud.get_db)):
@@ -16,4 +17,6 @@ async def get_config(email: str,  db: Session = Depends(crud.get_db)):
             return { "error": 'License is over, top up your account' }
     else:
         return { "error": f'User: {email} - is not exist' }
-    return "config...."
+    
+    xray = await handler.HandlerBuilder.get_instanse()
+    return { "config": xray.client_config, "last_update":  xray.last_update}

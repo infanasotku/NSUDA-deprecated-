@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-    <form>
-        <input type="hidden" name="password" value="{{ password }}"/>
-        <input type="text" name="email" autofocus/>
-        <input type="text" name="added_days"/>
-        <button>Add user</button>
-    </form>
-    {% if message %}
-    <p style="color: green;">{{ message }}</p>
-    {% endif %}
-
+    <body>
+        <form method="post">
+            <input type="text" name="email" autofocus/>
+            <input type="text" name="added_days"/>
+            <button>Add user</button>
+        </form>
+        {% if message %}
+        <p style="color: green;">{{ message }}</p>
+        {% endif %}
+    </body>
 </html>
