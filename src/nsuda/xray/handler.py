@@ -99,6 +99,7 @@ class XrayHandler:
                                 "path": self._xray_path }, 
             target=XrayHandler._execute,
             daemon=True)
+        # TODO: Fixes repeated db initializing after start().
         self._xray_executor.start()
         
 
