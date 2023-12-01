@@ -44,6 +44,7 @@ numpy==1.26.2
 outcome==1.3.0.post0
 Pillow==10.1.0
 platformdirs==4.0.0
+psutil==5.9.6
 py-arkose-generator==0.0.0.2
 pycparser==2.21
 pycryptodome==3.19.0

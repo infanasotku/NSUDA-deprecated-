@@ -1,7 +1,7 @@
 from fastapi import Depends, APIRouter, WebSocket
 from sqlalchemy.orm import Session
 
-from ..db import crud
+from nsuda.db import crud
 
 
 router = APIRouter()

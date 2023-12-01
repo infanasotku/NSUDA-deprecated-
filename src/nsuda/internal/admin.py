@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, Request, HTTPException, Body
 from sqlalchemy.orm import Session
-from ..db import crud, schemas
+from nsuda.db import crud, schemas
 from hashlib import sha256
 
 
 router = APIRouter(prefix="/admin")
 
-from ..routers.roots import templates
+from nsuda.routers.roots import templates
 
 
 

@@ -6,6 +6,7 @@ import json
 import pathlib
 import sys
 from datetime import datetime
+import psutil
 
 class XrayHandler:
     @classmethod
@@ -75,20 +76,30 @@ class XrayHandler:
             with open(path, "r") as f:
                 self.client_config = f.read()
 
+    @staticmethod
     def _execute(config, path):
         try:
             sproc.run(path.encode(), input=config.encode())
         except Exception as e:
             print(f"Xray have an error: {e}")
 
+    def _kill_xray(self):
+        killer = psutil.Process(self._xray_executor.pid)
+        for proc in killer.children(recursive=True):
+            proc.kill()
+        killer.kill()
+        self._xray_executor.join()
+
     def _reload_xray(self):
         if self._xray_executor:
-            self._xray_executor.terminate()
+            self._kill_xray()
 
         self._xray_executor = Process(
             group=None, kwargs={ "config": self.server_config,
                                 "path": self._xray_path }, 
-            target=XrayHandler._execute)
+            target=XrayHandler._execute,
+            daemon=True)
+        # TODO: Fixes repeated db initializing after start().
         self._xray_executor.start()
         
 
