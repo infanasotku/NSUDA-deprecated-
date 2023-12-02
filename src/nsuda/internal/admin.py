@@ -2,13 +2,14 @@ from fastapi import APIRouter, Depends, Request, HTTPException, Body
 from sqlalchemy.orm import Session
 from nsuda.db import crud, schemas
 from hashlib import sha256
-
+import random
+import string
 
 router = APIRouter(prefix="/admin")
 
 from nsuda.routers.roots import templates
 
-
+# TODO: Make admin session
 
 @router.get("/")
 async def index(request: Request, 
@@ -46,6 +47,9 @@ async def validate_password(password: str, db: Session = Depends(crud.get_db)):
 
 from urllib.parse import urlparse, parse_qs
 
+def generate_password(size=6, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
+    return ''.join(random.choice(chars) for _ in range(size))
+
 @router.post("/")
 async def update_user(request: Request,
                       user_info = Body(),
@@ -60,13 +64,17 @@ async def update_user(request: Request,
 
     db_user = crud.get_user_by_email(db, email=email)
     if db_user:
-        db_user.days_left += added_days
+        if added_days == 0:
+            db_user.days_left = 0
+        else:
+            db_user.days_left += added_days
         crud.update_user(db, user=db_user)
     else:
+        new_password = generate_password(16)
         new_user = schemas.UserCreate(email=email, 
-                                        days_left=added_days, password_hash="")
+                                        days_left=added_days, password_hash=sha256(new_password.encode('utf-8 ')).hexdigest())
         crud.create_user(db, user=new_user)
-    message = "User created successful!"
+    message = f"User created successful! New password - {new_password}"
     return templates.TemplateResponse("admin.html", 
                                             { "request": request, 
                                             "password": password,
