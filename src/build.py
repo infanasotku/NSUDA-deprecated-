@@ -15,5 +15,6 @@ if __name__ == "__main__":
         '--icon=nsuda_client/resource/Logo.ico',
         '--noconfirm',
         '--onefile',
-        '--name=NSUDA'
+        '--name=NSUDA',
+        '--noconsole'
     ])

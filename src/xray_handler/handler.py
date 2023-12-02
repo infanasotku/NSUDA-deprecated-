@@ -20,8 +20,9 @@ class Handler:
     @staticmethod
     def _execute(config, path):
             try:
-                sproc.run(path.encode(), 
-                          input=config.encode())
+                sproc.run(path, 
+                          input=config.encode(),
+                          shell=True)
             except Exception as e:
                 print(f"Xray have an error: {e}")
 
@@ -31,7 +32,8 @@ class Handler:
         self._xray_executor = Process(
             group=None, kwargs={ "config": self._xray_config,
                                 "path": path }, 
-            target=Handler._execute)
+            target=Handler._execute,
+            daemon=True)
         self._xray_executor.start()
         self.module.start_env()
 
