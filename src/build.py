@@ -12,5 +12,8 @@ if __name__ == "__main__":
         '--add-data=xray_handler/windows/xray.exe:' + WINDOWS_XRAY_FOLDER,
         '--add-data=nsuda_client/resource/Logo.ico:' + RESOURCE_FOLDER,
         '--add-data=nsuda_client/resource/Logo.png:' + RESOURCE_FOLDER,
-        '--noconfirm'
+        '--icon=nsuda_client/resource/Logo.ico',
+        '--noconfirm',
+        '--onefile',
+        '--name=NSUDA'
     ])

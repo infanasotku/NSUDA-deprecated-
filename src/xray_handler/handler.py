@@ -17,7 +17,7 @@ class Handler:
             self.module = win_handler
         self._load_env_setting()
 
-
+    @staticmethod
     def _execute(config, path):
             try:
                 sproc.run(path.encode(), 
@@ -31,8 +31,7 @@ class Handler:
         self._xray_executor = Process(
             group=None, kwargs={ "config": self._xray_config,
                                 "path": path }, 
-            target=Handler._execute,
-            daemon=True)
+            target=Handler._execute)
         self._xray_executor.start()
         self.module.start_env()
 

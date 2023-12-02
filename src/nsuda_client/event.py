@@ -1,6 +1,5 @@
-import dearpygui.dearpygui as dpg
 from xray_handler.handler import Handler
-
+import dearpygui.dearpygui as dpg
 
 class HandlerBuilder:
     _instanse: Handler = None
