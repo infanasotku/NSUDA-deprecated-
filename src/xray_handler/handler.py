@@ -1,7 +1,6 @@
 import requests as r
 from multiprocessing import Process
 import subprocess as sproc
-from pathlib import Path
 import psutil
 from datetime import datetime
 import platform
@@ -9,23 +8,25 @@ from xray_handler.windows import win_handler
 
 class Handler:
 
-    def __init__(self, email: str):
-        self.email = email
+    def __init__(self):
         self._xray_executor: Process = None
         self._xray_config: str = None
         self._last_update: datetime = None
         self.module = None
         if platform.system() == "Windows":
             self.module = win_handler
+        self._load_env_setting()
+
 
     def _execute(config, path):
             try:
-                sproc.run(path.encode(), input=config.encode())
+                sproc.run(path.encode(), 
+                          input=config.encode())
             except Exception as e:
                 print(f"Xray have an error: {e}")
 
     def start(self):
-        path = (Path(__file__).parent / "xray").absolute().as_posix()
+        path = self.module.xray_path
         
         self._xray_executor = Process(
             group=None, kwargs={ "config": self._xray_config,
@@ -55,13 +56,13 @@ class Handler:
              return False
         return True
 
-    def load_config(self):
+    def load_config(self, email: str):
         data = r.get(
-            f"https://infanasotku.ru/get_config?email={self.email}"
+            f"https://infanasotku.ru/get_config?email={email}"
             ).json()
         
         self._xray_config = data["config"]
         self._last_update = data["last_update"]
 
-    def load_env_setting(self):
+    def _load_env_setting(self):
         self.module.load_env_setting()

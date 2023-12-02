@@ -1,6 +1,15 @@
 import win32com.shell.shell as shell
 import os
+from pathlib import Path
+from config import is_development
+from build import WINDOWS_XRAY_FOLDER
 
+xray_path:str = None
+
+if is_development:
+    xray_path = (Path(__file__).parent / "xray").absolute().as_posix()
+else:
+    xray_path = (Path(__file__).parent.parent.parent / WINDOWS_XRAY_FOLDER / "xray").absolute().as_posix()
 
 def load_env_setting():
     os.system(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v PrivacyAdvanced /t REG_DWORD /d 1 /f')
