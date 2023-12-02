@@ -75,3 +75,42 @@
 {
     margin-top: 5%;
 }
+
+.content .download
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content .download .cell
+{
+    display: flex;
+    justify-content: center;
+}
+
+.content .download table, td, th
+{
+    border: 1px solid black;
+}
+
+.content .download table
+{
+    margin-top: 5%;
+    width: 80%;
+}
+
+
+.hero_area a:hover
+{
+    animation-duration: 0.25s;
+    animation-name: none !important;
+    animation-fill-mode: none !important;
+    text-decoration: none;
+}
+
+
+.content .download a:visited, a:link, a:active
+{
+    color: black !important;
+}

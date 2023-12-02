@@ -21,6 +21,8 @@ venv
 docs.zip
 archive.zip
 *.db
+.spec
+
 
 # vim temporary files
 *~
