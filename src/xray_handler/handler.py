@@ -57,13 +57,18 @@ class Handler:
              return False
         return True
 
-    def load_config(self, email: str):
-        data = r.get(
-            f"https://infanasotku.ru/get_config?email={email}"
-            ).json()
-        
+    def load_config(self, email: str, password: str) -> str:
+        try:
+            data = r.get(
+                f"https://infanasotku.ru/get_config?email={email}&password={password}"
+                ).json()
+        except:
+            return "Unidentified error"
+        if "error" in data:
+            return data["error"]
         self._xray_config = data["config"]
         self._last_update = data["last_update"]
+        return "OK"
 
     def _load_env_setting(self):
         self.module.load_env_setting()

@@ -1,11 +1,9 @@
 import dearpygui.dearpygui as dpg
-from pathlib import Path
-from config import is_development
+from config import resource_path, window_height, window_width
 from build import RESOURCE_FOLDER
 import platform
 
-width = 300
-height = 400
+
 
 icon_name: str = None
 
@@ -14,17 +12,14 @@ if platform.system() == "Windows":
 elif platform.system() == "Darwin":
     icon_name = "Logo.png"
 
+
 dpg.create_context()
-if is_development:
-    path = (Path(__file__).parent / "resource" / icon_name).absolute().as_posix()
-else:
-    path = (Path(__file__).parent.parent / RESOURCE_FOLDER / icon_name).absolute().as_posix()
 
 dpg.create_viewport(title='NSUDA', 
-                    width=width, 
-                    height=height, 
-                    small_icon=path, 
-                    large_icon=path, 
+                    width=window_width, 
+                    height=window_height, 
+                    small_icon=resource_path + "/" + icon_name, 
+                    large_icon=resource_path + "/" + icon_name, 
                     resizable=False,
                     x_pos=700,
                     y_pos=400)

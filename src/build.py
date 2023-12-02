@@ -12,6 +12,7 @@ BUILDER_ARGS: list = [
     '--noconsole',
     '--add-data=nsuda_client/resource/Logo.ico:' + RESOURCE_FOLDER,
     '--add-data=nsuda_client/resource/Logo.png:' + RESOURCE_FOLDER,
+    '--add-data=nsuda_client/resource/Gill Sans.ttf:' + RESOURCE_FOLDER,
 ]
 
 icon_name: str = None
