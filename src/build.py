@@ -23,7 +23,7 @@ if platform.system() == "Windows":
         '--add-data=xray_handler/windows/*.dat:' + XRAY_FOLDER,
     )
     BUILDER_ARGS.append(
-        '--add-data=xray_handler/windows/xray:' + XRAY_FOLDER,
+        '--add-data=xray_handler/windows/xray.exe:' + XRAY_FOLDER,
     )
 elif platform.system() == "Darwin":
     XRAY_FOLDER = "mac_os"
