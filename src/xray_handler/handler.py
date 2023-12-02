@@ -4,17 +4,17 @@ import subprocess as sproc
 import psutil
 from datetime import datetime
 import platform
-from xray_handler.windows import win_handler
-
+if platform.system() == "Windows":
+    from xray_handler.windows import win_handler as os_handler
+elif platform.system() == "Darwin":
+    from xray_handler.mac_os import mac_handler as os_handler
 class Handler:
 
     def __init__(self):
         self._xray_executor: Process = None
         self._xray_config: str = None
         self._last_update: datetime = None
-        self.module = None
-        if platform.system() == "Windows":
-            self.module = win_handler
+        self.module = os_handler
         self._load_env_setting()
 
     @staticmethod

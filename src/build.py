@@ -1,20 +1,43 @@
 import PyInstaller.__main__
+import platform
 
+RESOURCE_FOLDER: str = "resource"
+XRAY_FOLDER: str = None
 
-WINDOWS_XRAY_FOLDER = "windows"
-RESOURCE_FOLDER = "resource"
+BUILDER_ARGS: list = [
+    'run.py',
+    '--noconfirm',
+    '--onefile',
+    '--name=NSUDA',
+    '--noconsole',
+    '--add-data=nsuda_client/resource/Logo.ico:' + RESOURCE_FOLDER,
+    '--add-data=nsuda_client/resource/Logo.png:' + RESOURCE_FOLDER,
+]
+
+icon_name: str = None
+
+if platform.system() == "Windows":
+    XRAY_FOLDER = "windows"
+    icon_name = "Logo.ico"
+    BUILDER_ARGS.append(
+        '--add-data=xray_handler/windows/*.dat:' + XRAY_FOLDER,
+    )
+    BUILDER_ARGS.append(
+        '--add-data=xray_handler/windows/xray:' + XRAY_FOLDER,
+    )
+elif platform.system() == "Darwin":
+    XRAY_FOLDER = "mac_os"
+    icon_name = "Logo.png"
+    BUILDER_ARGS.append(
+        '--add-data=xray_handler/mac_os/*.dat:' + XRAY_FOLDER,
+    )
+    BUILDER_ARGS.append(
+        '--add-data=xray_handler/mac_os/xray:' + XRAY_FOLDER,
+    )
+BUILDER_ARGS.append(
+    '--icon=nsuda_client/resource/' + icon_name
+)
+
 
 if __name__ == "__main__":
-    PyInstaller.__main__.run([
-        'run.py',
-        '--add-data=xray_handler/windows/*.dat:' + WINDOWS_XRAY_FOLDER,
-        '--add-data=xray_handler/windows/xray.exe:' + WINDOWS_XRAY_FOLDER,
-        '--add-data=xray_handler/windows/xray.exe:' + WINDOWS_XRAY_FOLDER,
-        '--add-data=nsuda_client/resource/Logo.ico:' + RESOURCE_FOLDER,
-        '--add-data=nsuda_client/resource/Logo.png:' + RESOURCE_FOLDER,
-        '--icon=nsuda_client/resource/Logo.ico',
-        '--noconfirm',
-        '--onefile',
-        '--name=NSUDA',
-        '--noconsole'
-    ])
+    PyInstaller.__main__.run(BUILDER_ARGS)
