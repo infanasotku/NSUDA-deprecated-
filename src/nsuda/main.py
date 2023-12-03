@@ -43,8 +43,5 @@ from nsuda.xray import handler
 @app.on_event("startup")
 @repeat_every(seconds=3600 * 24)
 async def update_server():
-    try:
-        users.update_days()
-    except Exception as e:
-        print(e)
     await (await handler.HandlerBuilder.get_instanse()).update_uuid()
+    users.update_days()
