@@ -12,7 +12,7 @@ else:
 print(xray_path)
 
 def load_env_setting():
-    pass
+    os.system("networksetup -setsocksfirewallproxy wi-fi localhost 2080")
 
 
 def start_env():
