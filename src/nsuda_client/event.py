@@ -62,6 +62,6 @@ def close_clicked():
         return
     handler = HandlerBuilder.get_instanse()
     try:
-        handler.restart_if_needed()
+        handler.kill()
     except:
         pass
