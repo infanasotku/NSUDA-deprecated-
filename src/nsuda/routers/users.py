@@ -26,11 +26,14 @@ def update_days():
     db_handler = crud.get_db()
     db: Session = next(db_handler)
 
-    users = crud.get_all_users(db)
+    try:
+        users = crud.get_all_users(db)
+    except Exception as e:
+        print(e)
 
     for user in users:
         if user.days_left > 0:
             user.days_left -= 1
             crud.update_user(db, user=user)
-        
+            
     next(db_handler)
