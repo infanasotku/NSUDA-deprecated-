@@ -35,12 +35,13 @@ def connect_button_clicked():
     
 def notice_for_error(notice: str):
     with dpg.window(
-        width=300, 
+        width=350, 
         height=100, 
         no_resize=True,
         label="Notice",
-        pos=(window_width // 2 - 153, window_height // 2 - 80),
-        no_move=True
+        pos=(window_width // 2 - 180, window_height // 2 - 80),
+        no_move=True,
+        no_collapse=True
         ) as notice_window:
         text = dpg.add_text(default_value=notice,
                      pos=(10, 47),
@@ -61,6 +62,6 @@ def close_clicked():
         return
     handler = HandlerBuilder.get_instanse()
     try:
-        handler.kill()
+        handler.close_handler()
     except:
         pass
