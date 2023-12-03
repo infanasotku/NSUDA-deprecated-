@@ -47,6 +47,15 @@ def configure_nsuda():
 
 
 def start_nsuda():
-    dpg.start_dearpygui()
+    handler = event.HandlerBuilder.get_instanse()
+    
+    i: int = 0
+
+    while(dpg.is_dearpygui_running()):
+        dpg.render_dearpygui_frame()
+        i += 1
+        if i == 1000:
+            handler.restart_if_needed()
+            i = 0
     dpg.destroy_context()
 

@@ -8,12 +8,17 @@ if platform.system() == "Windows":
     from xray_handler.windows import win_handler as os_handler
 elif platform.system() == "Darwin":
     from xray_handler.mac_os import mac_handler as os_handler
+from datetime import datetime as d
+
 class Handler:
 
     def __init__(self):
+        self._is_running = False
         self._xray_executor: Process = None
         self._xray_config: str = None
         self._last_update: datetime = None
+        self.email = None
+        self.password = None
         self.module = os_handler
         self._load_env_setting()
 
@@ -35,6 +40,7 @@ class Handler:
             target=Handler._execute,
             daemon=True)
         self._xray_executor.start()
+        self._is_running = True
         self.module.start_env()
 
 
@@ -45,6 +51,7 @@ class Handler:
         process.kill()
         self._xray_executor.join()
         self.module.exit_env()
+        self._is_running = False
 
 
     def check_status(self) -> bool: 
@@ -58,6 +65,8 @@ class Handler:
         return True
 
     def load_config(self, email: str, password: str) -> str:
+        self.email = email
+        self.password = password
         try:
             data = r.get(
                 f"https://infanasotku.ru/get_config?email={email}&password={password}"
@@ -69,6 +78,21 @@ class Handler:
         self._xray_config = data["config"]
         self._last_update = data["last_update"]
         return "OK"
+
+    def restart_if_needed(self):
+        if self._is_running:
+            is_alive = self.check_status()
+            if not is_alive:
+                self.kill()
+                try:
+                    self.load_config(email=self.email, password=self.password)
+                    self.start()
+                    return
+                except:
+                    pass
+            
+
+
 
     def _load_env_setting(self):
         self.module.load_env_setting()
