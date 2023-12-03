@@ -6,6 +6,12 @@
             "port":2080,
             "protocol":"socks",
             "tag":"socks-in"
+        },
+        {
+            "listen":"127.0.0.1",
+            "port":2081,
+            "protocol":"http",
+            "tag":"http-in"
         }
     ],
     "log":
