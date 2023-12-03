@@ -59,10 +59,11 @@ async def update_user(request: Request,
     data = parse_qs(parsed_url.query)
     email = data["email"][0]
     added_days = int(data["added_days"][0])
-    if not email or not added_days:
+    if email == None or added_days == None: 
         raise HTTPException(status_code=404)
 
     db_user = crud.get_user_by_email(db, email=email)
+    message = None
     if db_user:
         if added_days == 0:
             db_user.days_left = 0
@@ -74,7 +75,7 @@ async def update_user(request: Request,
         new_user = schemas.UserCreate(email=email, 
                                         days_left=added_days, password_hash=sha256(new_password.encode('utf-8 ')).hexdigest())
         crud.create_user(db, user=new_user)
-    message = f"User created successful! New password - {new_password}"
+        message = f"User created successful! New password - {new_password}"
     return templates.TemplateResponse("admin.html", 
                                             { "request": request, 
                                             "password": password,
