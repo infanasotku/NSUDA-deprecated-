@@ -2,13 +2,14 @@ from config import is_development
 from build import XRAY_FOLDER
 from pathlib import Path
 import os
+import platform
 
 xray_path:str = None
-
+arch_folder: str = platform.uname().machine
 if is_development:
-    xray_path = (Path(__file__).parent / "xray").absolute().as_posix()
+    xray_path = (Path(__file__).parent / arch_folder / "xray").absolute().as_posix()
 else:
-    xray_path = (Path(__file__).parent.parent.parent / XRAY_FOLDER / "xray").absolute().as_posix()
+    xray_path = (Path(__file__).parent.parent.parent / arch_folder / XRAY_FOLDER / "xray").absolute().as_posix()
 print(xray_path)
 
 def load_env_setting():

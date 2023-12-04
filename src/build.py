@@ -29,11 +29,12 @@ if platform.system() == "Windows":
 elif platform.system() == "Darwin":
     XRAY_FOLDER = "mac_os"
     icon_name = "Logo.png"
+    arch_folder: str = platform.uname().machine
     BUILDER_ARGS.append(
-        '--add-data=xray_handler/mac_os/*.dat:' + XRAY_FOLDER,
+        '--add-data=xray_handler/mac_os/' + arch_folder + '/*.dat:' + XRAY_FOLDER,
     )
     BUILDER_ARGS.append(
-        '--add-data=xray_handler/mac_os/xray:' + XRAY_FOLDER,
+        '--add-data=xray_handler/mac_os/' + arch_folder + '/xray:' + XRAY_FOLDER,
     )
 BUILDER_ARGS.append(
     '--icon=nsuda_client/resource/' + icon_name
