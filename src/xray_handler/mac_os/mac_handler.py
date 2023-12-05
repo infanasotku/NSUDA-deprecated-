@@ -14,6 +14,7 @@ print(xray_path)
 
 def load_env_setting():
     os.system("networksetup -setsocksfirewallproxy wi-fi localhost 2080")
+    os.system("networksetup -setsocksfirewallproxystate wi-fi off")
 
 
 def start_env():
