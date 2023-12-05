@@ -179,7 +179,8 @@
 .content .download .cell
 {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .content .download table, td, th
