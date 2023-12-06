@@ -10,7 +10,6 @@ if is_development:
     xray_path = (Path(__file__).parent / arch_folder / "xray").absolute().as_posix()
 else:
     xray_path = (Path(__file__).parent.parent.parent / XRAY_FOLDER / "xray").absolute().as_posix()
-print(xray_path)
 
 def load_env_setting():
     os.system("networksetup -setsocksfirewallproxy wi-fi localhost 2080")
