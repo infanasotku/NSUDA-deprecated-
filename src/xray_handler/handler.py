@@ -8,7 +8,8 @@ if platform.system() == "Windows":
     from xray_handler.windows import win_handler as os_handler
 elif platform.system() == "Darwin":
     from xray_handler.mac_os import mac_handler as os_handler
-from datetime import datetime as d
+elif platform.system() == "Linux":
+    from xray_handler.linux import lin_handler as os_handler
 
 class Handler:
 
