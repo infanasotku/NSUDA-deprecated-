@@ -10,12 +10,14 @@ if is_development:
 else:
     xray_path = (Path(__file__).parent.parent.parent / XRAY_FOLDER / "xray").absolute().as_posix()
 
+# For linux requires manual set up env.
+
 def load_env_setting():
     pass
 
 
 def start_env():
-    os.system("export http_proxy=localhost:2081")
+    pass
 
 def exit_env():
-    os.system("unset http_proxy")
+    pass

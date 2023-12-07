@@ -11,6 +11,8 @@ if platform.system() == "Windows":
     icon_name = "Logo.ico"
 elif platform.system() == "Darwin":
     icon_name = "Logo.png"
+elif platform.system() == "Linux":
+    icon_name = "Logo.png"
 
 
 dpg.create_context()
