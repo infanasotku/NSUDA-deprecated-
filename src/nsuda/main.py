@@ -44,4 +44,4 @@ from nsuda.xray import handler
 @repeat_every(seconds=3600 * 24)
 async def update_server():
     await (await handler.HandlerBuilder.get_instanse()).update_uuid()
-    users.update_days()
+    users.DaysHandler.update_days()
