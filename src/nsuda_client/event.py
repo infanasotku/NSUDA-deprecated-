@@ -19,10 +19,6 @@ class HandlerBuilder:
 
 
 def connect_button_clicked():
-
-            
-
-
     email: str = dpg.get_value(item="email_item")
     password: str = dpg.get_value(item="password_item")
     if email == "" or password == "":
@@ -37,6 +33,7 @@ def connect_button_clicked():
         notice_for_error(msg)
         return
     dpg.configure_item(item="connect_button", show=False)
+    dpg.configure_item(item="remember_checkbox", show=False)
     dpg.configure_item(item="email_item", show=False)
     dpg.configure_item(item="password_item", show=False)
     dpg.configure_item(item="disconnect_button", show=True)
@@ -53,7 +50,7 @@ def notice_for_error(notice: str):
         no_move=True,
         no_collapse=True
         ) as notice_window:
-        text = dpg.add_text(default_value=notice,
+        dpg.add_text(default_value=notice,
                      pos=(10, 47),
                      )
         dpg.bind_item_font(notice_window, small_font)
@@ -64,6 +61,7 @@ def disconnect_button_clicked():
     dpg.configure_item(item="password_item", show=True)
     dpg.configure_item(item="connect_notice", show=False)
     dpg.configure_item(item="disconnect_button", show=False)
+    dpg.configure_item(item="remember_checkbox", show=True)
     handler = HandlerBuilder.get_instanse()
     handler.kill()
 
