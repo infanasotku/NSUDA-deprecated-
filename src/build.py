@@ -21,7 +21,7 @@ if platform.system() == "Windows":
     XRAY_FOLDER = "windows"
     icon_name = "Logo.ico"
     BUILDER_ARGS.append(
-        '--add-data=xray_handler/windows/*.dat:' + XRAY_FOLDER,
+        '--add-data=xray_handler/windows/xray.exe:' + XRAY_FOLDER,
     )
 elif platform.system() == "Darwin":
     XRAY_FOLDER = "mac_os"
