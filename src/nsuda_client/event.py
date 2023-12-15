@@ -19,8 +19,18 @@ class HandlerBuilder:
 
 
 def connect_button_clicked():
+
+            
+
+
     email: str = dpg.get_value(item="email_item")
     password: str = dpg.get_value(item="password_item")
+    if email == "" or password == "":
+        notice_for_error("Empty strings")
+        return
+    if dpg.get_value(item="remember_checkbox"):
+        with open("login", "w") as f:
+            f.write(f"{email} {password}")
     handler = HandlerBuilder.get_instanse()
     msg: str = handler.load_config(email=email, password=password)
     if msg != "OK":
@@ -39,7 +49,7 @@ def notice_for_error(notice: str):
         height=100, 
         no_resize=True,
         label="Notice",
-        pos=(window_width // 2 - 180, window_height // 2 - 80),
+        pos=(window_width // 2 - 180, window_height // 2 - 90),
         no_move=True,
         no_collapse=True
         ) as notice_window:

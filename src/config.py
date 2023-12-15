@@ -17,3 +17,5 @@ else:
 
 window_width = 500
 window_height = 400
+
+input_field_width = 350

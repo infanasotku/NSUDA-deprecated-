@@ -73,7 +73,7 @@ class Handler:
                 f"https://infanasotku.ru/get_config?email={email}&password={password}"
                 ).json()
         except:
-            return "Unidentified error"
+            return "Undefined error"
         if "error" in data:
             return data["error"]
         self._xray_config = data["config"]

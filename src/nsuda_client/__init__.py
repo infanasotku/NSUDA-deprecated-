@@ -1,6 +1,5 @@
 import dearpygui.dearpygui as dpg
 from config import resource_path, window_height, window_width
-from build import RESOURCE_FOLDER
 import platform
 
 
