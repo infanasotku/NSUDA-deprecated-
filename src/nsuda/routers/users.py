@@ -32,7 +32,7 @@ class DaysHandler:
         '''Updates days of user subscription. 
         '''
         if not DaysHandler._handler:
-            DaysHandler._handler = 0 # Initing flag
+            DaysHandler._handler = 1 # Initing flag
             return
         db_handler = crud.get_db()
         db: Session = next(db_handler)
