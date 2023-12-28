@@ -55,10 +55,10 @@ def configure_nsuda():
         dpg.set_exit_callback(callback=event.close_clicked)
 
     dpg.set_primary_window("Primary Window", True)
-
+from xray_handler.messenger import MessengerBuilder
 
 def start_nsuda():
-    os_handler.exit_env()
+    MessengerBuilder.get_instanse()
     while(dpg.is_dearpygui_running()):
         dpg.render_dearpygui_frame()
     dpg.destroy_context()

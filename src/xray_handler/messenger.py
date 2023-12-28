@@ -19,6 +19,7 @@ class Messenger:
         self._xray_config: str = None
         self.password: str = None
         self.is_running: bool = False
+        os_handler.load_env_setting()
 
     def load_config(self, email: str, password: str) -> str:
         '''Gets config from API by email and password.
@@ -43,7 +44,17 @@ class Messenger:
         if not self._xray_config:
             return "Undefined error"
         args = [os_handler.xray_path]
-        self._xray_process = subprocess.Popen(args=args, universal_newlines=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        if platform.system() == "Windows":
+            self._xray_process = subprocess.Popen(args=args, 
+                                                  universal_newlines=True, 
+                                                  stdin=subprocess.PIPE, 
+                                                  stdout=subprocess.PIPE, 
+                                                  creationflags=os_handler.CREATE_NO_WINDOW)
+        else:
+            self._xray_process = subprocess.Popen(args=args, 
+                                                  universal_newlines=True, 
+                                                  stdin=subprocess.PIPE, 
+                                                  stdout=subprocess.PIPE)
         self._xray_process.stdin.write(self._xray_config)
         self._xray_process.stdin.close()
         os_handler.start_env()
