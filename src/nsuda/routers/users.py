@@ -22,7 +22,9 @@ async def get_config(email: str, password: str,  db: Session = Depends(crud.get_
     xray = await handler.HandlerBuilder.get_instanse()
     return { "config": xray.client_config, "last_update":  xray.last_update}
 
-
+@router.get("/check_connection")
+async def check_connection():
+    return "OK"
 
 class DaysHandler:
     _handler: int = None
