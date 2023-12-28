@@ -1,6 +1,7 @@
 import dearpygui.dearpygui as dpg
 import nsuda_client.event as event
 from config import *
+from xray_handler.messenger import os_handler
 
 
 def configure_nsuda():
@@ -56,17 +57,9 @@ def configure_nsuda():
     dpg.set_primary_window("Primary Window", True)
 
 
-
 def start_nsuda():
-    handler = event.HandlerBuilder.get_instanse()
-    
-    i: int = 0
-
+    os_handler.exit_env()
     while(dpg.is_dearpygui_running()):
         dpg.render_dearpygui_frame()
-        i += 1
-        if i == 1000:
-            handler.restart_if_needed()
-            i = 0
     dpg.destroy_context()
 

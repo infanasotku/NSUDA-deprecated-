@@ -1,22 +1,8 @@
-from xray_handler.handler import Handler
+from xray_handler.messenger import MessengerBuilder
 import dearpygui.dearpygui as dpg
 from config import window_width, window_height
 
 small_font = None
-
-class HandlerBuilder:
-    _instanse: Handler = None
-
-    @staticmethod
-    def get_instanse() -> Handler:
-        if not HandlerBuilder._instanse:
-            HandlerBuilder._instanse = Handler()
-        return HandlerBuilder._instanse
-    
-    @staticmethod
-    def get_state() -> bool:
-        return HandlerBuilder._instanse == None
-
 
 def connect_button_clicked():
     email: str = dpg.get_value(item="email_item")
@@ -27,8 +13,8 @@ def connect_button_clicked():
     if dpg.get_value(item="remember_checkbox"):
         with open("login", "w") as f:
             f.write(f"{email} {password}")
-    handler = HandlerBuilder.get_instanse()
-    msg: str = handler.load_config(email=email, password=password)
+    messenger = MessengerBuilder.get_instanse()
+    msg: str = messenger.load_config(email=email, password=password)
     if msg != "OK":
         notice_for_error(msg)
         return
@@ -38,7 +24,8 @@ def connect_button_clicked():
     dpg.configure_item(item="password_item", show=False)
     dpg.configure_item(item="disconnect_button", show=True)
     dpg.configure_item(item="connect_notice", show=True)
-    handler.start()
+    messenger.run_session()
+    messenger.handle_xray()
     
 def notice_for_error(notice: str):
     with dpg.window(
@@ -62,14 +49,14 @@ def disconnect_button_clicked():
     dpg.configure_item(item="connect_notice", show=False)
     dpg.configure_item(item="disconnect_button", show=False)
     dpg.configure_item(item="remember_checkbox", show=True)
-    handler = HandlerBuilder.get_instanse()
-    handler.kill()
+    MessengerBuilder.get_instanse().kill()
+    
 
 def close_clicked():
-    if HandlerBuilder.get_state():
+    if MessengerBuilder.get_state():
         return
-    handler = HandlerBuilder.get_instanse()
+    messenger = MessengerBuilder.get_instanse()
     try:
-        handler.kill()
+        messenger.kill()
     except:
         pass
