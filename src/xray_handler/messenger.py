@@ -24,6 +24,8 @@ class Messenger:
     def load_config(self, email: str, password: str) -> str:
         '''Gets config from API by email and password.
         '''
+        if not self.check_internet_conection():
+            return "Internet connection lost"
         self.email = email
         self.password = password
         try:
@@ -109,7 +111,7 @@ class Messenger:
         while True:
             time.sleep(5)
             if self.is_running:
-                if not self.check_status():
+                if not self.check_xray_conection():
                     self.kill()
                     self.load_config(email=self.email, password=self.password)
                     self.run_session()
@@ -119,7 +121,7 @@ class Messenger:
                 return
 
 
-    def check_status(self) -> bool:
+    def check_xray_conection(self) -> bool:
         '''Returns True if connection with xray is stable, False otherwise.
         '''
         try:
@@ -130,6 +132,18 @@ class Messenger:
         except:
                 return False
         return True
+    
+    def check_internet_conection(self) -> bool:
+        '''Returns True if connection with internet is stable, False otherwise
+        '''
+        try:
+            req = r.get("http://infanasotku.ru/")
+            if req.status_code == 503:
+                return False
+        except:
+                return False
+        return True
+
 
 class MessengerBuilder:
     _instanse: Messenger = None

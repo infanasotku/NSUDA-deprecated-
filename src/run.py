@@ -8,4 +8,4 @@ if __name__ == "__main__":
         print("Нажмите любую кнопку для продолжения")
         input()
     configure_nsuda()
-    start_nsuda()   
+    start_nsuda()
