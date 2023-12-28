@@ -48,8 +48,8 @@ def configure_nsuda():
                 tag="disconnect_button",
                 show=False
             )
-        dpg.add_checkbox(label="Remember login",
-                pos=(window_width // 2 - 130, window_height // 2 + 20),
+        dpg.add_checkbox(label="Remember me",
+                pos=(window_width // 2 - 120, window_height // 2 + 20),
                 tag="remember_checkbox"
             )
         dpg.set_exit_callback(callback=event.close_clicked)
