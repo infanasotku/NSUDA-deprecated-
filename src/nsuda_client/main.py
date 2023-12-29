@@ -26,12 +26,14 @@ def configure_nsuda():
         event.small_font = dpg.add_font(resource_path + "/Gill Sans.ttf", 21)
         dpg.bind_font(default_font)
     with dpg.window(tag="Primary Window"):
+
         email, password = None, None
         try:
-            with open("login", "r") as f:
+            with open(app_folder_path + "/" + login_file_name, "r") as f:
                 email, password = f.read().split()
         except:
             pass
+
         dpg.add_input_text(
                 tag="email_item", 
                 hint="Input email",

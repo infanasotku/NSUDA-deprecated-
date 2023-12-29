@@ -10,11 +10,15 @@ else:
     is_development = True
 
 resource_path: str = None
+app_folder_path: str = None
+login_file_name = ".NSUDA_login"
 if is_development:
     resource_path = (Path(__file__).parent / "nsuda_client" / "resource").absolute().as_posix()
+    app_folder_path = (Path(__file__).parent).absolute().as_posix()
 else:
     resource_path = (Path(__file__).parent / RESOURCE_FOLDER).absolute().as_posix()
-
+    app_folder_path = str(Path.home())
+    
 window_width = 500
 window_height = 400
 

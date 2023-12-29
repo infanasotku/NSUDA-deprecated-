@@ -1,13 +1,15 @@
 from xray_handler.messenger import MessengerBuilder
 import dearpygui.dearpygui as dpg
 from threading import Thread
-from config import window_width, window_height
+from config import window_width, window_height, app_folder_path, login_file_name
 
 class UIData:
     '''Keeps the UI data.
     '''
     def __init__(self):
         self.load_screen_data = []
+        self.load_end_event = False
+        self.loading_process: Thread = None
 
 class UIDataBuilder:
     '''Provides access to UIData singleton instance.
@@ -21,13 +23,13 @@ class UIDataBuilder:
         return UIDataBuilder._instance
 
 small_font = None
-load_end_event = False
 
 def show_main_menu(show: bool):
     dpg.configure_item(item="connect_button", show=show)
     dpg.configure_item(item="remember_checkbox", show=show)
     dpg.configure_item(item="email_item", show=show)
     dpg.configure_item(item="password_item", show=show)
+
 
 def connect_button_clicked():
     email: str = dpg.get_value(item="email_item")
@@ -36,28 +38,28 @@ def connect_button_clicked():
         notice_for_error("Empty strings")
         return
     if dpg.get_value(item="remember_checkbox"):
-        with open("login", "w") as f:
+        with open(app_folder_path + "/" + login_file_name, "w") as f:
             f.write(f"{email} {password}")
 
     show_main_menu(show=False)
-    global load_end_event
-    load_end_event = False
-    loading = Thread(daemon=True, target=view_load_screen)
-    loading.start()
+    ui_data = UIDataBuilder.get_instanse()
+    ui_data.load_end_event = False
+    ui_data.loading_process = Thread(daemon=True, target=view_load_screen)
+    ui_data.loading_process.start()
     messenger = MessengerBuilder.get_instanse()
     msg: str = messenger.load_config(email=email, password=password)
 
     if msg != "OK":
-        load_end_event = True
-        loading.join()
+        ui_data.load_end_event = True
+        ui_data.loading_process.join()
         show_main_menu(show=True)
         notice_for_error(msg)
         return
 
     messenger.run_session()
     messenger.handle_xray()
-    load_end_event = True
-    loading.join()
+    ui_data.load_end_event = True
+    ui_data.loading_process.join()
     dpg.configure_item(item="disconnect_button", show=True)
     dpg.configure_item(item="connect_notice", show=True)
 
@@ -91,7 +93,7 @@ def view_load_screen():
     i = 0
     while True:
         for gif_data in ui_data.load_screen_data:
-            if load_end_event:
+            if ui_data.load_end_event:
                 dpg.configure_item(item="load_screen", show=False)
                 dpg.configure_item(item="connecting_notice", show=False)
                 return
@@ -103,6 +105,8 @@ def view_load_screen():
             time.sleep(0.02)
 
 def close_clicked():
+    ui_data = UIDataBuilder.get_instanse()
+    ui_data.load_end_event = True
     if MessengerBuilder.get_state():
         return
     messenger = MessengerBuilder.get_instanse()
