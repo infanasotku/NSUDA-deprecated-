@@ -26,7 +26,7 @@ if platform.system() == "Windows":
     )
 elif platform.system() == "Darwin":
     XRAY_FOLDER = "mac_os"
-    icon_name = "Logo.png"
+    icon_name = "Logo.ico"
     arch_folder: str = platform.uname().machine
 
     BUILDER_ARGS.append(
