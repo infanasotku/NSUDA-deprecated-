@@ -1,7 +1,7 @@
 from xray_handler.messenger import MessengerBuilder
 import dearpygui.dearpygui as dpg
 from threading import Thread
-from config import window_width, window_height, app_folder_path, login_file_name
+from config import *
 
 class UIData:
     '''Keeps the UI data.
@@ -69,7 +69,8 @@ def notice_for_error(notice: str):
         height=100, 
         no_resize=True,
         label="Notice",
-        pos=(window_width // 2 - 175, window_height // 2 - 90),
+        pos=(window_width // 2 - 175 + width_shift, 
+             window_height // 2 - 90 + height_shift),
         no_move=True,
         no_collapse=True
         ) as notice_window:
@@ -116,12 +117,3 @@ def close_clicked():
         pass
 
 
-def disable_fullscreen(): 
-    import win32con
-    import win32gui
-    import win32api
-    hwnd = win32gui.GetForegroundWindow() 
-    win32api.SetWindowLong(hwnd, 
-                           win32con.GWL_STYLE, 
-                           win32api.GetWindowLong(hwnd, 
-                                                  win32con.GWL_STYLE) & ~win32con.WS_MAXIMIZEBOX)

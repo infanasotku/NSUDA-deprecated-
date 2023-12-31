@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 from build import RESOURCE_FOLDER
+import nsuda_client.win as win
 
 is_development: bool = False
 
@@ -23,3 +24,12 @@ window_width = 500
 window_height = 400
 
 input_field_width = 350
+
+width_shift = 0
+height_shift = 0
+
+import platform
+
+if platform.system() == "Windows":
+    width_shift = win.width_shift
+    height_shift = win.height_shift

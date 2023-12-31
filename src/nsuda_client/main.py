@@ -38,57 +38,66 @@ def configure_nsuda():
                 tag="email_item", 
                 hint="Input email",
                 default_value=email or "",
-                pos=(window_width // 2 - 175, window_height // 2 - 90),
+                pos=(window_width // 2 - 175 + width_shift, 
+                     window_height // 2 - 90 + height_shift),
                 width=input_field_width
             )
         dpg.add_input_text(tag="password_item",
                 hint="Input password",
                 default_value=password or "",
-                pos=(window_width // 2 - 175, window_height // 2 - 40),
+                pos=(window_width // 2 - 175 + width_shift, 
+                     window_height // 2 - 40 + height_shift),
                 width=input_field_width,
                 password=True
             )
         dpg.add_text(default_value="Connection established!", 
                 tag="connect_notice", 
-                pos=(window_width // 2 - 140, window_height // 2 - 60),
+                pos=(window_width // 2 - 140 + width_shift, 
+                     window_height // 2 - 60 + height_shift),
                 show=False
             )
         dpg.add_button(label="Connect", 
                 callback=event.connect_button_clicked,
-                pos=(window_width // 2 - 82, window_height // 2 + 80), 
+                pos=(window_width // 2 - 82 + width_shift, 
+                     window_height // 2 + 80 + height_shift), 
                 width=150, height=50,
                 tag="connect_button"
             )
         dpg.add_button(label="Disconnect", 
                 callback=event.disconnect_button_clicked,
-                pos=(window_width // 2 - 92, window_height // 2 + 40), 
+                pos=(window_width // 2 - 92 + width_shift, 
+                     window_height // 2 + 40 + height_shift), 
                 width=180, height=50,
                 tag="disconnect_button",
                 show=False
             )
         dpg.add_checkbox(label="Remember me",
-                pos=(window_width // 2 - 114, window_height // 2 + 20),
+                pos=(window_width // 2 - 114 + width_shift, 
+                     window_height // 2 + 20 + height_shift),
                 tag="remember_checkbox"
             )
         dpg.set_exit_callback(callback=event.close_clicked)
         dpg.add_image(texture_tag="load_screen_texture",
                       tag="load_screen",
                       show=False,
-                      pos=(window_width // 2 - 101, window_height // 2 - 120))
+                      pos=(window_width // 2 - 101 + width_shift, 
+                           window_height // 2 - 120 + height_shift))
         dpg.add_text(default_value="Connecting", 
                 tag="connecting_notice", 
-                pos=(window_width // 2 - 70, window_height // 2 + 85),
+                pos=(window_width // 2 - 70 + width_shift, 
+                     window_height // 2 + 85 + height_shift),
                 show=False
             )
 
     dpg.set_primary_window("Primary Window", True)
 from xray_handler.messenger import MessengerBuilder
+from nsuda_client.win import disable_fullscreen
 
 def start_nsuda():
     MessengerBuilder.get_instanse()
     if platform.system() == "Windows":
         dpg.render_dearpygui_frame()
-        event.disable_fullscreen()
+        disable_fullscreen()
     while(dpg.is_dearpygui_running()):
         dpg.render_dearpygui_frame()
     dpg.destroy_context()
