@@ -8,5 +8,5 @@ def disable_fullscreen():
                            win32api.GetWindowLong(hwnd, 
                                                   win32con.GWL_STYLE) & ~win32con.WS_MAXIMIZEBOX)
 
-width_shift = -15
-height_shift = -30
+width_shift = -6
+height_shift = -10
