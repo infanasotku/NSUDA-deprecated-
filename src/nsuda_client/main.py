@@ -1,8 +1,19 @@
 import dearpygui.dearpygui as dpg
 import nsuda_client.event as event
+import platform
+
 from config import *
 
 
+def disable_cb(): 
+    import win32con
+    import win32gui
+    import win32api
+    hwnd = win32gui.GetForegroundWindow() 
+    win32api.SetWindowLong(hwnd, 
+                           win32con.GWL_STYLE, 
+                           win32api.GetWindowLong(hwnd, 
+                                                  win32con.GWL_STYLE) & ~win32con.WS_MAXIMIZEBOX)
 
 def configure_load_screen():
     ui_data = event.UIDataBuilder.get_instanse()
@@ -20,13 +31,14 @@ def configure_load_screen():
                                     tag="load_screen_texture")
 
 def configure_nsuda():
+    if platform.system() == "Windows":
+        disable_cb()
     configure_load_screen()
     with dpg.font_registry():
         default_font = dpg.add_font(resource_path + "/Gill Sans.ttf", 30)
         event.small_font = dpg.add_font(resource_path + "/Gill Sans.ttf", 21)
         dpg.bind_font(default_font)
     with dpg.window(tag="Primary Window"):
-
         email, password = None, None
         try:
             with open(app_folder_path + "/" + login_file_name, "r") as f:
