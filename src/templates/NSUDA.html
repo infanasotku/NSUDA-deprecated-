@@ -36,7 +36,7 @@
                             <img src="{{ url_for('static', path='/resources/data/gif/flying.gif') }}">
                         </div>
                         <h4>
-                            Cross-platform VPN.
+                            Cross-platform proxy.
                         </h4>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                             <th><div class="cell">Linux</div></th>
                         </tr>
                         <tr>
-                            <th><div class="cell">1.0.0</div></th>
+                            <th><div class="cell"><a href="#1.0.0">1.0.0</a></div></th>
                             <th>
                                 <div class="cell">
                                     <a href="{{ url_for('static', path='/resources/data/nsuda_apps/1.0.0/windows/NSUDAWin.zip') }}">Download</a>
@@ -82,7 +82,40 @@
                             </th>
                             
                         </tr>
+                        <tr>
+                            <th><div class="cell"><a href="#1.0.1">1.0.1</a></div></th>
+                            <th>
+                                <div class="cell">
+                                    <a href="{{ url_for('static', path='/resources/data/nsuda_apps/1.0.1/windows/NSUDAWin.zip') }}">Download</a>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="cell">
+                                    <a href="{{ url_for('static', path='/resources/data/nsuda_apps/1.0.1/MacOS/NSUDAMacOSarm64.zip') }}">Download arm64</a>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="cell">
+                                </div>
+                            </th>
+                            
+                        </tr>
                     </table>
+                </div>
+                <div class="release_notes">
+                    <h1>Release notes:</h1>
+                    <div class="version" id="1.0.1">
+                        <h4>1.0.1</h4>
+                        <ul>
+                            <li>Fixed icon view on windows and macOS</li>
+                            <li>Fixed several signs</li>
+                            <li>Added loading screen</li>
+                            <li>Added memorization last user and password</li>
+                            <li>Removed pop-up consoles</li>
+                            <li>Disabled fullscreen button in windows.</li>
+                        </ul>
+                    </div>
+                    
                 </div>
             </div>
         </div>
