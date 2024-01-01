@@ -129,6 +129,7 @@
 .content .about_project a
 {
     font-size: 40px;
+    color: black;
 }
 
 .content .about_project a:visited, a:link, a:active
