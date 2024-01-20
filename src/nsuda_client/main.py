@@ -38,7 +38,7 @@ def configure_nsuda():
         ver = dpg.add_text(default_value=f"v{version}", 
                 tag="version", 
                 pos=(window_width - 78, 
-                     window_height - 28),
+                     window_height - 28 + height_shift * 4),
                 show=True,
             )
         dpg.bind_item_font(ver, event.small_font)
