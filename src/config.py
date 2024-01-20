@@ -28,6 +28,8 @@ input_field_width = 350
 width_shift = 0
 height_shift = 0
 
+version = "1.0.1a"
+
 import platform
 
 if platform.system() == "Windows":
