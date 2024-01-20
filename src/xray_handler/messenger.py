@@ -17,6 +17,7 @@ class Messenger:
         self._xray_process = None
         self.email: str = None
         self._xray_config: str = None
+        self.on_error_event = None
         self.password: str = None
         self.is_running: bool = False
         os_handler.load_env_setting()
@@ -113,7 +114,11 @@ class Messenger:
             if self.is_running:
                 if not self.check_xray_conection():
                     self.kill()
-                    self.load_config(email=self.email, password=self.password)
+                    status = self.load_config(email=self.email, password=self.password)
+                    if status != "OK":
+                        if self.on_error_event:
+                            self.on_error_event(status)
+                        return
                     self.run_session()
                     self.handle_xray()
                     return

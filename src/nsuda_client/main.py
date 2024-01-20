@@ -94,7 +94,8 @@ from xray_handler.messenger import MessengerBuilder
 from nsuda_client.win import disable_fullscreen
 
 def start_nsuda():
-    MessengerBuilder.get_instanse()
+    mes = MessengerBuilder.get_instanse()
+    mes.on_error_event = event.on_error_event
     if platform.system() == "Windows":
         dpg.render_dearpygui_frame()
         disable_fullscreen()

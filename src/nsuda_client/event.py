@@ -85,6 +85,10 @@ def disconnect_button_clicked():
     dpg.configure_item(item="disconnect_button", show=False)
     MessengerBuilder.get_instanse().kill()
 
+def on_error_event(mes: str):
+    disconnect_button_clicked()
+    notice_for_error(mes)
+
 import time
 
 def view_load_screen():
