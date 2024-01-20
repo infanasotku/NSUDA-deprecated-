@@ -34,6 +34,15 @@ def configure_nsuda():
         except:
             pass
 
+
+        ver = dpg.add_text(default_value=f"v{version}", 
+                tag="version", 
+                pos=(window_width - 78, 
+                     window_height - 28),
+                show=True,
+            )
+        dpg.bind_item_font(ver, event.small_font)
+
         dpg.add_input_text(
                 tag="email_item", 
                 hint="Input email",

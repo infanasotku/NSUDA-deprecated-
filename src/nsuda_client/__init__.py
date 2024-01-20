@@ -1,5 +1,5 @@
 import dearpygui.dearpygui as dpg
-from config import resource_path, window_height, window_width, version
+from config import resource_path, window_height, window_width
 import platform
 
 
@@ -16,7 +16,7 @@ elif platform.system() == "Linux":
 
 dpg.create_context()
 
-dpg.create_viewport(title='NSUDA v' + version, 
+dpg.create_viewport(title='NSUDA', 
                     width=window_width, 
                     height=window_height, 
                     small_icon=resource_path + "/" + icon_name, 
