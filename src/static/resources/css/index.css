@@ -309,6 +309,14 @@
     }
 }
 
+@media only screen and (max-width: 300px)
+{
+    .content .skill_block .extra_skills .row p
+    {
+        font-size: 7px !important;
+    }
+}
+
 .content .skill_block .ul_experience
 {
     width: 100% !important;
