@@ -303,6 +303,10 @@
     {
         font-size: 15px !important;
     }
+    .content .skill_block .extra_skills .row p
+    {
+        font-size: 10px !important;
+    }
 }
 
 .content .skill_block .ul_experience
@@ -348,6 +352,11 @@
     animation-name: slideLeft;
     animation-duration: 0.3s;
     animation-fill-mode: forwards;
+}
+
+.content .skill_block .extra_skills .row
+{
+    justify-content: center;
 }
 
 @keyframes slideLeft {
