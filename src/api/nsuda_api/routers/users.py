@@ -1,6 +1,6 @@
 from fastapi.routing import APIRouter
 
-users = APIRouter(prefix="/users")
+users = APIRouter()
 
 @users.get("/")
 async def index():
