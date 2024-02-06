@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.wsgi import WSGIMiddleware
 import site_root.site_root.wsgi as django
 from api.main import api
-from core.middlewares.main import setup_core_middlewares
+from core.middlewares.setup import setup_core_middlewares
 
 def configure(app: FastAPI):
     '''Configures all app.
