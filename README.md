@@ -8,4 +8,4 @@ Branch use:
     - Vue.js
 2. Backend
     - FastApi
-    - ?(Django or Flask)
+    - Django
