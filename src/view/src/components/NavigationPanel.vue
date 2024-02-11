@@ -1,52 +1,58 @@
 <template>
     <nav class="panel col">
+        <span class="label">InfaNaSotku</span>
         <div v-for="navigationLink in navigationLinks" :key="navigationLink.id">
-            <router-link :to="navigationLink.href">
-                <transparent-button>
+            <router-link :to="navigationLink.link">
+                <dark-button>
                     <p>{{ navigationLink.content }}</p>
-                </transparent-button>
+                </dark-button>
             </router-link>
         </div>
     </nav>
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent, type PropType } from 'vue';
+import type { NavigationContent } from '@/types'
+export default defineComponent({
     name: 'navigation-panel',
-    data: () =>
-    {
-        return {
-            navigationLinks: [
-                {
-                    id: 1,
-                    content: 'About',
-                    href: "/about"
-                },
-                {
-                    id: 2,
-                    content: 'Home',
-                    href: "/"
-                }
-            ]
+    props: {
+        navigationLinks: {
+            type: Array as PropType<NavigationContent[]>,
         }
     }
-}
+})
 </script>
 
 <style scoped>
-    .panel
+    .label:hover {
+        -webkit-transition: 500ms;
+        transition: 500ms;
+        color: #d6d6d6;
+    }
+    .label
+    {
+        -webkit-transition: 500ms;
+        transition: 500ms;
+        margin-top: 5px;
+        margin-left: 5px;
+        font-family: Consolas, Courier New, monospace;
+        font-size: 23px;
+        font-weight: 500;
+        color: rgb(161, 161, 161);
+        margin-right: auto;
+        
+    }
+.panel
     {
         position: fixed;
         top: 0px;
-        left: 0px;
-        right: 0px;
-        padding-top: 5px;
+        padding-top: 0px;
         padding-bottom: 5px;
         padding-left: 20px;
         padding-right: 20px;
         width: 100%;
         display: flex;
-        justify-content: right;
-        gap: 20px;
+        gap: 10px;
     }
 </style>
