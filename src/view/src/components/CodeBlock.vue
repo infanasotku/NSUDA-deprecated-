@@ -1,7 +1,9 @@
 <template>
-    <div class="code-block">
-        <span class="lang-label">{{ language }}</span>
-        <highlightjs class="code" :code="interiorCode"/>
+    <div class="block-wrapper">
+        <div class="code-block">
+            <span class="lang-label">{{ language }}</span>
+            <highlightjs class="code" :code="interiorCode"/>
+        </div>
     </div>
 </template>
 <script lang="ts">
