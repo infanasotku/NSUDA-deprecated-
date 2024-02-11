@@ -1,7 +1,5 @@
-import TransparentButton from "@/components/UI/TransparentButton.vue"
-import BackgroundVideo from "@/components/UI/BackgroundVideo.vue"
+import DarkButton from "@/components/UI/DarkButton.vue"
 
 export default [
-    TransparentButton,
-    BackgroundVideo,
+    DarkButton,
 ]
