@@ -17,7 +17,7 @@ export default {
         -webkit-box-pack: center;
         -ms-flex-pack: center;
         justify-content: center;
-        cursor: pointer;
+        cursor: default;
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
