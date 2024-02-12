@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@highlightjs/vue-plugin": "^2.1.0",
+    "pinia": "^2.1.7",
     "url": "^0.11.3",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
