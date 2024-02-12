@@ -7,14 +7,11 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { PropType, defineComponent, defineExpose } from 'vue';
+import { useStreamCode } from '@/hooks/useStreamCode';
+import { Action } from '@/types';
 export default defineComponent({
     name: 'code-block',
-    data() {
-        return {
-            interiorCode: '',
-        }
-    },
     props: {
         language: {
             type: String,
@@ -31,33 +28,35 @@ export default defineComponent({
             type: Number
         },
         onCodePrinted: {
-            type: Function
+            type: Function as PropType<Action>
         }
     },
     methods: {
-        startText(text: string, sleepTime: number) {
-            if (text.length === 0) {
-                if (this.onCodePrinted)
-                {
-                    this.onCodePrinted()
-                }
-                return
+        
+    },
+    setup(props)
+    {
+        const { interiorCode, startStream } = useStreamCode(props.onCodePrinted)
+
+
+        const start = () => {
+            if (props.stream)
+            {
+                startStream(props.code, props.time! / props.code.length )
             }
-            this.interiorCode += text[0]
-            setTimeout(() => { this.startText(text.substring(1, text.length),
-                 sleepTime) }, sleepTime)
+            else
+            {
+                interiorCode.value = props.code
+            }
         }
-    },
-    mounted() {
-        if (this.stream)
-        {
-            this.startText(this.code, this.time! / this.code.length )
+        defineExpose({
+            start,
+        })
+
+        return {
+            interiorCode, start
         }
-        else
-        {
-            this.interiorCode = this.code
-        }
-    },
+    }
 })
 </script>
 <style scoped>

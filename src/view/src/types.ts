@@ -4,3 +4,6 @@ export interface NavigationContent
     content: string,
     id: number
 }
+
+export type Action = () => void;
+
