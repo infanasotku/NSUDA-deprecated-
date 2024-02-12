@@ -1,32 +1,55 @@
 <template>
     <div class="hero" :class="{ 'dark-background': isBackgroundVisible }">
-        <navigation-panel
-            class="non-visible" 
-            :class="{ 'smoothly-visible': isNavigationVisible }"
-            :navigationLinks="navigationInfo"
-        ></navigation-panel>
         <div class="content">
-            <code-block
+            <transition-group
+            name="fade-hiding"
+            leave-active-class="fade-leave-active"
+            leave-to-class="fade-leave-to"
+            >
+                <loading-icon
+                v-show="!isNavigationVisible"
+                class="loader"
+                :key="'loading-block'"
+                ></loading-icon>
+            </transition-group>
+            <transition-group
+            name="fade-ariving"
+            enter-active-class="fade-enter-active"
+            enter-from-class="fade-enter"
+            >
+                <navigation-panel
+                v-show="isNavigationVisible"
+                :navigationLinks="navigationInfo"
+                :key="'nav-panel'"
+                ></navigation-panel>
+                <code-block 
+                v-show="isTypescriptCodeVisible"
+                ref="typescriptCodeRef"
+                class="code-segment"
+                :stream="true"
+                language="typescript" 
+                :time="3000"
+                :code="typescriptCode"
+                :onCodePrinted="activateElements"
+                :key="'typescript-block'"
+                ></code-block>
+                <login-form
+                v-show="isNavigationVisible"
+                :key="'welcome-window'"
+                class="form"
+                >
+                </login-form >
+            </transition-group>
+            <code-block 
+            v-show="!isBackgroundVisible"
             ref="pythonCodeRef"
-            v-if="!isBackgroundVisible"
             class="code-segment"
             :stream="true"
             language="python" 
-            :time="4000"
+            :time="3000"
             :code="pythonCode"
             :onCodePrinted="setupBackground"
-            :class="{ 'smoothly-non-visible': isBackgroundVisible }"
             ></code-block>
-            <!-- <code-block v-if="isBackgroundVisible"
-            class="code-segment non-visible"
-            :stream="true"
-            language="typescript" 
-            :time="4000"
-            :code="typescriptCode"
-            :onCodePrinted="activateElements"
-            :class="{ 'smoothly-visible': isBackgroundVisible }"
-            ></code-block> -->
-            <loading-icon class="loader"></loading-icon>
         </div>
     </div>
 </template>
@@ -35,14 +58,20 @@ import NavigationPanel from '@/components/NavigationPanel.vue';
 import CodeBlock from '@/components/CodeBlock.vue';
 import { defineComponent, ref } from 'vue'
 import LoadingIcon from '@/components/UI/LoadingIcon.vue';
+import DarkButton from '@/components/UI/DarkButton.vue';
+import LoginForm from '@/components/UI/LoginForm.vue';
 export default defineComponent({
     components: {
     NavigationPanel,
     CodeBlock,
-    LoadingIcon
+    LoadingIcon,
+    DarkButton,
+    LoginForm
 },
     data() {
         return {
+            show: true,
+
             isBackgroundVisible: false,
             pythonCode: `from fastapi import FastAPI
 
@@ -53,14 +82,14 @@ async def index():
     return 'Background'`,
 
             isNavigationVisible: false,
+            isTypescriptCodeVisible: false,
             typescriptCode: `import App from '@/App.vue'
 import { createApp } from 'vue'
 
 const app = createApp(App)
 
 app.component('navigarion', Navigation)
-app.mount('#app')
-            `,
+app.mount('#app')`,
 
             navigationInfo: [
                 {
@@ -81,10 +110,13 @@ app.mount('#app')
         setupBackground() 
         {
             this.isBackgroundVisible = true
+            this.isTypescriptCodeVisible = true
+            this.typescriptCodeRef?.start()
         },
         activateElements()
         {
             this.isNavigationVisible = true
+            // this.isTypescriptCodeVisible = false
         }
     },
     mounted() {
@@ -92,12 +124,14 @@ app.mount('#app')
     },
     setup() {
         const pythonCodeRef = ref<InstanceType<typeof CodeBlock>>()
-
-        return { pythonCodeRef }
+        const typescriptCodeRef = ref<InstanceType<typeof CodeBlock>>()
+        console.log(typescriptCodeRef)
+        return { pythonCodeRef, typescriptCodeRef }
     }
 })
 </script>
 <style scoped>
+
     .hero
     {
         min-height: 100vh;
@@ -133,34 +167,12 @@ app.mount('#app')
     .code-segment
     {
         width: 600px;
-        margin-bottom: 50px;
     }
-
 
     .loader
     {
         position: absolute;
         bottom: 15vh;
-    }
-
-
-    .smoothly-visible
-    {
-        animation-name: ariving;
-        animation-duration: 1s;
-        animation-fill-mode: forwards;
-    }
-
-    .non-visible
-    {
-        opacity: 0;
-    }
-
-    .smoothly-non-visible
-    {
-        animation-name: hiding;
-        animation-duration: 1s;
-        animation-fill-mode: forwards;
     }
 
     @keyframes ariving
@@ -178,4 +190,17 @@ app.mount('#app')
             opacity: 0;
         }
     }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: all .5s;
+    }
+    .fade-enter, .fade-leave-to {
+    opacity: 0;
+    }
+
+    .form
+    {
+        position: absolute;
+    }
+
 </style>
