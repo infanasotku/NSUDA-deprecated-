@@ -1,12 +1,16 @@
 <template>
-    <button>
+    <button @click="$emit('click')">
         <slot></slot>
     </button>
 </template>
 <script lang="ts">
-export default {
-    name: 'dark-button'
-}
+import { defineComponent } from 'vue';
+export default defineComponent({
+    name: 'dark-button',
+    emits: [
+        'click'
+    ]
+})
 </script>
 <style scoped>
     button {

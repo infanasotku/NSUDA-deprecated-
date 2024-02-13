@@ -1,5 +1,5 @@
 <template>
-    <button>
+    <button @click="$emit('click')">
         <div class="box">
             <slot></slot>
 
@@ -8,7 +8,10 @@
 </template>
 <script lang="ts">
 export default {
-    name: 'form-button'
+    name: 'form-button',
+    emits: [
+        'click'
+    ]
 }
 </script>
 <style scoped>
