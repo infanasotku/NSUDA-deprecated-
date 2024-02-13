@@ -7,28 +7,27 @@
     </button>
 </template>
 <script lang="ts">
-export default {
-    name: 'form-button',
+import { defineComponent } from 'vue';
+export default defineComponent({
+    name: 'transparent-button',
     emits: [
         'click'
     ]
-}
+})
 </script>
 <style scoped>
     .box {
-        width: 140px;
-        height: auto;
+        width: 100%;
+        height: 100%;
         float: left;
         transition: .5s linear;
         position: relative;
         display: flex;
         justify-content: center;
+        align-items: center;
         overflow: hidden;
-        padding: 15px;
         text-align: center;
         background: transparent;
-        text-transform: uppercase;
-        font-weight: 900;
     }
 
     .box:before {
@@ -76,12 +75,14 @@ export default {
     }
 
     button {
+        font-weight: 900;
         color: rgb(161, 161, 161);
         text-decoration: none;
         cursor: pointer;
         outline: none;
         border: none;
         background: transparent;
+        text-transform: uppercase;
     }
 
     .box:active {
