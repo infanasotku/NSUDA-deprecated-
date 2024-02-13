@@ -60,10 +60,9 @@ export default defineComponent({
         transition: 1s;
         gap: 40px;
         display: flex;
-        justify-content: center;
         align-items: center;
         width: 400px;
-        height: 400px;
+        height: 450px;
         background: rgba( 255, 255, 255, 0.15 );
         backdrop-filter: blur( 5.5px );
         -webkit-backdrop-filter: blur( 5.5px );
@@ -75,9 +74,9 @@ export default defineComponent({
     .button
     {
         position: absolute;
-        width: 150px;
+        width: 190px;
         height: 60px;
-        bottom: 50px;
+        bottom: 30px;
     }
 
     .close-button
@@ -88,5 +87,14 @@ export default defineComponent({
         left: 0px;
         top: 3px;
         font-weight: 500;
+    }
+
+    .input 
+    {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 350px;
+        height: 350px;
     }
 </style>
