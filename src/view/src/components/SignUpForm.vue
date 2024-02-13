@@ -3,11 +3,8 @@
     class="welcome-window"
     >
         <div class="description">
-            <h1>Welcome!</h1>
+            <h1>Sign up form!</h1>
         </div>
-        <dark-button class="welcome-button">
-            Лев - прав
-        </dark-button>
     </div>
 </template>
 <script lang="ts">

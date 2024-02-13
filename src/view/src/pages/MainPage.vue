@@ -2,7 +2,6 @@
     <div class="hero" :class="{ 'dark-background': isBackgroundVisible }">
         <div class="content">
             <transition-group
-            name="fade-hiding"
             leave-active-class="fade-leave-active"
             leave-to-class="fade-leave-to"
             >
@@ -13,14 +12,15 @@
                 ></loading-icon>
             </transition-group>
             <transition-group
-            name="fade-ariving"
             enter-active-class="fade-enter-active"
             enter-from-class="fade-enter"
+            enter-to-class="fade-enter-to"
             >
                 <navigation-panel
                 v-show="isNavigationVisible"
                 :navigationLinks="navigationInfo"
                 :key="'nav-panel'"
+                @click="onNavPanelClicked"
                 ></navigation-panel>
                 <code-block 
                 v-show="isTypescriptCodeVisible"
@@ -33,13 +33,25 @@
                 :onCodePrinted="activateElements"
                 :key="'typescript-block'"
                 ></code-block>
+
+            </transition-group>
+            <transition
+            leave-active-class="fade-leave-active"
+            leave-to-class="fade-leave-to"
+            enter-active-class="fade-enter-active"
+            enter-from-class="fade-enter"
+            enter-to-class="fade-enter-to"
+            >
                 <login-form
-                v-show="isNavigationVisible"
-                :key="'welcome-window'"
+                v-show="authStore.isLoginFormVisible"
+                :key="'login-form'"
                 class="form"
+                @submit="onLoginSubmit"
+                @close="authStore.setFormVisibility(false)"
                 >
                 </login-form >
-            </transition-group>
+            </transition>
+            
             <code-block 
             v-show="!isBackgroundVisible"
             ref="pythonCodeRef"
@@ -54,24 +66,23 @@
     </div>
 </template>
 <script lang="ts">
+
+import { useAuthStore } from '@/store/auth';
+import { defineComponent, ref } from 'vue'
+import { FormType } from '@/types';
+// Components
 import NavigationPanel from '@/components/NavigationPanel.vue';
 import CodeBlock from '@/components/CodeBlock.vue';
-import { defineComponent, ref } from 'vue'
-import LoadingIcon from '@/components/UI/LoadingIcon.vue';
-import DarkButton from '@/components/UI/DarkButton.vue';
-import LoginForm from '@/components/UI/LoginForm.vue';
+import LoginForm from '@/components/LoginForm.vue';
+
 export default defineComponent({
     components: {
     NavigationPanel,
     CodeBlock,
-    LoadingIcon,
-    DarkButton,
     LoginForm
 },
     data() {
         return {
-            show: true,
-
             isBackgroundVisible: false,
             pythonCode: `from fastapi import FastAPI
 
@@ -95,38 +106,68 @@ app.mount('#app')`,
                 {
                     id: 1,
                     link: '/author',
-                    content: 'Author'
+                    content: 'Author',
                 },
                 {
                     id: 2,
-                    link: '/',
-                    content: 'Sign in'
+                    link: '',
+                    content: 'Sign in',
+                },
+                {
+                    id: 3,
+                    link: '',
+                    content: 'Sign up'
                 }
-            ]
+            ],
         }
     },
     methods:
     {
-        setupBackground() 
-        {
+        setupBackground() {
             this.isBackgroundVisible = true
             this.isTypescriptCodeVisible = true
             this.typescriptCodeRef?.start()
         },
-        activateElements()
-        {
+        activateElements() {
             this.isNavigationVisible = true
-            // this.isTypescriptCodeVisible = false
+        },
+        onNavPanelClicked(data: { id: number}) {
+            switch (data.id) {
+                // author
+                case 1:
+                    
+                    break;
+                // sign in
+                case 2:
+                    this.authStore.setFormVisibility(true)
+                    this.authStore.setFormType(FormType.SignIn)
+                    break;
+                // sign up
+                case 3:
+                    this.authStore.setFormVisibility(true)
+                    this.authStore.setFormType(FormType.SignUp)
+                    break;
+                default:
+                    break;
+            }
+        },
+        onLoginSubmit() {
+            console.log("Submit!")
         }
     },
     mounted() {
         this.pythonCodeRef?.start()
     },
     setup() {
+        const authStore = useAuthStore()
         const pythonCodeRef = ref<InstanceType<typeof CodeBlock>>()
         const typescriptCodeRef = ref<InstanceType<typeof CodeBlock>>()
-        console.log(typescriptCodeRef)
-        return { pythonCodeRef, typescriptCodeRef }
+        return { 
+            pythonCodeRef, 
+            typescriptCodeRef, 
+            authStore, 
+            FormType,
+        }
     }
 })
 </script>
@@ -191,12 +232,6 @@ app.mount('#app')`,
         }
     }
 
-    .fade-enter-active, .fade-leave-active {
-        transition: all .5s;
-    }
-    .fade-enter, .fade-leave-to {
-    opacity: 0;
-    }
 
     .form
     {
