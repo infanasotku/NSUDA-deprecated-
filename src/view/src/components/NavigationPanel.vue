@@ -3,7 +3,7 @@
         <span class="label">InfaNaSotku</span>
         <div v-for="navigationLink in navigationLinks" :key="navigationLink.id">
             <router-link :to="navigationLink.link">
-                <dark-button>
+                <dark-button @click="$emit('click', { id: navigationLink.id })">
                     <p>{{ navigationLink.content }}</p>
                 </dark-button>
             </router-link>
@@ -20,7 +20,10 @@ export default defineComponent({
         navigationLinks: {
             type: Array as PropType<NavigationContent[]>,
         }
-    }
+    },
+    emits: [
+        'click'
+    ]
 })
 </script>
 
