@@ -7,3 +7,7 @@ export interface NavigationContent
 
 export type Action = () => void;
 
+export enum FormType {
+    SignIn,
+    SignUp
+}
