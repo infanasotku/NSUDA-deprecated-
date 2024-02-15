@@ -99,6 +99,7 @@ export default defineComponent({
         cursor: pointer;
         outline: none;
         background: transparent;
+        border: none;
         height: 100%;
         width: 90%;
         z-index: 4;
