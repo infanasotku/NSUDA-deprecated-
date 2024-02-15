@@ -76,6 +76,7 @@ export default defineComponent({
 
     button {
         font-weight: 900;
+        padding: 0;
         color: rgb(161, 161, 161);
         text-decoration: none;
         cursor: pointer;
