@@ -5,6 +5,8 @@
             :placeholder="placeholder" 
             :type="type"
             maxlength="15"
+            :value="content"
+            @input="$emit('input', ($event.target as HTMLInputElement).value)"
             >
         </slot>
     </div>
@@ -14,7 +16,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
     name: 'transparent-input',
     emits: [
-        'click'
+        'input'
     ],
     props: {
         placeholder: {
@@ -22,6 +24,10 @@ export default defineComponent({
         },
         type: {
             type: String
+        },
+        content: {
+            type: String,
+            required: true
         }
     }
 })
@@ -92,7 +98,6 @@ export default defineComponent({
         text-decoration: none;
         cursor: pointer;
         outline: none;
-        border: none;
         background: transparent;
         height: 100%;
         width: 90%;
@@ -103,12 +108,6 @@ export default defineComponent({
     input::placeholder {
         font-size: 14px;
         text-transform: uppercase;
-    }
-
-    .box:active {
-        color: #d6d6d6;
-        -webkit-transition: 100ms;
-        transition: 100ms;
     }
 
 </style>
