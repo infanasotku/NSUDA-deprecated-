@@ -11,3 +11,9 @@ export enum FormType {
     SignIn,
     SignUp
 }
+
+export interface UserAuthData 
+{
+    login: string,
+    password: string
+}
