@@ -4,10 +4,10 @@
         class="close-button" 
         @click="authStore.setFormVisibility(false)"
         >
-                <div class="line f">
-                </div>
-                <div class="line s">
-                </div>
+            <div class="line f">
+            </div>
+            <div class="line s">
+            </div>
         </transparent-button>
     </div>
 </template>
@@ -28,6 +28,28 @@ export default {
     }
 }
 </script>
-<style lang="">
+<style>
     
+    .f
+    {
+        transform: rotate(45deg);
+    }
+
+    .s
+    {
+        transform: rotate(135deg);
+    }
+
+    .line
+    {
+        border-top: 3px solid rgb(161, 161, 161);
+        width: 19px;
+        position: absolute;
+    }
+
+    .close-button 
+    {
+        width: 35px;
+        height: 35px;
+    }
 </style>
