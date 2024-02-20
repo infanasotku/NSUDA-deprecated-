@@ -2,7 +2,6 @@
     <div>
         <transparent-button 
         class="close-button" 
-        @click="authStore.setFormVisibility(false)"
         >
             <div class="line f">
             </div>
@@ -12,7 +11,6 @@
     </div>
 </template>
 <script lang="ts">
-import { useAuthStore } from '@/store/auth';
 export default {
     name: 'close-transparent-button',
     props: {
@@ -20,11 +18,6 @@ export default {
             type: Function,
             required: true
         }
-    },
-    setup() {
-        const authStore = useAuthStore()
-
-        return { authStore }
     }
 }
 </script>
