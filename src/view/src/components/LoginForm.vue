@@ -19,11 +19,21 @@
                     ></sign-up-form>
                 </transition-group>
             </div>
-            <error-notice class="error">Error</error-notice>
+            <error-notice 
+            class="error" 
+            :visible="isErrorVisible"
+            @close="isErrorVisible = false"
+            >
+                {{ errorContent }}
+            </error-notice>
             <transparent-button class="button" @click="loginSubmit">
                 Submit
             </transparent-button>
-            <close-transparent-button class="close-button"></close-transparent-button>
+            <close-transparent-button 
+            class="close-button" 
+            @click="authStore.setFormVisibility(false)"
+            >
+            </close-transparent-button>
         </form>
     </div>
 </template>
@@ -42,7 +52,9 @@ export default defineComponent({
         return {
             isPasswordConfirmValid: false,
             isPasswordValid: false,
-            isUsernameValid: false
+            isUsernameValid: false,
+            isErrorVisible: false,
+            errorContent: ''
         }
     },
     setup() {
@@ -55,6 +67,11 @@ export default defineComponent({
             if (this.isPasswordConfirmValid)
             {
                 console.log(`Submit! ${this.authStore.username} ${this.authStore.password}`)
+            }
+            else
+            {
+                this.isErrorVisible = true
+                this.errorContent = 'Password mismatch'
             }
         }
     }
@@ -111,5 +128,6 @@ export default defineComponent({
         top: 0;
         bottom: 0;
         margin: auto;
+        border-radius: 10px;
     }
 </style>
