@@ -11,23 +11,19 @@
                     <sign-in-form
                     v-if="authStore.loginFormType === FormType.SignIn"
                     :key="1"
-                    >
-
-                    </sign-in-form>
+                    ></sign-in-form>
                     <sign-up-form
                     v-if="authStore.loginFormType === FormType.SignUp"
                     :key="2"
-                    >
-
-                    </sign-up-form>
+                    @confirm-input="isPasswordConfirmValid = $event"
+                    ></sign-up-form>
                 </transition-group>
             </div>
-            <transparent-button class="button" @click="$emit('submit')">
-                Sumbit
+            <error-notice class="error">Error</error-notice>
+            <transparent-button class="button" @click="loginSubmit">
+                Submit
             </transparent-button>
-            <transparent-button class="close-button" @click="$emit('close')">
-                x
-            </transparent-button>
+            <close-transparent-button class="close-button"></close-transparent-button>
         </form>
     </div>
 </template>
@@ -42,15 +38,27 @@ export default defineComponent({
     components: {
         SignInForm, SignUpForm
     },
+    data() {
+        return {
+            isPasswordConfirmValid: false,
+            isPasswordValid: false,
+            isUsernameValid: false
+        }
+    },
     setup() {
         const authStore = useAuthStore()
 
         return { authStore, FormType }
     },
-    emits: [
-        'submit',
-        'close'
-    ]
+    methods: {
+        loginSubmit() {
+            if (this.isPasswordConfirmValid)
+            {
+                console.log(`Submit! ${this.authStore.username} ${this.authStore.password}`)
+            }
+        }
+    }
+    
 })
 </script>
 <style scoped>
@@ -58,7 +66,6 @@ export default defineComponent({
     {
         flex-direction: column;
         transition: 1s;
-        gap: 40px;
         display: flex;
         align-items: center;
         width: 400px;
@@ -82,11 +89,8 @@ export default defineComponent({
     .close-button
     {
         position: absolute;
-        width: 40px;
-        height: 35px;
-        left: 0px;
-        top: 3px;
-        font-weight: 500;
+        left: 7px;
+        top: 7px;
     }
 
     .input 
@@ -95,6 +99,17 @@ export default defineComponent({
         align-items: center;
         justify-content: center;
         width: 350px;
-        height: 350px;
+        height: auto;
+    }
+
+
+
+    .error
+    {
+        position: absolute;
+        align-self: center !important;
+        top: 0;
+        bottom: 0;
+        margin: auto;
     }
 </style>

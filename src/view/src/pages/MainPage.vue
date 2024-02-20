@@ -46,8 +46,6 @@
                 v-show="authStore.isLoginFormVisible"
                 :key="'login-form'"
                 class="form"
-                @submit="onLoginSubmit"
-                @close="authStore.setFormVisibility(false)"
                 >
                 </login-form >
             </transition>
@@ -150,9 +148,6 @@ app.mount('#app')`,
                 default:
                     break;
             }
-        },
-        onLoginSubmit() {
-            console.log("Submit!")
         }
     },
     mounted() {
