@@ -67,7 +67,6 @@
 
 import { useAuthStore } from '@/store/auth';
 import { defineComponent, ref } from 'vue'
-import { FormType } from '@/types';
 // Components
 import NavigationPanel from '@/components/NavigationPanel.vue';
 import CodeBlock from '@/components/CodeBlock.vue';
@@ -111,11 +110,6 @@ app.mount('#app')`,
                     link: '',
                     content: 'Sign in',
                 },
-                {
-                    id: 3,
-                    link: '',
-                    content: 'Sign up'
-                }
             ],
         }
     },
@@ -129,8 +123,8 @@ app.mount('#app')`,
         activateElements() {
             this.isNavigationVisible = true
         },
-        onNavPanelClicked(data: { id: number}) {
-            switch (data.id) {
+        onNavPanelClicked(id: number) {
+            switch (id) {
                 // author
                 case 1:
                     
@@ -138,12 +132,6 @@ app.mount('#app')`,
                 // sign in
                 case 2:
                     this.authStore.setFormVisibility(true)
-                    this.authStore.setFormType(FormType.SignIn)
-                    break;
-                // sign up
-                case 3:
-                    this.authStore.setFormVisibility(true)
-                    this.authStore.setFormType(FormType.SignUp)
                     break;
                 default:
                     break;
@@ -161,7 +149,6 @@ app.mount('#app')`,
             pythonCodeRef, 
             typescriptCodeRef, 
             authStore, 
-            FormType,
         }
     }
 })
