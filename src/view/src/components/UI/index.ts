@@ -4,6 +4,7 @@ import TransparentButton from "@/components/UI/TransparentButton.vue"
 import TransparentInput from "@/components/UI/TransparentInput.vue"
 import ErrorNotice from "@/components/UI/ErrorNotice.vue"
 import CloseTransparentButton from "@/components/UI/CloseTransparentButton.vue"
+import TransparantButtonNB from "@/components/UI/TransparantButtonNB.vue"
 
 export default [
     DarkButton,
@@ -11,5 +12,6 @@ export default [
     TransparentButton,
     TransparentInput,
     ErrorNotice,
-    CloseTransparentButton
+    CloseTransparentButton,
+    TransparantButtonNB
 ]
