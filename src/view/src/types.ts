@@ -6,3 +6,8 @@ export interface NavigationContent
 }
 
 export type Action = () => void;
+
+export enum AuthType {
+    NoAuth,
+    Google
+}
