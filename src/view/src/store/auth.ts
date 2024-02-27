@@ -47,7 +47,7 @@ export const useAuthStore =  defineStore('auth', {
         async authenticateUser(authType: AuthType, authCode: string, sessionSecret: string) {
             this.authType = authType
             // TODO send code to backend
-
+            
             
         }
     }
