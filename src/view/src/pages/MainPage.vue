@@ -6,7 +6,7 @@
             leave-to-class="fade-leave-to"
             >
                 <loading-icon
-                v-show="!isNavigationVisible"
+                v-show="isLoading"
                 class="loader"
                 :key="'loading-block'"
                 ></loading-icon>
@@ -46,6 +46,7 @@
                 v-show="authStore.isLoginFormVisible"
                 :key="'login-form'"
                 class="form"
+                @load="isLoading = true"
                 >
                 </login-form >
             </transition>
@@ -111,6 +112,8 @@ app.mount('#app')`,
                     content: 'Sign in',
                 },
             ],
+            
+            isLoading: true
         }
     },
     methods:
@@ -122,6 +125,7 @@ app.mount('#app')`,
         },
         activateElements() {
             this.isNavigationVisible = true
+            this.isLoading = false
         },
         onNavPanelClicked(id: number) {
             switch (id) {
