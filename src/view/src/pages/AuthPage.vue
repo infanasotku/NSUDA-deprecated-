@@ -1,7 +1,6 @@
 <template></template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-// Components
 import { AuthType } from '@/types';
 import { useAuthStore } from '@/store/auth';
 
@@ -14,14 +13,20 @@ export default defineComponent({
         authService: {
             type: String,
             required: true
+        },
+        sessionSecret: {
+            type: String,
+            required: true
         }
     },
-    mounted() {
-        console.log(this.authService)
-        console.log(this.authCode)
+    async mounted() {
         switch (this.authService) {
             case 'google':
-                this.authStore.authenticateUser(AuthType.Google, this.authCode)
+                await this.authStore.authenticateUser(
+                    AuthType.Google, 
+                    this.authCode,
+                    this.sessionSecret
+                )
                 break;
         
             default:

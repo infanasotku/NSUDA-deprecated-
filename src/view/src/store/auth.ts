@@ -9,9 +9,13 @@ export const useAuthStore =  defineStore('auth', {
             isAuth: false,
             isLoginFormVisible: false,
             authType: AuthType.NoAuth,
+            sessionSecret: ''
         }
     },
     actions: {
+        getSessionSecret() {
+            // TODO getting session secret with JWT token
+        },
         updateAuthState() {
 
         },
@@ -21,13 +25,18 @@ export const useAuthStore =  defineStore('auth', {
         requestCode(authType: AuthType) {
             switch (authType) {
                 case AuthType.Google:
-                    const params = new URLSearchParams()
-                    params.append('client_id', googleEnv.googleClientID)
-                    params.append('redirect_uri', googleEnv.redirectUri)
-                    params.append('response_type', 'code')
-                    params.append('scope', googleEnv.scope)
-                    params.append('state', 'google')
-                    window.location.href = googleEnv.googleAuthUri + '?' + params.toString()
+                    const info = axios.get(googleEnv.openIDConfigUri)
+                    info.then((value) => {
+                        const googleAuthUri = value.data['authorization_endpoint']
+
+                        const params = new URLSearchParams()
+                        params.append('client_id', googleEnv.googleClientID)
+                        params.append('redirect_uri', googleEnv.redirectUri)
+                        params.append('response_type', 'code')
+                        params.append('scope', googleEnv.scope)
+                        params.append('state', this.sessionSecret)
+                        window.location.href = googleAuthUri + '?' + params.toString()
+                    })
                     break;
             
                 default:
@@ -35,9 +44,10 @@ export const useAuthStore =  defineStore('auth', {
             }
             
         },
-        authenticateUser(authType: AuthType, authCode: string) {
+        async authenticateUser(authType: AuthType, authCode: string, sessionSecret: string) {
             this.authType = authType
-            
+            // TODO send code to backend
+
             
         }
     }
