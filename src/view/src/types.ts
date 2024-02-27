@@ -7,13 +7,7 @@ export interface NavigationContent
 
 export type Action = () => void;
 
-export enum FormType {
-    SignIn,
-    SignUp
-}
-
-export interface UserAuthData 
-{
-    login: string,
-    password: string
+export enum AuthType {
+    NoAuth,
+    Google
 }

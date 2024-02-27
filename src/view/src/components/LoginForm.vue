@@ -1,81 +1,55 @@
 <template>
     <div class="form-wrapper">
         <form @submit.prevent>
-            <div class="input">
-                <transition-group
-                enter-from-class="fade-enter"
-                enter-active-class="fade-enter-active"
-                enter-to-class="fade-enter-to"
-                leave-from-class="fade-enter"
-                >
-                    <sign-in-form
-                    v-if="authStore.loginFormType === FormType.SignIn"
-                    :key="1"
-                    ></sign-in-form>
-                    <sign-up-form
-                    v-if="authStore.loginFormType === FormType.SignUp"
-                    :key="2"
-                    @confirm-input="isPasswordConfirmValid = $event"
-                    ></sign-up-form>
-                </transition-group>
-            </div>
-            <error-notice 
-            class="error" 
-            :visible="isErrorVisible"
-            @close="isErrorVisible = false"
-            >
-                {{ errorContent }}
-            </error-notice>
-            <transparent-button class="button" @click="loginSubmit">
-                Submit
-            </transparent-button>
+            <span>Sign in with</span>
             <close-transparent-button 
             class="close-button" 
             @click="authStore.setFormVisibility(false)"
             >
             </close-transparent-button>
+            <div class="auth-wrapper">
+                <transparent-button-nb 
+                class="google-button"
+                @click="authStore.requestCode(AuthType.Google); submit()"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+                        <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z"/>
+                    </svg>
+                </transparent-button-nb>
+            </div>
         </form>
+        <div 
+        class="block_all"
+        v-if="isLoading" 
+        >
+        </div>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import SignInForm from '@/components/SignInForm.vue'
-import SignUpForm from '@/components/SignUpForm.vue'
 import { useAuthStore } from '@/store/auth';
-import { FormType } from '@/types';
+import { AuthType } from '@/types'
 export default defineComponent({
     name: 'login-form',
-    components: {
-        SignInForm, SignUpForm
-    },
+    emits: [
+        'load'
+    ],
     data() {
         return {
-            isPasswordConfirmValid: false,
-            isPasswordValid: false,
-            isUsernameValid: false,
-            isErrorVisible: false,
-            errorContent: ''
+            isLoading: false
         }
     },
     setup() {
         const authStore = useAuthStore()
 
-        return { authStore, FormType }
+        return { authStore, AuthType }
     },
     methods: {
-        loginSubmit() {
-            if (this.isPasswordConfirmValid)
-            {
-                console.log(`Submit! ${this.authStore.username} ${this.authStore.password}`)
-            }
-            else
-            {
-                this.isErrorVisible = true
-                this.errorContent = 'Password mismatch'
-            }
+        submit() {
+            this.isLoading = true
+            this.$emit('load')
         }
     }
-    
 })
 </script>
 <style scoped>
@@ -85,22 +59,14 @@ export default defineComponent({
         transition: 1s;
         display: flex;
         align-items: center;
-        width: 400px;
-        height: 450px;
+        width: 250px;
+        height: 150px;
         background: rgba( 255, 255, 255, 0.15 );
         backdrop-filter: blur( 5.5px );
         -webkit-backdrop-filter: blur( 5.5px );
         border-radius: 10px;
         border: 1px solid rgba( 255, 255, 255, 0.18 );
         color: rgb(161, 161, 161);;
-    }
-
-    .button
-    {
-        position: absolute;
-        width: 190px;
-        height: 60px;
-        bottom: 30px;
     }
 
     .close-button
@@ -110,24 +76,38 @@ export default defineComponent({
         top: 7px;
     }
 
-    .input 
+    span
     {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 350px;
-        height: auto;
+        margin-top: 10px;
+        font-weight: 800;
+        font-size: 20px;
+        font-family: Consolas, Courier New, monospace;
     }
 
-
-
-    .error
+    .auth-wrapper
     {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: auto;
+        margin-bottom: 30px;
+    }
+
+    .google-button
+    {
+        height: 50px;
+        border-radius: 50px;
+        width: 50px;
+    }
+
+    .block_all
+    {
+        height: 100%;
+        width: 100%;
         position: absolute;
-        align-self: center !important;
         top: 0;
-        bottom: 0;
-        margin: auto;
-        border-radius: 10px;
+        left: 0;
+        z-index: 10;
     }
 </style>

@@ -1,40 +1,54 @@
-import { FormType, UserAuthData } from '@/types';
-import { defineStore } from 'pinia';
+import { AuthType } from '@/types'
+import { defineStore } from 'pinia'
 import axios from 'axios'
+import { googleEnv } from '../../env'
 
 export const useAuthStore =  defineStore('auth', {
     state() {
         return {
             isAuth: false,
             isLoginFormVisible: false,
-            loginFormType: FormType.SignIn,
-            username: '',
-            password: ''
+            authType: AuthType.NoAuth,
+            sessionSecret: ''
         }
     },
     actions: {
-        async authUser(userData: UserAuthData) {
-            await axios.post('/api', userData).
-            then(resp => {
-                const token = resp.data.token
-                localStorage.setItem('user-token', token)
-            }).
-            catch(() => {
-                localStorage.removeItem('user-token')
-            })
-            this.isAuth = true
+        getSessionSecret() {
+            // TODO getting session secret with JWT token
+        },
+        updateAuthState() {
+
         },
         setFormVisibility(value: boolean) {
             this.isLoginFormVisible = value
         },
-        setFormType(value: FormType) {
-            this.loginFormType = value
+        requestCode(authType: AuthType) {
+            switch (authType) {
+                case AuthType.Google:
+                    const info = axios.get(googleEnv.openIDConfigUri)
+                    info.then((value) => {
+                        const googleAuthUri = value.data['authorization_endpoint']
+
+                        const params = new URLSearchParams()
+                        params.append('client_id', googleEnv.googleClientID)
+                        params.append('redirect_uri', googleEnv.redirectUri)
+                        params.append('response_type', 'code')
+                        params.append('scope', googleEnv.scope)
+                        params.append('state', this.sessionSecret)
+                        window.location.href = googleAuthUri + '?' + params.toString()
+                    })
+                    break;
+            
+                default:
+                    break;
+            }
+            
         },
-        setUsername(value: string) {
-            this.username = value
-        },
-        setPassword(value: string) {
-            this.password = value
+        async authenticateUser(authType: AuthType, authCode: string, sessionSecret: string) {
+            this.authType = authType
+            // TODO send code to backend
+            
+            
         }
     }
 })
