@@ -16,6 +16,8 @@ class HttpErrorMiddleware(BaseHTTPMiddleware):
             return self.error_404()
         elif response.status_code == 500:
             return self.error_500()
+        
+        return response
     
         
 
