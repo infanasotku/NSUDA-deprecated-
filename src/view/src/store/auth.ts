@@ -1,7 +1,7 @@
 import { AuthType } from '@/types'
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { googleEnv } from '../../env'
+import { googleEnv, globalEnv } from '../../env'
 
 export const useAuthStore =  defineStore('auth', {
     state() {
@@ -9,13 +9,9 @@ export const useAuthStore =  defineStore('auth', {
             isAuth: false,
             isLoginFormVisible: false,
             authType: AuthType.NoAuth,
-            sessionSecret: ''
         }
     },
     actions: {
-        getSessionSecret() {
-            // TODO getting session secret with JWT token
-        },
         updateAuthState() {
 
         },
@@ -34,7 +30,8 @@ export const useAuthStore =  defineStore('auth', {
                         params.append('redirect_uri', googleEnv.redirectUri)
                         params.append('response_type', 'code')
                         params.append('scope', googleEnv.scope)
-                        params.append('state', this.sessionSecret)
+                        params.append('state', "None")
+                        params.append('access_type', googleEnv.accessType)
                         window.location.href = googleAuthUri + '?' + params.toString()
                     })
                     break;
@@ -44,10 +41,21 @@ export const useAuthStore =  defineStore('auth', {
             }
             
         },
-        async authenticateUser(authType: AuthType, authCode: string, sessionSecret: string) {
+        async authenticateUser(authType: AuthType, authCode: string, _: string) {
             this.authType = authType
+            switch(this.authType) {
+                case AuthType.Google:
+                    this.authenticateUserByGoogle(authCode)
+                    break;
+                default:
+                    throw new Error('401')
+            }
+        },
+        async authenticateUserByGoogle(authCode: string) {
+            let res = axios.get(globalEnv.apiUri + 
+                `/auth/google/?auth_code=${authCode}`)
             // TODO send code to backend
-            
+            console.log(res)
             
         }
     }
