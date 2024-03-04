@@ -11,12 +11,12 @@ from api.auth.database.shemas import GoogleOIDCModel
 
 @google.get("/")
 async def index(data: Annotated[dict, Depends(auth_by_google)]) -> GoogleOIDCModel:
-    print(data)
     model = GoogleOIDCModel(
-        name=data['given_name']
+        name=data['given_name'],
+        surname=data['family_name'],
+        email=data['email'],
+        picture_uri=data['picture']
     )
-
-
     return model
 
 
