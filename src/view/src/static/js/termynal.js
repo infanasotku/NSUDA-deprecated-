@@ -46,6 +46,7 @@ export class Termynal {
             || this.container.getAttribute(`${this.pfx}-cursor`) || '▋';
         this.container.removeAttribute(`${this.pfx}-cursor`)
         this.lineData = this.lineDataToElements(options.lineData || []);
+        this.callback = options.callback ?? undefined;
         this.loadLines()
         if (!options.noInit) this.init()
     }
@@ -98,19 +99,14 @@ export class Termynal {
         await this._wait(this.startDelay);
         //this.addFinish()
 
-        let step = 0
         for (let line of this.lines) {
-            step += 1
             const type = line.getAttribute(this.pfx);
             const delay = line.getAttribute(`${this.pfx}-delay`) || this.lineDelay;
 
             if (type == 'input') {
                 line.setAttribute(`${this.pfx}-cursor`, this.cursor);
                 await this.type(line);
-                if (step < this.lines.length)
-                {
-                    await this._wait(delay);
-                }
+                await this._wait(delay);
             }
 
             else if (type == 'progress') {
@@ -130,6 +126,9 @@ export class Termynal {
         this.lineDelay = this.originalLineDelay
         this.typeDelay = this.originalTypeDelay
         this.startDelay = this.originalStartDelay
+        if (this.callback) {
+            this.callback()
+        }
     }
 
     generateRestart() {
@@ -179,8 +178,8 @@ export class Termynal {
         line.textContent = '';
         this.container.appendChild(line);
 
+        const delay = line.getAttribute(`${this.pfx}-typeDelay`) || this.typeDelay;
         for (let char of chars) {
-            const delay = line.getAttribute(`${this.pfx}-typeDelay`) || this.typeDelay;
             await this._wait(delay);
             line.textContent += char;
         }
@@ -198,11 +197,12 @@ export class Termynal {
         const chars = progressChar.repeat(progressLength);
 		const progressPercent = line.getAttribute(`${this.pfx}-progressPercent`)
 			|| this.progressPercent;
+        const delay = line.getAttribute(`${this.pfx}-typeDelay`) || this.typeDelay;
         line.textContent = '';
         this.container.appendChild(line);
 
         for (let i = 1; i < chars.length + 1; i++) {
-            await this._wait(this.typeDelay);
+            await this._wait(delay || this.typeDelay);
             const percent = Math.round(i / chars.length * 100);
             line.textContent = `${chars.slice(0, i)} ${percent}%`;
 			if (percent>progressPercent) {

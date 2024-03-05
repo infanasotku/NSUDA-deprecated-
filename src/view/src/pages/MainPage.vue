@@ -80,18 +80,24 @@
                     <span 
                     data-ty-typeDelay="100"
                     data-ty="input" 
+                    data-ty-delay="1000"
                     :data-ty-prompt="'' + authStore.userModel.name + ' ~ %'"
                     >Welcome to NSUDA webpage!</span>
                     <span
                     data-ty="output"
-                    data-ty-typeDelay="50"
                     >Are you sure you want to redirect to account page?</span>
                     <span 
-                    data-ty-typeDelay="1000"
+                    data-ty-delay="1000"
+                    data-ty-typeDelay="1500"
                     data-ty="input" 
                     data-ty-prompt="(y/n)"
                     >y</span>
-                    
+                    <span
+                    data-ty="progress"
+                    data-ty-typeDelay="40"
+                    data-ty-delay="500"
+                    progressChar="|"
+                    ></span>
                 </div>
             </transition>
         </div>
@@ -107,6 +113,7 @@ import CodeBlock from '@/components/CodeBlock.vue';
 import LoginForm from '@/components/LoginForm.vue';
 
 import { Termynal } from '@/static/js/termynal'
+import router from '@/router/router';
 
 export default defineComponent({
     components: {
@@ -198,7 +205,8 @@ app.mount('#app')`,
             this.isAuthGreetings = true
             let termynal = new Termynal('#termynal', { 
             startDelay: 600,  
-            noInit: true 
+            noInit: true,
+            callback: () => router.push('/account')
             })
             termynal.init()
         }
@@ -294,7 +302,7 @@ app.mount('#app')`,
     .termynal
     {
         position: absolute;
-        height: 200px;
+        height: 250px;
         --tw-shadow: 7px 7px 15px 0 #000;
         box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
     }
