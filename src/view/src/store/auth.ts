@@ -14,8 +14,28 @@ export const useAuthStore =  defineStore('auth', {
         }
     },
     actions: {
-        updateAuthState() {
-
+        async updateAuthState() {
+            switch(this.authType) {
+                case AuthType.Google:
+                    let res = await axios.get(globalEnv.apiUri + 
+                        `/auth/google`)
+        
+                    if (res.status == 200) {
+                        this.isAuth = true
+                        this.userModel = new UserOIDCModel(
+                            res.data['name'],
+                            res.data['surname'],
+                            res.data['email'],
+                            res.data['picture_uri']
+                        )
+                    }
+                    else {
+                        this.isAuth = false
+                    }
+                    break
+                case AuthType.NoAuth:
+                    return
+            }
         },
         setFormVisibility(value: boolean) {
             this.isLoginFormVisible = value
@@ -43,9 +63,17 @@ export const useAuthStore =  defineStore('auth', {
             }
             
         },
-        async unloginUser() {
-            await axios.get(globalEnv.apiUri + 
-                `/auth/signout/`)
+        async signOutUser() {
+            switch(this.authType) {
+                case AuthType.Google:
+                    await axios.get(globalEnv.apiUri + 
+                        `/auth/google/signout`)
+                    this.authType = AuthType.NoAuth
+                    break
+                case AuthType.NoAuth:
+                    return
+            }
+            
         },
         async authenticateUser(authType: AuthType, authCode: string, _: string) {
             switch(authType) {
