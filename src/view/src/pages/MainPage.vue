@@ -20,7 +20,7 @@
                 v-show="isNavigationVisible"
                 :navigationLinks="navigationInfo"
                 :key="'nav-panel'"
-                @click="onNavPanelClicked"
+                @click="navPanelClicked"
                 ></navigation-panel>
                 <code-block 
                 v-show="isTypescriptCodeVisible"
@@ -61,6 +61,28 @@
             :code="pythonCode"
             :onCodePrinted="setupBackground"
             ></code-block>
+
+            <transition
+            leave-active-class="fade-leave-active"
+            leave-to-class="fade-leave-to"
+            enter-active-class="fade-enter-active"
+            enter-from-class="fade-enter"
+            enter-to-class="fade-enter-to"
+            >
+                <div 
+                id="termynal" 
+                data-termynal 
+                class="termynal"
+                data-ty-startDelay="600" 
+                data-ty-cursor="▋"
+                v-show="isAuthGreetings"
+                >
+                    <span 
+                    data-ty="input" 
+                    :data-ty-prompt="'' + authStore.userModel.name + ' ~ %'"
+                    >Welcome to NSUDA webpage!</span>
+                </div>
+            </transition>
         </div>
     </div>
 </template>
@@ -72,6 +94,8 @@ import { defineComponent, ref } from 'vue'
 import NavigationPanel from '@/components/NavigationPanel.vue';
 import CodeBlock from '@/components/CodeBlock.vue';
 import LoginForm from '@/components/LoginForm.vue';
+
+import { Termynal } from '@/static/js/termynal'
 
 export default defineComponent({
     components: {
@@ -113,7 +137,9 @@ app.mount('#app')`,
                 },
             ],
             
-            isLoading: true
+            isLoading: false,
+            
+            isAuthGreetings: false
         }
     },
     methods:
@@ -127,36 +153,62 @@ app.mount('#app')`,
             this.isNavigationVisible = true
             this.isLoading = false
         },
-        onNavPanelClicked(id: number) {
+        navPanelClicked(id: number) {
             switch (id) {
                 // author
                 case 1:
                     
                     break;
-                // sign in
+                // sign
                 case 2:
-                    this.authStore.setFormVisibility(true)
+                    // sign in
+                    if (this.authStore.isAuth) {
+                        this.authStore.setFormVisibility(true)
+                    }
+                    // sign out
+                    else {
+                        // TODO: Make sign out
+                    }
                     break;
                 default:
                     break;
             }
         }
     },
-    mounted() {
-        this.pythonCodeRef?.start()
+    async mounted() {
+        if (this.authStore.isAuth) {
+            this.navigationInfo[1].content = 'Sign out'
+            this.isBackgroundVisible = true
+            this.isNavigationVisible = true
+            this.isAuthGreetings = true
+            let termynal = new Termynal('#termynal', { 
+            startDelay: 600,  
+            noInit: true 
+            })
+            termynal.init()
+        }
+        else
+        {
+            this.isLoading = true
+            this.pythonCodeRef?.start()
+        }
     },
     setup() {
         const authStore = useAuthStore()
         const pythonCodeRef = ref<InstanceType<typeof CodeBlock>>()
         const typescriptCodeRef = ref<InstanceType<typeof CodeBlock>>()
+        
         return { 
             pythonCodeRef, 
             typescriptCodeRef, 
-            authStore, 
+            authStore
         }
     }
 })
 </script>
+<style>
+@import url('../static/css/termynal.css');
+</style>
 <style scoped>
 
     .hero
@@ -222,6 +274,13 @@ app.mount('#app')`,
     .form
     {
         position: absolute;
+    }
+
+    .termynal
+    {
+        position: absolute;
+        --tw-shadow: 7px 7px 15px 0 #000;
+        box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
     }
 
 </style>
