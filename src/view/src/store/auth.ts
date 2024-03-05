@@ -1,7 +1,8 @@
-import { AuthType } from '@/types'
+import { AuthType, UserOIDCModel } from '@/types'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { googleEnv, globalEnv } from '../../env'
+import router from '@/router/router'
 
 export const useAuthStore =  defineStore('auth', {
     state() {
@@ -9,6 +10,7 @@ export const useAuthStore =  defineStore('auth', {
             isAuth: false,
             isLoginFormVisible: false,
             authType: AuthType.NoAuth,
+            userModel: new UserOIDCModel()
         }
     },
     actions: {
@@ -42,21 +44,29 @@ export const useAuthStore =  defineStore('auth', {
             
         },
         async authenticateUser(authType: AuthType, authCode: string, _: string) {
-            this.authType = authType
-            switch(this.authType) {
+            switch(authType) {
                 case AuthType.Google:
-                    this.authenticateUserByGoogle(authCode)
+                    this.authenticateUserByGoogle(authType, authCode)
                     break;
                 default:
                     throw new Error('401')
             }
         },
-        async authenticateUserByGoogle(authCode: string) {
-            let res = axios.get(globalEnv.apiUri + 
+        async authenticateUserByGoogle(authType: AuthType, authCode: string) {
+            let res = await axios.get(globalEnv.apiUri + 
                 `/auth/google/?auth_code=${authCode}`)
-            // TODO send code to backend
-            console.log(res)
-            
+
+            if (res.status == 200) {
+                this.isAuth = true
+                this.authType = authType
+                this.userModel = new UserOIDCModel(
+                    res.data['name'],
+                    res.data['surname'],
+                    res.data['email'],
+                    res.data['picture_uri']
+                )
+            }
+            router.push('/')
         }
     }
 })
