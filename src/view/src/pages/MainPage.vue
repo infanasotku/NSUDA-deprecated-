@@ -73,11 +73,12 @@
                 id="termynal" 
                 data-termynal 
                 class="termynal"
-                data-ty-startDelay="600" 
+                data-ty-startDelay="200" 
                 data-ty-cursor="▋"
                 v-show="isAuthGreetings"
                 >
                     <span 
+                    typeDelay="50"
                     data-ty="input" 
                     :data-ty-prompt="'' + authStore.userModel.name + ' ~ %'"
                     >Welcome to NSUDA webpage!</span>
@@ -176,6 +177,10 @@ app.mount('#app')`,
         }
     },
     async mounted() {
+        // Test settings
+        this.authStore.isAuth = true
+        this.authStore.userModel.name = "Maxim"
+
         if (this.authStore.isAuth) {
             this.navigationInfo[1].content = 'Sign out'
             this.isBackgroundVisible = true
@@ -279,6 +284,7 @@ app.mount('#app')`,
     .termynal
     {
         position: absolute;
+        height: 200px;
         --tw-shadow: 7px 7px 15px 0 #000;
         box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
     }
