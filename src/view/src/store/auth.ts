@@ -1,7 +1,8 @@
-import { AuthType } from '@/types'
+import { AuthType, UserOIDCModel } from '@/types'
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { googleEnv } from '../../env'
+import { googleEnv, globalEnv } from '../../env'
+import router from '@/router/router'
 
 export const useAuthStore =  defineStore('auth', {
     state() {
@@ -9,15 +10,32 @@ export const useAuthStore =  defineStore('auth', {
             isAuth: false,
             isLoginFormVisible: false,
             authType: AuthType.NoAuth,
-            sessionSecret: ''
+            userModel: new UserOIDCModel()
         }
     },
     actions: {
-        getSessionSecret() {
-            // TODO getting session secret with JWT token
-        },
-        updateAuthState() {
-
+        async updateAuthState() {
+            switch(this.authType) {
+                case AuthType.Google:
+                    let res = await axios.get(globalEnv.apiUri + 
+                        `/auth/google`)
+        
+                    if (res.status == 200) {
+                        this.isAuth = true
+                        this.userModel = new UserOIDCModel(
+                            res.data['name'],
+                            res.data['surname'],
+                            res.data['email'],
+                            res.data['picture_uri']
+                        )
+                    }
+                    else {
+                        this.isAuth = false
+                    }
+                    break
+                case AuthType.NoAuth:
+                    return
+            }
         },
         setFormVisibility(value: boolean) {
             this.isLoginFormVisible = value
@@ -34,7 +52,8 @@ export const useAuthStore =  defineStore('auth', {
                         params.append('redirect_uri', googleEnv.redirectUri)
                         params.append('response_type', 'code')
                         params.append('scope', googleEnv.scope)
-                        params.append('state', this.sessionSecret)
+                        params.append('state', "None")
+                        params.append('access_type', googleEnv.accessType)
                         window.location.href = googleAuthUri + '?' + params.toString()
                     })
                     break;
@@ -44,11 +63,42 @@ export const useAuthStore =  defineStore('auth', {
             }
             
         },
-        async authenticateUser(authType: AuthType, authCode: string, sessionSecret: string) {
-            this.authType = authType
-            // TODO send code to backend
+        async signOutUser() {
+            switch(this.authType) {
+                case AuthType.Google:
+                    await axios.get(globalEnv.apiUri + 
+                        `/auth/google/signout`)
+                    this.authType = AuthType.NoAuth
+                    break
+                case AuthType.NoAuth:
+                    return
+            }
             
-            
+        },
+        async authenticateUser(authType: AuthType, authCode: string, _: string) {
+            switch(authType) {
+                case AuthType.Google:
+                    this.authenticateUserByGoogle(authType, authCode)
+                    break;
+                default:
+                    throw new Error('401')
+            }
+        },
+        async authenticateUserByGoogle(authType: AuthType, authCode: string) {
+            let res = await axios.get(globalEnv.apiUri + 
+                `/auth/google/?auth_code=${authCode}`)
+
+            if (res.status == 200) {
+                this.isAuth = true
+                this.authType = authType
+                this.userModel = new UserOIDCModel(
+                    res.data['name'],
+                    res.data['surname'],
+                    res.data['email'],
+                    res.data['picture_uri']
+                )
+            }
+            router.push('/')
         }
     }
 })
