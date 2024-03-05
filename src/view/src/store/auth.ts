@@ -43,6 +43,10 @@ export const useAuthStore =  defineStore('auth', {
             }
             
         },
+        async unloginUser() {
+            await axios.get(globalEnv.apiUri + 
+                `/auth/signout/`)
+        },
         async authenticateUser(authType: AuthType, authCode: string, _: string) {
             switch(authType) {
                 case AuthType.Google:
