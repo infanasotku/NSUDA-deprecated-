@@ -98,14 +98,19 @@ export class Termynal {
         await this._wait(this.startDelay);
         //this.addFinish()
 
+        let step = 0
         for (let line of this.lines) {
+            step += 1
             const type = line.getAttribute(this.pfx);
             const delay = line.getAttribute(`${this.pfx}-delay`) || this.lineDelay;
 
             if (type == 'input') {
                 line.setAttribute(`${this.pfx}-cursor`, this.cursor);
                 await this.type(line);
-                //await this._wait(delay);
+                if (step < this.lines.length)
+                {
+                    await this._wait(delay);
+                }
             }
 
             else if (type == 'progress') {

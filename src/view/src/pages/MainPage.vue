@@ -78,10 +78,20 @@
                 v-show="isAuthGreetings"
                 >
                     <span 
-                    typeDelay="50"
+                    data-ty-typeDelay="100"
                     data-ty="input" 
                     :data-ty-prompt="'' + authStore.userModel.name + ' ~ %'"
                     >Welcome to NSUDA webpage!</span>
+                    <span
+                    data-ty="output"
+                    data-ty-typeDelay="50"
+                    >Are you sure you want to redirect to account page?</span>
+                    <span 
+                    data-ty-typeDelay="1000"
+                    data-ty="input" 
+                    data-ty-prompt="(y/n)"
+                    >y</span>
+                    
                 </div>
             </transition>
         </div>
