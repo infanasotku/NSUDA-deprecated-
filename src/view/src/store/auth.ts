@@ -66,7 +66,7 @@ export const useAuthStore =  defineStore('auth', {
         async signOutUser() {
             switch(this.authType) {
                 case AuthType.Google:
-                    await axios.get(globalEnv.apiUri + 
+                    await axios.post(globalEnv.apiUri + 
                         `/auth/google/signout`)
                     this.authType = AuthType.NoAuth
                     break
