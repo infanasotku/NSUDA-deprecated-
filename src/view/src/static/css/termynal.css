@@ -58,6 +58,9 @@ a[data-terminal-control] {
     display: block;
     color: #aebbff;
     transition: .5s;
+    animation-name: arriving;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
 }
 
 a[data-terminal-control]:hover {
@@ -99,6 +102,11 @@ a[data-terminal-control]:hover {
             animation: blink 1s infinite;
 }
 
+.hidden {
+    opacity: 0 !important;
+    transition: .5s;
+}
+
 
 /* Cursor animation */
 
@@ -111,5 +119,14 @@ a[data-terminal-control]:hover {
 @keyframes blink {
     50% {
         opacity: 0;
+    }
+}
+
+@keyframes arriving {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
