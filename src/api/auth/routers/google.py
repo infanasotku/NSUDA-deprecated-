@@ -1,5 +1,5 @@
 from fastapi.routing import APIRouter
-from fastapi import Depends, HTTPException, Response
+from fastapi import Depends, Request
 from typing import Annotated
 
 
@@ -10,13 +10,6 @@ from api.auth.database.shemas import GoogleOIDCModel
 
 
 @google.get("/")
-async def index(data: Annotated[dict, Depends(auth_by_google)]) -> GoogleOIDCModel:
-    model = GoogleOIDCModel(
-        name=data['given_name'],
-        surname=data['family_name'],
-        email=data['email'],
-        picture_uri=data['picture']
-    )
+async def index(model: Annotated[GoogleOIDCModel, Depends(auth_by_google)]) -> GoogleOIDCModel:
     return model
-
 

@@ -1,7 +1,6 @@
 from fastapi import FastAPI
-from api.auth.routers.google import google
-
+from api.auth.configure import configure
 
 auth = FastAPI()
 
-auth.include_router(google, prefix='/google')
+configure(auth)
