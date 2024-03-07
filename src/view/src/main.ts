@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import VueCookies from 'vue-cookies'
 import App from '@/App.vue'
 import router from '@/router/router'
 import components from '@/components/UI'
@@ -16,4 +17,7 @@ app.
 use(pinia).
 use(router).
 use(hljsVuePlugin).
+use(VueCookies, {
+    expires: '1d', 
+}).
 mount('#app')

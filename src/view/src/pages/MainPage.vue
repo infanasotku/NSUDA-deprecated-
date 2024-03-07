@@ -33,7 +33,16 @@
                 :onCodePrinted="activateElements"
                 :key="'typescript-block'"
                 ></code-block>
-
+                <code-block 
+                v-show="isPythonCodeVisible"
+                ref="pythonCodeRef"
+                class="code-segment"
+                :stream="true"
+                language="python" 
+                :time="3000"
+                :code="pythonCode"
+                :onCodePrinted="setupBackground"
+                ></code-block>
             </transition-group>
             <transition
             leave-active-class="fade-leave-active"
@@ -51,16 +60,7 @@
                 </login-form >
             </transition>
             
-            <code-block 
-            v-show="!isBackgroundVisible"
-            ref="pythonCodeRef"
-            class="code-segment"
-            :stream="true"
-            language="python" 
-            :time="3000"
-            :code="pythonCode"
-            :onCodePrinted="setupBackground"
-            ></code-block>
+            
 
             <transition
             leave-active-class="fade-leave-active"
@@ -124,6 +124,7 @@ export default defineComponent({
     data() {
         return {
             isBackgroundVisible: false,
+            isPythonCodeVisible: false,
             pythonCode: `from fastapi import FastAPI
 
 app = FastAPI()
@@ -164,6 +165,7 @@ app.mount('#app')`,
     {
         setupBackground() {
             this.isBackgroundVisible = true
+            this.isPythonCodeVisible = false
             this.isTypescriptCodeVisible = true
             this.typescriptCodeRef?.start()
         },
@@ -171,7 +173,7 @@ app.mount('#app')`,
             this.isNavigationVisible = true
             this.isLoading = false
         },
-        navPanelClicked(id: number) {
+        async navPanelClicked(id: number) {
             switch (id) {
                 // author
                 case 1:
@@ -180,12 +182,12 @@ app.mount('#app')`,
                 // sign
                 case 2:
                     // sign in
-                    if (this.authStore.isAuth) {
+                    if (!this.authStore.isAuth) {
                         this.authStore.setFormVisibility(true)
                     }
                     // sign out
                     else {
-                        // TODO: Make sign out
+                        await this.authStore.signOutUser()
                     }
                     break;
                 default:
@@ -194,14 +196,11 @@ app.mount('#app')`,
         }
     },
     async mounted() {
-        // Test settings
-        this.authStore.isAuth = true
-        this.authStore.userModel.name = "Maxim"
-
+        await this.authStore.updateAuthState()
         if (this.authStore.isAuth) {
             this.navigationInfo[1].content = 'Sign out'
-            this.isBackgroundVisible = true
             this.isNavigationVisible = true
+            this.isBackgroundVisible = true
             this.isAuthGreetings = true
             let termynal = new Termynal('#termynal', { 
             startDelay: 600,  
@@ -213,6 +212,7 @@ app.mount('#app')`,
         else
         {
             this.isLoading = true
+            this.isPythonCodeVisible = true
             this.pythonCodeRef?.start()
         }
     },
