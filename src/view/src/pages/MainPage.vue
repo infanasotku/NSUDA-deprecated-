@@ -1,7 +1,8 @@
 <template>
     <div class="hero" :class="{ 'dark-background': isBackgroundVisible }">
         <div class="content">
-            <transition-group
+            <!-- loading icon -->
+            <transition
             leave-active-class="fade-leave-active"
             leave-to-class="fade-leave-to"
             >
@@ -10,7 +11,8 @@
                 class="loader"
                 :key="'loading-block'"
                 ></loading-icon>
-            </transition-group>
+            </transition>
+            <!-- nav panel; ts/py code -->
             <transition-group
             enter-active-class="fade-enter-active"
             enter-from-class="fade-enter"
@@ -33,8 +35,18 @@
                 :onCodePrinted="activateElements"
                 :key="'typescript-block'"
                 ></code-block>
-
+                <code-block 
+                v-show="isPythonCodeVisible"
+                ref="pythonCodeRef"
+                class="code-segment"
+                :stream="true"
+                language="python" 
+                :time="3000"
+                :code="pythonCode"
+                :onCodePrinted="setupBackground"
+                ></code-block>
             </transition-group>
+            <!-- login form -->
             <transition
             leave-active-class="fade-leave-active"
             leave-to-class="fade-leave-to"
@@ -42,26 +54,20 @@
             enter-from-class="fade-enter"
             enter-to-class="fade-enter-to"
             >
-                <login-form
+                <modal-window
                 v-show="authStore.isLoginFormVisible"
                 :key="'login-form'"
                 class="form"
-                @load="isLoading = true"
+                @close="authStore.setFormVisibility(false)"
                 >
-                </login-form >
-            </transition>
+                    <login-form
+                    @load="isLoading = true"
+                    >
+                    </login-form >
+                </modal-window>
             
-            <code-block 
-            v-show="!isBackgroundVisible"
-            ref="pythonCodeRef"
-            class="code-segment"
-            :stream="true"
-            language="python" 
-            :time="3000"
-            :code="pythonCode"
-            :onCodePrinted="setupBackground"
-            ></code-block>
-
+            </transition>
+            <!-- termynal -->
             <transition
             leave-active-class="fade-leave-active"
             leave-to-class="fade-leave-to"
@@ -81,7 +87,7 @@
                     data-ty-typeDelay="100"
                     data-ty="input" 
                     data-ty-delay="1000"
-                    :data-ty-prompt="'' + authStore.userModel.name + ' ~ %'"
+                    :data-ty-prompt="'' + authStore.userModel.email + ' ~ %'"
                     >Welcome to NSUDA webpage!</span>
                     <span
                     data-ty="output"
@@ -111,6 +117,7 @@ import { defineComponent, ref } from 'vue'
 import NavigationPanel from '@/components/NavigationPanel.vue';
 import CodeBlock from '@/components/CodeBlock.vue';
 import LoginForm from '@/components/LoginForm.vue';
+import ModalWindow from '@/components/ModalWindow.vue'
 
 import { Termynal } from '@/static/js/termynal'
 import router from '@/router/router';
@@ -119,11 +126,13 @@ export default defineComponent({
     components: {
     NavigationPanel,
     CodeBlock,
-    LoginForm
+    LoginForm,
+    ModalWindow
 },
     data() {
         return {
             isBackgroundVisible: false,
+            isPythonCodeVisible: false,
             pythonCode: `from fastapi import FastAPI
 
 app = FastAPI()
@@ -164,6 +173,7 @@ app.mount('#app')`,
     {
         setupBackground() {
             this.isBackgroundVisible = true
+            this.isPythonCodeVisible = false
             this.isTypescriptCodeVisible = true
             this.typescriptCodeRef?.start()
         },
@@ -171,7 +181,7 @@ app.mount('#app')`,
             this.isNavigationVisible = true
             this.isLoading = false
         },
-        navPanelClicked(id: number) {
+        async navPanelClicked(id: number) {
             switch (id) {
                 // author
                 case 1:
@@ -180,12 +190,12 @@ app.mount('#app')`,
                 // sign
                 case 2:
                     // sign in
-                    if (this.authStore.isAuth) {
+                    if (!this.authStore.isAuth) {
                         this.authStore.setFormVisibility(true)
                     }
                     // sign out
                     else {
-                        // TODO: Make sign out
+                        await this.authStore.signOutUser()
                     }
                     break;
                 default:
@@ -194,14 +204,11 @@ app.mount('#app')`,
         }
     },
     async mounted() {
-        // Test settings
-        this.authStore.isAuth = true
-        this.authStore.userModel.name = "Maxim"
-
+        await this.authStore.updatingPromise
         if (this.authStore.isAuth) {
             this.navigationInfo[1].content = 'Sign out'
-            this.isBackgroundVisible = true
             this.isNavigationVisible = true
+            this.isBackgroundVisible = true
             this.isAuthGreetings = true
             let termynal = new Termynal('#termynal', { 
             startDelay: 600,  
@@ -213,6 +220,7 @@ app.mount('#app')`,
         else
         {
             this.isLoading = true
+            this.isPythonCodeVisible = true
             this.pythonCodeRef?.start()
         }
     },
@@ -296,6 +304,8 @@ app.mount('#app')`,
 
     .form
     {
+        width: 250px;
+        height: 150px;
         position: absolute;
     }
 

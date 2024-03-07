@@ -10,32 +10,31 @@ export const useAuthStore =  defineStore('auth', {
             isAuth: false,
             isLoginFormVisible: false,
             authType: AuthType.NoAuth,
-            userModel: new UserOIDCModel()
+            userModel: new UserOIDCModel(),
+            updatingPromise: (async () => {})()
         }
     },
     actions: {
-        async updateAuthState() {
-            switch(this.authType) {
-                case AuthType.Google:
-                    let res = await axios.get(globalEnv.apiUri + 
-                        `/auth/google`)
-        
-                    if (res.status == 200) {
-                        this.isAuth = true
-                        this.userModel = new UserOIDCModel(
-                            res.data['name'],
-                            res.data['surname'],
-                            res.data['email'],
-                            res.data['picture_uri']
-                        )
-                    }
-                    else {
-                        this.isAuth = false
-                    }
-                    break
-                case AuthType.NoAuth:
-                    return
+        updateAuthState() {
+            this.updatingPromise = this._updateUserModel()
+        },
+        async _updateUserModel() {
+            let resp = await axios.get(globalEnv.apiUri + 
+                `/auth/default`).catch(() => {
+                    this.isAuth = false
+                })
+            if (!resp) {
+                return;
             }
+
+            this.isAuth = true
+            this.userModel = new UserOIDCModel(
+                resp.data['name'],
+                resp.data['surname'],
+                resp.data['email'],
+                resp.data['picture_uri'],
+            )
+            this.validateServiceType(resp.data['service'])
         },
         setFormVisibility(value: boolean) {
             this.isLoginFormVisible = value
@@ -43,7 +42,9 @@ export const useAuthStore =  defineStore('auth', {
         requestCode(authType: AuthType) {
             switch (authType) {
                 case AuthType.Google:
-                    const info = axios.get(googleEnv.openIDConfigUri)
+                    const info = axios.get(googleEnv.openIDConfigUri, {
+                        withCredentials: false
+                    })
                     info.then((value) => {
                         const googleAuthUri = value.data['authorization_endpoint']
 
@@ -64,16 +65,10 @@ export const useAuthStore =  defineStore('auth', {
             
         },
         async signOutUser() {
-            switch(this.authType) {
-                case AuthType.Google:
-                    await axios.post(globalEnv.apiUri + 
-                        `/auth/google/signout`)
-                    this.authType = AuthType.NoAuth
-                    break
-                case AuthType.NoAuth:
-                    return
-            }
-            
+            await axios.post(globalEnv.apiUri + 
+                `/auth/default/signout`)
+            this.authType = AuthType.NoAuth
+            router.go(0)
         },
         async authenticateUser(authType: AuthType, authCode: string, _: string) {
             switch(authType) {
@@ -85,20 +80,33 @@ export const useAuthStore =  defineStore('auth', {
             }
         },
         async authenticateUserByGoogle(authType: AuthType, authCode: string) {
-            let res = await axios.get(globalEnv.apiUri + 
+            let resp = await axios.get(globalEnv.apiUri + 
                 `/auth/google/?auth_code=${authCode}`)
-
-            if (res.status == 200) {
-                this.isAuth = true
-                this.authType = authType
-                this.userModel = new UserOIDCModel(
-                    res.data['name'],
-                    res.data['surname'],
-                    res.data['email'],
-                    res.data['picture_uri']
-                )
+                .catch(() => {
+                    this.isAuth = false
+                })
+            if (!resp) {
+                return;
             }
+
+            this.isAuth = true
+            this.authType = authType
+            this.userModel = new UserOIDCModel(
+                resp.data['name'],
+                resp.data['surname'],
+                resp.data['email'],
+                resp.data['picture_uri']
+            )
             router.push('/')
-        }
-    }
+        },
+        //-
+        validateServiceType(type: string) {
+            switch(type) {
+                case 'google':
+                    this.authType = AuthType.Google
+                    break
+            }
+        },
+    },
+    
 })
