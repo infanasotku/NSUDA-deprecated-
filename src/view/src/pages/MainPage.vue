@@ -1,7 +1,8 @@
 <template>
     <div class="hero" :class="{ 'dark-background': isBackgroundVisible }">
         <div class="content">
-            <transition-group
+            <!-- loading icon -->
+            <transition
             leave-active-class="fade-leave-active"
             leave-to-class="fade-leave-to"
             >
@@ -10,7 +11,8 @@
                 class="loader"
                 :key="'loading-block'"
                 ></loading-icon>
-            </transition-group>
+            </transition>
+            <!-- nav panel; ts/py code -->
             <transition-group
             enter-active-class="fade-enter-active"
             enter-from-class="fade-enter"
@@ -44,6 +46,7 @@
                 :onCodePrinted="setupBackground"
                 ></code-block>
             </transition-group>
+            <!-- login form -->
             <transition
             leave-active-class="fade-leave-active"
             leave-to-class="fade-leave-to"
@@ -51,17 +54,20 @@
             enter-from-class="fade-enter"
             enter-to-class="fade-enter-to"
             >
-                <login-form
+                <modal-window
                 v-show="authStore.isLoginFormVisible"
                 :key="'login-form'"
                 class="form"
-                @load="isLoading = true"
+                @close="authStore.setFormVisibility(false)"
                 >
-                </login-form >
+                    <login-form
+                    @load="isLoading = true"
+                    >
+                    </login-form >
+                </modal-window>
+            
             </transition>
-            
-            
-
+            <!-- termynal -->
             <transition
             leave-active-class="fade-leave-active"
             leave-to-class="fade-leave-to"
@@ -81,7 +87,7 @@
                     data-ty-typeDelay="100"
                     data-ty="input" 
                     data-ty-delay="1000"
-                    :data-ty-prompt="'' + authStore.userModel.name + ' ~ %'"
+                    :data-ty-prompt="'' + authStore.userModel.email + ' ~ %'"
                     >Welcome to NSUDA webpage!</span>
                     <span
                     data-ty="output"
@@ -111,6 +117,7 @@ import { defineComponent, ref } from 'vue'
 import NavigationPanel from '@/components/NavigationPanel.vue';
 import CodeBlock from '@/components/CodeBlock.vue';
 import LoginForm from '@/components/LoginForm.vue';
+import ModalWindow from '@/components/ModalWindow.vue'
 
 import { Termynal } from '@/static/js/termynal'
 import router from '@/router/router';
@@ -119,7 +126,8 @@ export default defineComponent({
     components: {
     NavigationPanel,
     CodeBlock,
-    LoginForm
+    LoginForm,
+    ModalWindow
 },
     data() {
         return {
@@ -296,6 +304,8 @@ app.mount('#app')`,
 
     .form
     {
+        width: 250px;
+        height: 150px;
         position: absolute;
     }
 
