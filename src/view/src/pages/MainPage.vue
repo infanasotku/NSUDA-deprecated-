@@ -237,9 +237,8 @@ app.mount('#app')`,
         }
         this.authStore.isPagesLoaded = true
     },
-    async setup() {
+    setup() {
         const authStore = useAuthStore()
-        await authStore.updatingPromise
         const pythonCodeRef = ref<InstanceType<typeof CodeBlock>>()
         const typescriptCodeRef = ref<InstanceType<typeof CodeBlock>>()
         

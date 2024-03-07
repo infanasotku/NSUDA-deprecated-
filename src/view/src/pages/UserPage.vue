@@ -54,9 +54,8 @@ export default defineComponent({
             }
         }
     },
-    async setup() {
+    setup() {
         const authStore = useAuthStore()
-        await authStore.updatingPromise
         authStore.isPagesLoaded = true
         if (!authStore.isAuth) {
             router.push('/')

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Main from '@/pages/MainPage.vue'
-import Auth from '@/pages/AuthPage.vue'
 import User from '@/pages/UserPage.vue'
 import SignInStub from '@/components/auth/SignInStub.vue'
 import SignOutStub from '@/components/auth/SignOutStub.vue'
@@ -8,14 +7,21 @@ import SignOutStub from '@/components/auth/SignOutStub.vue'
 import { useAuthStore } from '@/store/auth'
 
 const routes = [
+    // SignOut
     {
         path: '/signout',
         component: SignOutStub,
     },
+    // Main
     {
         path: '/',
         component: Main,
+        beforeEnter: async () => {
+            const authStore = useAuthStore()
+            await authStore.updateAuthState()
+        }
     },
+    // Auth
     {
         path: '/auth/',
         component: SignInStub,
@@ -31,9 +37,14 @@ const routes = [
             throw new Error('400')
         },
     },
+    // Account
     {
         path: '/account',
-        component: User
+        component: User,
+        beforeEnter: async () => {
+            const authStore = useAuthStore()
+            await authStore.updateAuthState()
+        }
     }
 ]
 
