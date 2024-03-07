@@ -8,7 +8,6 @@ export const useAuthStore =  defineStore('auth', {
     state() {
         return {
             isPagesLoaded: false,
-            isAuth: false,
             isLoginFormVisible: false,
             authType: AuthType.NoAuth,
             userModel: new UserOIDCModel(),
@@ -18,13 +17,12 @@ export const useAuthStore =  defineStore('auth', {
         async updateAuthState() {
             let resp = await axios.get(globalEnv.apiUri + 
                 `/auth/default`).catch(() => {
-                    this.isAuth = false
+                    this.authType = AuthType.NoAuth
                 })
             if (!resp) {
                 return;
             }
 
-            this.isAuth = true
             this.userModel = new UserOIDCModel(
                 resp.data['name'],
                 resp.data['surname'],
@@ -65,7 +63,6 @@ export const useAuthStore =  defineStore('auth', {
             await axios.post(globalEnv.apiUri + 
                 `/auth/default/signout`)
             this.authType = AuthType.NoAuth
-            this.isAuth = false
         },
         async authenticateUser(authType: AuthType, authCode: string, _: string) {
             switch(authType) {
@@ -80,13 +77,12 @@ export const useAuthStore =  defineStore('auth', {
             let resp = await axios.get(globalEnv.apiUri + 
                 `/auth/google/?auth_code=${authCode}`)
                 .catch(() => {
-                    this.isAuth = false
+                    this.authType = AuthType.NoAuth
                 })
             if (!resp) {
                 return;
             }
 
-            this.isAuth = true
             this.authType = authType
             this.userModel = new UserOIDCModel(
                 resp.data['name'],
