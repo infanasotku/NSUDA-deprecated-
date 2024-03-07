@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 from pydantic import BaseModel
 
 # Google shemas
@@ -10,7 +10,7 @@ class BaseUserModel(BaseModel):
     service:  Optional[str] = None
 
 class GoogleOIDCModel(BaseUserModel):
-    def __pydantic_post_init__(self):
+    def model_post_init(self, _: Any) -> None:
         self.service = 'google'
 
 
