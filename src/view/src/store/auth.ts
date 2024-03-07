@@ -7,6 +7,7 @@ import router from '@/router/router'
 export const useAuthStore =  defineStore('auth', {
     state() {
         return {
+            isPagesLoaded: false,
             isAuth: false,
             isLoginFormVisible: false,
             authType: AuthType.NoAuth,
@@ -68,7 +69,7 @@ export const useAuthStore =  defineStore('auth', {
             await axios.post(globalEnv.apiUri + 
                 `/auth/default/signout`)
             this.authType = AuthType.NoAuth
-            router.go(0)
+            this.isAuth = false
         },
         async authenticateUser(authType: AuthType, authCode: string, _: string) {
             switch(authType) {

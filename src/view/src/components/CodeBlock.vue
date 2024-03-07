@@ -21,9 +21,6 @@ export default defineComponent({
             type: String,
             required: true 
         },
-        stream: {
-            type: Boolean
-        },
         time: {
             type: Number
         },
@@ -39,8 +36,8 @@ export default defineComponent({
         const { interiorCode, startStream } = useStreamCode(props.onCodePrinted)
 
 
-        const start = () => {
-            if (props.stream)
+        const start = (stream: boolean) => {
+            if (stream)
             {
                 startStream(props.code, props.time! / props.code.length )
             }

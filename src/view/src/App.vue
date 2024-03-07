@@ -11,10 +11,13 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/store/auth';
+import router from '@/router/router'
 export default defineComponent({
   setup() {
     axios.defaults.withCredentials = true
     const authStore = useAuthStore()
+
+    
     authStore.updateAuthState()
   }
 })
