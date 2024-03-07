@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Main from '@/pages/MainPage.vue'
 import Auth from '@/pages/AuthPage.vue'
+import User from '@/pages/UserPage.vue'
 
 const routes = [
     {
@@ -21,7 +22,10 @@ const routes = [
             }
             throw new Error('400')
         },
-        
+    },
+    {
+        path: '/account',
+        component: User
     }
 ]
 
