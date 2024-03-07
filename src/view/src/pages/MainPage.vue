@@ -204,7 +204,7 @@ app.mount('#app')`,
         }
     },
     async mounted() {
-        await this.authStore.updateAuthState()
+        await this.authStore.updatingPromise
         if (this.authStore.isAuth) {
             this.navigationInfo[1].content = 'Sign out'
             this.isNavigationVisible = true

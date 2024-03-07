@@ -10,11 +10,15 @@ export const useAuthStore =  defineStore('auth', {
             isAuth: false,
             isLoginFormVisible: false,
             authType: AuthType.NoAuth,
-            userModel: new UserOIDCModel()
+            userModel: new UserOIDCModel(),
+            updatingPromise: (async () => {})()
         }
     },
     actions: {
-        async updateAuthState() {
+        updateAuthState() {
+            this.updatingPromise = this._updateUserModel()
+        },
+        async _updateUserModel() {
             let resp = await axios.get(globalEnv.apiUri + 
                 `/auth/default`).catch(() => {
                     this.isAuth = false
