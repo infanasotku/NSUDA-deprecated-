@@ -9,7 +9,7 @@ def run():
     commands: list[list] = []
 
     # Backend
-    backend_cmd = [f"{EXECUTEABLE_PATH}", f"{CURRENT_DIRECTORY}/src/manage_core.py"]
+    backend_cmd = [f"{EXECUTEABLE_PATH}", f"{CURRENT_DIRECTORY}/src/backend/manage_backend.py"]
     commands.append(backend_cmd)
 
     # Frontend
