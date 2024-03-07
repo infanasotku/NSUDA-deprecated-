@@ -28,7 +28,6 @@
                 v-show="isTypescriptCodeVisible"
                 ref="typescriptCodeRef"
                 class="code-segment"
-                :stream="true"
                 language="typescript" 
                 :time="3000"
                 :code="typescriptCode"
@@ -39,7 +38,6 @@
                 v-show="isPythonCodeVisible"
                 ref="pythonCodeRef"
                 class="code-segment"
-                :stream="true"
                 language="python" 
                 :time="3000"
                 :code="pythonCode"
@@ -175,38 +173,43 @@ app.mount('#app')`,
             this.isBackgroundVisible = true
             this.isPythonCodeVisible = false
             this.isTypescriptCodeVisible = true
-            this.typescriptCodeRef?.start()
+            this.typescriptCodeRef?.start(true)
         },
         activateElements() {
             this.isNavigationVisible = true
             this.isLoading = false
         },
-        async navPanelClicked(id: number) {
-            switch (id) {
+        async navPanelClicked(content: string) {
+            switch (content) {
                 // author
-                case 1:
+                case 'Author':
                     
                     break;
                 // sign
-                case 2:
+                case 'Sign in':
                     // sign in
-                    if (!this.authStore.isAuth) {
-                        this.authStore.setFormVisibility(true)
-                    }
-                    // sign out
-                    else {
-                        await this.authStore.signOutUser()
-                    }
+                    this.authStore.setFormVisibility(true)
+                    break;
+                case 'Sign out':
+                    router.push('/signout')
+                    break;
+                case 'Account':
+                    router.push('/account')
                     break;
                 default:
                     break;
             }
         }
     },
-    async mounted() {
-        await this.authStore.updatingPromise
+    mounted() {
         if (this.authStore.isAuth) {
-            this.navigationInfo[1].content = 'Sign out'
+            this.navigationInfo[1].content = 'Account'
+            this.navigationInfo[1].link = '/account'
+            this.navigationInfo.push({
+                id: 3,
+                link: '/signout',
+                content: 'Sign out'
+            })
             this.isNavigationVisible = true
             this.isBackgroundVisible = true
             this.isAuthGreetings = true
@@ -219,10 +222,20 @@ app.mount('#app')`,
         }
         else
         {
-            this.isLoading = true
-            this.isPythonCodeVisible = true
-            this.pythonCodeRef?.start()
+            if (this.authStore.isPagesLoaded) {
+                this.isNavigationVisible = true
+                this.isBackgroundVisible = true
+                this.typescriptCodeRef?.start(false)
+                this.isTypescriptCodeVisible = true
+            }
+            else
+            {
+                this.isLoading = true
+                this.isPythonCodeVisible = true
+                this.pythonCodeRef?.start(true)
+            }
         }
+        this.authStore.isPagesLoaded = true
     },
     setup() {
         const authStore = useAuthStore()
