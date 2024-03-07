@@ -203,8 +203,7 @@ app.mount('#app')`,
             }
         }
     },
-    async mounted() {
-        await this.authStore.updatingPromise
+    mounted() {
         if (this.authStore.isAuth) {
             this.navigationInfo[1].content = 'Sign out'
             this.isNavigationVisible = true
@@ -224,8 +223,9 @@ app.mount('#app')`,
             this.pythonCodeRef?.start()
         }
     },
-    setup() {
+    async setup() {
         const authStore = useAuthStore()
+        await authStore.updatingPromise
         const pythonCodeRef = ref<InstanceType<typeof CodeBlock>>()
         const typescriptCodeRef = ref<InstanceType<typeof CodeBlock>>()
         
