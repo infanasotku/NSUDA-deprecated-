@@ -3,7 +3,7 @@
         <span class="label">NSUDA</span>
         <div v-for="navigationLink in navigationLinks" :key="navigationLink.id">
             <router-link :to="navigationLink.link">
-                <dark-button @click="$emit('click', navigationLink.id )">
+                <dark-button @click="$emit('click', navigationLink.content )">
                     <p>{{ navigationLink.content }}</p>
                 </dark-button>
             </router-link>
