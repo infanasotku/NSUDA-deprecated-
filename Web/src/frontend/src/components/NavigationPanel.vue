@@ -32,6 +32,7 @@ export default defineComponent({
         -webkit-transition: 500ms;
         transition: 500ms;
         color: #d6d6d6;
+        user-select: none;
     }
     .label
     {
@@ -47,6 +48,7 @@ export default defineComponent({
         align-content: center;
         text-align: center;
         padding-top: 4px;
+        user-select: none;
     }
     .panel
     {
