@@ -8,7 +8,7 @@
 </template>
 <script lang="ts">
 import { PropType, defineComponent, defineExpose } from 'vue';
-import { useStreamCode } from '@/hooks/useStreamCode';
+import { useStreamText } from '@/hooks/useStreamText';
 import { Action } from '@/types';
 export default defineComponent({
     name: 'code-block',
@@ -28,12 +28,9 @@ export default defineComponent({
             type: Function as PropType<Action>
         }
     },
-    methods: {
-        
-    },
     setup(props)
     {
-        const { interiorCode, startStream } = useStreamCode(props.onCodePrinted)
+        const { interiorCode, startStream } = useStreamText(props.onCodePrinted)
 
 
         const start = (stream: boolean) => {
@@ -84,4 +81,4 @@ export default defineComponent({
         background-color: rgba(0,0,0,.3);
         border-bottom-left-radius: 5px;
     }
-</style>
+</style>@/hooks/useStreamText
