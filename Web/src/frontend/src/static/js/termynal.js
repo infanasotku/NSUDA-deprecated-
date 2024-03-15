@@ -22,7 +22,7 @@ export class Termynal {
      * @param {number} options.lineDelay - Delay between each line, in ms.
      * @param {number} options.progressLength - Number of characters displayed as progress bar.
      * @param {string} options.progressChar – Character to use for progress bar, defaults to █.
-	 * @param {number} options.progressPercent - Max percent of progress.
+     * @param {number} options.progressPercent - Max percent of progress.
      * @param {string} options.cursor – Character to use for cursor, defaults to ▋.
      * @param {Object[]} lineData - Dynamically loaded line data objects.
      * @param {boolean} options.noInit - Don't initialise the animation.
@@ -40,7 +40,7 @@ export class Termynal {
             || parseFloat(this.container.getAttribute(`${this.pfx}-progressLength`)) || 40;
         this.progressChar = options.progressChar
             || this.container.getAttribute(`${this.pfx}-progressChar`) || '█';
-		this.progressPercent = options.progressPercent
+        this.progressPercent = options.progressPercent
             || parseFloat(this.container.getAttribute(`${this.pfx}-progressPercent`)) || 100;
         this.cursor = options.cursor
             || this.container.getAttribute(`${this.pfx}-cursor`) || '▋';
@@ -179,6 +179,10 @@ export class Termynal {
         this.container.appendChild(line);
 
         const delay = line.getAttribute(`${this.pfx}-typeDelay`) || this.typeDelay;
+        const startDelay = line.getAttribute(`${this.pfx}-startDelay`) || 0
+
+        await this._wait(startDelay)
+
         for (let char of chars) {
             await this._wait(delay);
             line.textContent += char;
@@ -195,8 +199,8 @@ export class Termynal {
         const progressChar = line.getAttribute(`${this.pfx}-progressChar`)
             || this.progressChar;
         const chars = progressChar.repeat(progressLength);
-		const progressPercent = line.getAttribute(`${this.pfx}-progressPercent`)
-			|| this.progressPercent;
+        const progressPercent = line.getAttribute(`${this.pfx}-progressPercent`)
+            || this.progressPercent;
         const delay = line.getAttribute(`${this.pfx}-typeDelay`) || this.typeDelay;
         line.textContent = '';
         this.container.appendChild(line);
@@ -205,9 +209,9 @@ export class Termynal {
             await this._wait(delay || this.typeDelay);
             const percent = Math.round(i / chars.length * 100);
             line.textContent = `${chars.slice(0, i)} ${percent}%`;
-			if (percent>progressPercent) {
-				break;
-			}
+            if (percent > progressPercent) {
+                break;
+            }
         }
     }
 

@@ -1,66 +1,88 @@
 <template>
     <div
+    v-show="isInfoVisible"
     class="content"
     >
+        <div>
+            <h2>There is your steps to using proxy each times:</h2>
+        </div>
         <div
-        id="termynal" 
+        id="info-termynal" 
         data-termynal 
         class="termynal"
-        data-ty-startDelay="200" 
-        data-ty-cursor="▋"
-        v-show="false"
+        v-show="isTermynalVisible"
         >
             <span 
             data-ty-typeDelay="100"
             data-ty="input" 
-            data-ty-delay="1000"
-            :data-ty-prompt="'' + authStore.userModel.email + ' ~ %'"
-            >Welcome to NSUDA webpage!</span>
+            data-ty-delay="3000"
+            data-ty-startDelay="1000" 
+            :data-ty-prompt="'infanasotku@air  ~ %'"
+            >ssh infanasotku@server-ip</span>
             <span
             data-ty="output"
-            >Are you sure you want to redirect to account page?</span>
+            data-ty-delay="0"
+            >Welcome to Ubuntu 18.04.6 LTS</span>
             <span 
-            data-ty-delay="1000"
-            data-ty-typeDelay="1500"
+            data-ty-typeDelay="100"
             data-ty="input" 
-            data-ty-prompt="(y/n)"
-            >y</span>
-            <span
-            data-ty="progress"
-            data-ty-typeDelay="40"
-            data-ty-delay="500"
-            progressChar="|"
-            ></span>
-        </div>
-        <div>
-            <h2>There is your steps to using proxy each times</h2>
+            data-ty-delay="1000"
+            data-ty-startDelay="1000" 
+            :data-ty-prompt="'infanasotku@server:~$'"
+            >sudo systemctl start xray</span>
+            <span 
+            data-ty-typeDelay="100"
+            data-ty="input" 
+            data-ty-delay="1000"
+            :data-ty-prompt="'infanasotku@server:~$'"
+            >exit</span>
+            <span 
+            data-ty-typeDelay="100"
+            data-ty="input" 
+            data-ty-delay="1000"
+            :data-ty-prompt="'infanasotku@air  ~ %'"
+            >./xray -c config.json</span>
         </div>
     </div>
 </template>
 <script lang="ts">
+import { Termynal } from '@/static/js/termynal'
 import { useAuthStore } from '@/store/auth'
 
 export default {
     name: 'nsuda-info',
     data() {
         return {
-            
+            isTermynalVisible: false
+        }
+    },
+    props: {
+        isInfoVisible: {
+            type: Boolean,
+            required: true
         }
     },
     methods: {
-        startInfo() {
-            
+        start() {
+            this.isTermynalVisible = true
+            new Termynal('#info-termynal',  { startDelay: 600 })
         }
+    },
+    watch: {
+        isInfoVisible: {
+            handler(val) {
+                if(val) {
+                    this.start()
+                }
+            }
+        }
+    },
+    mounted() {
+        
     },
     setup() {
         const authStore = useAuthStore()
-        const start = () => {
-            
-        }
-
-
         return {
-            start,
             authStore
         }
     }
@@ -72,10 +94,17 @@ export default {
     width: 600px;
 }
 
-.move-down
+.termynal
 {
-    transform: translateY(-150px);
-    transition: all .5s;
-    transition-delay: .5s;
+    height: 250px;
+    --tw-shadow: 7px 7px 15px 0 #000;
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
 }
+
+h2
+{
+    margin-bottom: 60px;
+    font-weight: 600;
+}
+
 </style>

@@ -65,7 +65,7 @@
                 </modal-window>
             
             </transition>
-            <!-- termynal -->
+            <!-- User termynal -->
             <transition
             leave-active-class="fade-leave-active"
             leave-to-class="fade-leave-to"
@@ -77,8 +77,6 @@
                 id="termynal" 
                 data-termynal 
                 class="termynal"
-                data-ty-startDelay="200" 
-                data-ty-cursor="▋"
                 v-show="isAuthGreetings"
                 >
                     <span 
@@ -104,6 +102,19 @@
                     ></span>
                 </div>
             </transition>
+            <!-- NSUDA termynal -->
+            <transition
+            leave-active-class="fade-leave-active"
+            leave-to-class="fade-leave-to"
+            enter-active-class="fade-enter-active"
+            enter-from-class="fade-enter"
+            enter-to-class="fade-enter-to"
+            >
+                <nsuda-info
+                ref="nsudaInfoRef"
+                :isInfoVisible="isNsudaInfoVisible"
+                ></nsuda-info>
+            </transition>
         </div>
     </div>
 </template>
@@ -116,6 +127,7 @@ import NavigationPanel from '@/components/NavigationPanel.vue';
 import CodeBlock from '@/components/CodeBlock.vue';
 import LoginForm from '@/components/LoginForm.vue';
 import ModalWindow from '@/components/ModalWindow.vue'
+import NsudaInfo from '@/components/UI/NsudaInfo.vue'
 
 import { Termynal } from '@/static/js/termynal'
 import router from '@/router/router';
@@ -126,7 +138,8 @@ export default defineComponent({
     NavigationPanel,
     CodeBlock,
     LoginForm,
-    ModalWindow
+    ModalWindow,
+    NsudaInfo
 },
     data() {
         return {
@@ -170,7 +183,9 @@ app.mount('#app')`,
             
             isLoading: false,
             
-            isAuthGreetings: false
+            isAuthGreetings: false,
+
+            isNsudaInfoVisible: false
         }
     },
     methods:
@@ -184,6 +199,16 @@ app.mount('#app')`,
         activateElements() {
             this.isNavigationVisible = true
             this.isLoading = false
+            this.startNsudaInfo()
+        },
+        startNsudaInfo() {
+            (this.typescriptCodeRef?.$el.classList as DOMTokenList).add('move-up')
+            setTimeout(() => {
+                this.isTypescriptCodeVisible = false
+            }, 500)
+            setTimeout(() => {
+                this.isNsudaInfoVisible = true
+            }, 1000)
         },
         navPanelClicked(content: string) {
             switch (content) {
@@ -219,16 +244,14 @@ app.mount('#app')`,
             this.isNavigationVisible = true
             this.isBackgroundVisible = true
             this.isAuthGreetings = true
-            let termynal = new Termynal('#termynal', { 
-            startDelay: 600,  
-            noInit: true,
-            callback: () => {
-                if (this.authStore.authType != AuthType.NoAuth) {
-                    router.push('/account')
+            new Termynal('#termynal', { 
+                startDelay: 600,  
+                callback: () => {
+                    if (this.authStore.authType != AuthType.NoAuth) {
+                        router.push('/account')
+                    }
                 }
-            }
             })
-            termynal.init()
         }
         else
         {
@@ -251,11 +274,13 @@ app.mount('#app')`,
         const authStore = useAuthStore()
         const pythonCodeRef = ref<InstanceType<typeof CodeBlock>>()
         const typescriptCodeRef = ref<InstanceType<typeof CodeBlock>>()
+        const nsudaInfoRef = ref<InstanceType<typeof NsudaInfo>>()
         
         return { 
             pythonCodeRef, 
             typescriptCodeRef, 
-            authStore
+            authStore,
+            nsudaInfoRef
         }
     }
 })
@@ -267,11 +292,12 @@ app.mount('#app')`,
 
     .hero
     {
+        font-family: Consolas, Courier New, monospace;
         min-height: 100vh;
         width: 100%;
-        color: white;
         display: flex;
         background-color: rgb(255, 255, 255);
+        color: rgb(161, 161, 161);
     }
 
     .dark-background
@@ -300,6 +326,14 @@ app.mount('#app')`,
     .code-segment
     {
         width: 600px;
+    }
+
+    .move-up
+    {
+        transform: translateY(-250px);
+        opacity: 0;
+        transition: all .5s;
+        transition-delay: .5s;
     }
 
     .loader
