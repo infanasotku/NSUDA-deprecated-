@@ -158,9 +158,14 @@ app.mount('#app')`,
                 },
                 {
                     id: 2,
+                    link: '/downloads',
+                    content: 'Downloads'
+                },
+                {
+                    id: 3,
                     link: '',
                     content: 'Sign in',
-                },
+                }
             ],
             
             isLoading: false,
@@ -204,8 +209,8 @@ app.mount('#app')`,
     },
     mounted() {
         if (this.authStore.authType != AuthType.NoAuth) {
-            this.navigationInfo[1].content = 'Account'
-            this.navigationInfo[1].link = '/account'
+            this.navigationInfo[2].content = 'Account'
+            this.navigationInfo[2].link = '/account'
             this.navigationInfo.push({
                 id: 3,
                 link: '/signout',
