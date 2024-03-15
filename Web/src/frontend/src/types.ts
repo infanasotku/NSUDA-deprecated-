@@ -8,7 +8,8 @@ export type Action = () => void;
 
 export enum AuthType {
     NoAuth,
-    Google
+    Google,
+    VK
 }
 
 export interface UserBaseModel {

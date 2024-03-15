@@ -16,6 +16,7 @@ import { defineComponent } from 'vue'
 import router from '@/router/router'
 
 import NavigationPanel from '@/components/NavigationPanel.vue'
+import { AuthType } from '@/types';
 
 export default defineComponent({
     components: {
@@ -57,7 +58,7 @@ export default defineComponent({
     setup() {
         const authStore = useAuthStore()
         authStore.isPagesLoaded = true
-        if (!authStore.isAuth) {
+        if (authStore.authType == AuthType.NoAuth) {
             router.push('/')
         }
         return {

@@ -13,7 +13,7 @@ def run():
     commands.append(backend_cmd)
 
     # Frontend
-    frontend_cmd = [f"npm", "--prefix", f"{CURRENT_DIRECTORY}/src/view", "run", "dev"]
+    frontend_cmd = [f"npm", "--prefix", f"{CURRENT_DIRECTORY}/src/frontend", "run", "dev"]
     commands.append(frontend_cmd)
 
     if sys.argv[1] == "DEBUG":

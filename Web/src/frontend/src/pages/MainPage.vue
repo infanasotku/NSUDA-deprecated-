@@ -119,6 +119,7 @@ import ModalWindow from '@/components/ModalWindow.vue'
 
 import { Termynal } from '@/static/js/termynal'
 import router from '@/router/router';
+import { AuthType } from '@/types';
 
 export default defineComponent({
     components: {
@@ -157,9 +158,14 @@ app.mount('#app')`,
                 },
                 {
                     id: 2,
+                    link: '/downloads',
+                    content: 'Downloads'
+                },
+                {
+                    id: 3,
                     link: '',
                     content: 'Sign in',
-                },
+                }
             ],
             
             isLoading: false,
@@ -179,7 +185,7 @@ app.mount('#app')`,
             this.isNavigationVisible = true
             this.isLoading = false
         },
-        async navPanelClicked(content: string) {
+        navPanelClicked(content: string) {
             switch (content) {
                 // author
                 case 'Author':
@@ -202,9 +208,9 @@ app.mount('#app')`,
         }
     },
     mounted() {
-        if (this.authStore.isAuth) {
-            this.navigationInfo[1].content = 'Account'
-            this.navigationInfo[1].link = '/account'
+        if (this.authStore.authType != AuthType.NoAuth) {
+            this.navigationInfo[2].content = 'Account'
+            this.navigationInfo[2].link = '/account'
             this.navigationInfo.push({
                 id: 3,
                 link: '/signout',
@@ -216,7 +222,11 @@ app.mount('#app')`,
             let termynal = new Termynal('#termynal', { 
             startDelay: 600,  
             noInit: true,
-            callback: () => router.push('/account')
+            callback: () => {
+                if (this.authStore.authType != AuthType.NoAuth) {
+                    router.push('/account')
+                }
+            }
             })
             termynal.init()
         }
