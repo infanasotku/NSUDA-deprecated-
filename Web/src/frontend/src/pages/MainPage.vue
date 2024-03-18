@@ -191,7 +191,6 @@ export default defineComponent({
         {
             this.startNsudaInfo()
         }
-        this.authStore.isPagesLoaded = true
     },
     setup() {
         const authStore = useAuthStore()

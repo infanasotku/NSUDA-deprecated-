@@ -4,10 +4,9 @@ import axios from 'axios'
 import { googleEnv, globalEnv, vkEnv } from '../../env'
 import router from '@/router/router'
 
-export const useAuthStore =  defineStore('auth', {
+export const useAuthStore = defineStore('auth', {
     state() {
         return {
-            isPagesLoaded: false,
             isLoginFormVisible: false,
             authType: AuthType.NoAuth,
             userModel: new UserOIDCModel(),
@@ -15,14 +14,14 @@ export const useAuthStore =  defineStore('auth', {
     },
     actions: {
         async updateAuthState() {
-            let resp = await axios.get(globalEnv.apiUri + 
+            let resp = await axios.get(globalEnv.apiUri +
                 `/auth/default`).catch(() => {
                     this.authType = AuthType.NoAuth
                 })
             if (!resp) {
                 return;
             }
-            
+
             this.userModel = new UserOIDCModel(
                 resp.data['name'],
                 resp.data['surname'],
@@ -58,19 +57,19 @@ export const useAuthStore =  defineStore('auth', {
                     params.append('scope', vkEnv.scope)
                     window.location.href = vkEnv.authUri + '?' + params.toString()
                     break
-            
+
                 default:
                     break;
             }
             // Redirect url
         },
         async signOutUser() {
-            await axios.post(globalEnv.apiUri + 
+            await axios.post(globalEnv.apiUri +
                 `/auth/default/signout`)
             this.authType = AuthType.NoAuth
         },
         async authenticateUser(authType: AuthType, authCode: string, _: string) {
-            switch(authType) {
+            switch (authType) {
                 case AuthType.Google:
                     this.authenticateUserByGoogle(authCode)
                     break
@@ -82,7 +81,7 @@ export const useAuthStore =  defineStore('auth', {
             }
         },
         async authenticateUserByGoogle(authCode: string) {
-            let resp = await axios.get(globalEnv.apiUri + 
+            let resp = await axios.get(globalEnv.apiUri +
                 `/auth/google/?auth_code=${authCode}`)
                 .catch(() => {
                     this.authType = AuthType.NoAuth
@@ -100,7 +99,7 @@ export const useAuthStore =  defineStore('auth', {
             router.push('/')
         },
         async authenticateUserByVK(authCode: string) {
-            let resp = await axios.get(globalEnv.apiUri + 
+            let resp = await axios.get(globalEnv.apiUri +
                 `/auth/vk/?auth_code=${authCode}`)
                 .catch(() => {
                     this.authType = AuthType.NoAuth
@@ -119,7 +118,7 @@ export const useAuthStore =  defineStore('auth', {
         },
         //-
         validateServiceType(type: string) {
-            switch(type) {
+            switch (type) {
                 case 'google':
                     this.authType = AuthType.Google
                     break
@@ -129,5 +128,5 @@ export const useAuthStore =  defineStore('auth', {
             }
         },
     },
-    
+
 })
