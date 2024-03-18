@@ -144,7 +144,6 @@ export default defineComponent({
     {
         startNsudaInfo() {
             this.isNsudaInfoVisible = true
-            this.nsudaInfoRef?.start()
         },
         navPanelClicked(content: string) {
             switch (content) {
