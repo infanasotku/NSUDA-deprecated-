@@ -70,10 +70,13 @@ app.mount('#app')`,
             this.isBackgroundVisible = true;
             while (!this.loaded) {
                 await new Promise(resolve => setTimeout(resolve, 10))
-            }
+            };
+            (this.typescriptCodeRef?.$el.classList as DOMTokenList).add('move-up')
+            this.isLoading = false
             setTimeout(() => {
+                this.isTypescriptCodeVisible = false
                 this.$emit('load')
-            }, 200)
+            }, 400)
         }
     },
     mounted() {
@@ -112,6 +115,7 @@ app.mount('#app')`,
         justify-content: center;
         flex-direction: column;
     }
+
     .code-segment
     {
         width: 600px;
@@ -121,5 +125,13 @@ app.mount('#app')`,
     {
         position: absolute;
         bottom: 15vh;
+    }
+
+    .move-up
+    {
+        transform: translateY(-250px);
+        opacity: 0;
+        transition: all .5s;
+        transition-delay: .1s;
     }
 </style>
