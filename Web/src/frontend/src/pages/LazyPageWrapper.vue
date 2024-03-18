@@ -13,16 +13,13 @@
 import { useAuthStore } from '@/store/auth';
 import { defineAsyncComponent, ref } from 'vue'
 import LoadingPage from '@/pages/LoadingPage.vue';
-
 const props = defineProps({
     page: {
         type: String,
         required: true
     }
 })
-
 const pagePath = './' + props.page
-
 const authStore = useAuthStore()
 const loadEnd = ref(false)
 const loaded = ref(false)

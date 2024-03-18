@@ -3,10 +3,10 @@ import { useAuthStore } from '@/store/auth';
 import { defineComponent } from 'vue'
 import router from '@/router/router'
 export default defineComponent({
-    async setup() {
+    setup() {
         const authStore = useAuthStore()
-        await authStore.signOutUser()
-        router.push('/')
+        authStore.signOutUser().then(() => router.push('/'))
+        
         
         return { 
             authStore

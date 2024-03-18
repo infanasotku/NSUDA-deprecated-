@@ -215,7 +215,6 @@ export default defineComponent({
         min-height: 100vh;
         width: 100%;
         display: flex;
-        background-color: rgb(36, 33, 33);
         color: rgb(161, 161, 161);
     }
 

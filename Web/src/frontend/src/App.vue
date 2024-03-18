@@ -1,5 +1,5 @@
 <template>
-  <router-view v-slot="{ Component }">
+  <router-view :key="$route.path" v-slot="{ Component }">
     <template v-if="Component">
       <component :is="Component"></component>
     </template>
@@ -17,6 +17,7 @@ export default defineComponent({
 <style>
     body
     {
+        transition: all 1s;
         background-color: rgb(36, 33, 33);
         overflow: hidden;
     }
