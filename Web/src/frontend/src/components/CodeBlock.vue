@@ -43,9 +43,6 @@ export default defineComponent({
                 interiorCode.value = props.code
             }
         }
-        defineExpose({
-            start,
-        })
 
         return {
             interiorCode, start
