@@ -17,6 +17,7 @@ export default defineComponent({
 <style>
     body
     {
+        background-color: rgb(36, 33, 33);
         overflow: hidden;
     }
 </style>

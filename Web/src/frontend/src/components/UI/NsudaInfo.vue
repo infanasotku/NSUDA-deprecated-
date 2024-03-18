@@ -3,12 +3,15 @@
     v-show="isInfoVisible"
     class="content"
     >
-        <div>
+        <div
+        v-show="isFirstStepTextVisible"
+        >
             <h2>There is your steps to using proxy each times:</h2>
         </div>
         <div
         id="info-termynal" 
         data-termynal 
+        data-ty-startDelay="0" 
         class="termynal"
         v-show="isTermynalVisible"
         >
@@ -28,12 +31,14 @@
             data-ty="input" 
             data-ty-delay="1000"
             data-ty-startDelay="1000" 
+            class="linux-view"
             :data-ty-prompt="'infanasotku@server:~$'"
             >sudo systemctl start xray</span>
             <span 
             data-ty-typeDelay="100"
             data-ty="input" 
             data-ty-delay="1000"
+            class="linux-view"
             :data-ty-prompt="'infanasotku@server:~$'"
             >exit</span>
             <span 
@@ -42,6 +47,12 @@
             data-ty-delay="1000"
             :data-ty-prompt="'infanasotku@air  ~ %'"
             >./xray -c config.json</span>
+            <span
+            data-ty="output"
+            data-ty-delay="0"
+            >Xray (Xray, Penetrates Everything.)
+A unified platform for anti-censorship.</span>
+            
         </div>
     </div>
 </template>
@@ -53,7 +64,8 @@ export default {
     name: 'nsuda-info',
     data() {
         return {
-            isTermynalVisible: false
+            isTermynalVisible: false,
+            isFirstStepTextVisible: false,
         }
     },
     props: {
@@ -96,15 +108,25 @@ export default {
 
 .termynal
 {
-    height: 250px;
+    height: 350px;
     --tw-shadow: 7px 7px 15px 0 #000;
     box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+}
+
+.linux-view::before
+{
+    color: green;
 }
 
 h2
 {
     margin-bottom: 60px;
     font-weight: 600;
+}
+
+.blackout
+{
+    background: black;
 }
 
 </style>
