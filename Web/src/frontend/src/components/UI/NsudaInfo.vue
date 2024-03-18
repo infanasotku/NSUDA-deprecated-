@@ -3,6 +3,15 @@
     v-show="isInfoVisible"
     class="content"
     >
+        <transition
+        leave-active-class="fade-leave-active"
+        leave-to-class="fade-leave-to"
+        enter-active-class="fade-enter-active"
+        enter-from-class="fade-enter"
+        enter-to-class="fade-enter-to"
+        >
+            <div v-if="isBlackoutVisible" class="blackout"></div>
+        </transition>
         <div
         v-show="isFirstStepTextVisible"
         >
@@ -18,10 +27,10 @@
             <span 
             data-ty-typeDelay="100"
             data-ty="input" 
-            data-ty-delay="3000"
+            data-ty-delay="1500"
             data-ty-startDelay="1000" 
             :data-ty-prompt="'infanasotku@air  ~ %'"
-            >ssh infanasotku@server-ip</span>
+            >ssh infanasotku@server</span>
             <span
             data-ty="output"
             data-ty-delay="0"
@@ -49,7 +58,7 @@
             >./xray -c config.json</span>
             <span
             data-ty="output"
-            data-ty-delay="0"
+            data-ty-delay="1000"
             >Xray (Xray, Penetrates Everything.)
 A unified platform for anti-censorship.</span>
             
@@ -64,6 +73,7 @@ export default {
     name: 'nsuda-info',
     data() {
         return {
+            isBlackoutVisible: false,
             isTermynalVisible: false,
             isFirstStepTextVisible: false,
         }
@@ -77,7 +87,17 @@ export default {
     methods: {
         start() {
             this.isTermynalVisible = true
-            new Termynal('#info-termynal',  { startDelay: 600 })
+            new Termynal('#info-termynal',  { 
+                startDelay: 600, 
+                callback: this.termynalCallback
+            })
+        },
+        termynalCallback() {
+            this.isBlackoutVisible = true
+            setTimeout(() => {
+                this.isTermynalVisible = false
+                this.isBlackoutVisible = false
+            }, 1000)
         }
     },
     watch: {
@@ -101,6 +121,12 @@ export default {
 }
 </script>
 <style scoped>
+.content
+{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
 .code-segment
 {
     width: 600px;
@@ -108,7 +134,7 @@ export default {
 
 .termynal
 {
-    height: 350px;
+    height: 330px;
     --tw-shadow: 7px 7px 15px 0 #000;
     box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
 }
@@ -126,7 +152,12 @@ h2
 
 .blackout
 {
-    background: black;
+    background-color: black;
+    transition: all 1s;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }
 
 </style>
