@@ -28,6 +28,7 @@ export class Termynal {
      * @param {boolean} options.noInit - Don't initialise the animation.
      */
     constructor(container = '#termynal', options = {}) {
+        this.finishStatus = false
         this.container = (typeof container === 'string') ? document.querySelector(container) : container;
         this.pfx = `data-${options.prefix || 'ty'}`;
         this.originalStartDelay = this.startDelay = options.startDelay
@@ -96,32 +97,43 @@ export class Termynal {
      * Start the animation and rener the lines depending on their data attributes.
      */
     async start() {
-        await this._wait(this.startDelay);
-        //this.addFinish()
+        if (!this.finishStatus) {
+            await this._wait(this.startDelay);
+        }
+        this.addFinish()
 
         for (let line of this.lines) {
             const type = line.getAttribute(this.pfx);
-            const delay = line.getAttribute(`${this.pfx}-delay`) || this.lineDelay;
+            const delay = this.finishStatus ? 0 :
+                line.getAttribute(`${this.pfx}-delay`) || this.lineDelay;
 
             if (type == 'input') {
-                line.setAttribute(`${this.pfx}-cursor`, this.cursor);
+                this.lineDelay === -1 ? 0 :
+                    line.setAttribute(`${this.pfx}-cursor`, this.cursor);
                 await this.type(line);
-                await this._wait(delay);
+                if (!this.finishStatus) {
+                    await this._wait(delay);
+                }
             }
 
             else if (type == 'progress') {
                 await this.progress(line);
-                await this._wait(delay);
+                if (!this.finishStatus) {
+                    await this._wait(delay);
+                }
             }
 
             else {
                 this.container.appendChild(line);
+                if (!this.finishStatus) {
+                    await this._wait(delay);
+                }
                 await this._wait(delay);
             }
 
             line.removeAttribute(`${this.pfx}-cursor`);
         }
-        //this.finishElement.classList.add('hidden')
+        this.finishElement.classList.add('hidden')
         //this.addRestart()
         this.lineDelay = this.originalLineDelay
         this.typeDelay = this.originalTypeDelay
@@ -147,10 +159,9 @@ export class Termynal {
     generateFinish() {
         const finish = document.createElement('a')
         finish.onclick = (e) => {
+            console.log("here")
             e.preventDefault()
-            this.lineDelay = 0
-            this.typeDelay = 0
-            this.startDelay = 0
+            this.finishStatus = true
         }
         finish.href = '#'
         finish.setAttribute('data-terminal-control', '')
@@ -178,12 +189,16 @@ export class Termynal {
         line.textContent = '';
         this.container.appendChild(line);
 
-        const delay = line.getAttribute(`${this.pfx}-typeDelay`) || this.typeDelay;
-        const startDelay = line.getAttribute(`${this.pfx}-startDelay`) || 0
+        let delay = line.getAttribute(`${this.pfx}-typeDelay`) || this.typeDelay;
+        const startDelay = this.finishStatus ? 0 :
+            line.getAttribute(`${this.pfx}-startDelay`) || 0
 
         await this._wait(startDelay)
 
         for (let char of chars) {
+            if (this.finishStatus) {
+                delay = 0
+            }
             await this._wait(delay);
             line.textContent += char;
         }

@@ -56,7 +56,7 @@
 a[data-terminal-control] {
     text-align: right;
     display: block;
-    color: #aebbff;
+    color: rgb(161, 161, 161);
     transition: .5s;
     animation-name: arriving;
     animation-duration: .3s;
@@ -65,7 +65,8 @@ a[data-terminal-control] {
 
 a[data-terminal-control]:hover {
     transition: .5s;
-    color: #dee3fd;
+    color: rgb(214, 214, 214);
+    cursor: default;
 }
 
 [data-ty] {
