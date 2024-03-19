@@ -128,7 +128,6 @@ export class Termynal {
                 if (!this.finishStatus) {
                     await this._wait(delay);
                 }
-                await this._wait(delay);
             }
 
             line.removeAttribute(`${this.pfx}-cursor`);

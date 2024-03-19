@@ -61,11 +61,13 @@ a[data-terminal-control] {
     animation-name: arriving;
     animation-duration: .3s;
     animation-fill-mode: forwards;
+    user-select: none;
 }
 
 a[data-terminal-control]:hover {
     transition: .5s;
     color: rgb(214, 214, 214);
+    user-select: none;
     cursor: default;
 }
 
