@@ -57,7 +57,6 @@ export default defineComponent({
     },
     setup() {
         const authStore = useAuthStore()
-        authStore.isPagesLoaded = true
         if (authStore.authType == AuthType.NoAuth) {
             router.push('/')
         }

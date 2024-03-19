@@ -13,12 +13,6 @@
 <script lang="ts">
 export default {
     name: 'close-transparent-button',
-    props: {
-        onCloseClicked: {
-            type: Function,
-            required: true
-        }
-    }
 }
 </script>
 <style>
