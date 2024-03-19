@@ -158,7 +158,6 @@ export class Termynal {
     generateFinish() {
         const finish = document.createElement('a')
         finish.onclick = (e) => {
-            console.log("here")
             e.preventDefault()
             this.finishStatus = true
         }
