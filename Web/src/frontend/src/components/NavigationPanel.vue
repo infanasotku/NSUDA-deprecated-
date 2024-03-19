@@ -1,6 +1,6 @@
 <template>
     <nav class="panel col">
-        <span class="label">NSUDA</span>
+        <span @click="() => $router.push('/')" class="label">NSUDA</span>
         <div v-for="navigationLink in navigationLinks" :key="navigationLink.id">
             <router-link :to="navigationLink.link">
                 <dark-button @click="$emit('click', navigationLink.content )">
@@ -60,6 +60,7 @@ export default defineComponent({
         padding-right: 20px;
         width: 100%;
         display: flex;
+        z-index: 1;
         gap: 10px;
     }
 </style>

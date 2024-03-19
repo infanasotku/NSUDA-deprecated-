@@ -1,10 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Main from '@/pages/MainPage.vue'
-import User from '@/pages/UserPage.vue'
 import SignInStub from '@/components/auth/SignInStub.vue'
 import SignOutStub from '@/components/auth/SignOutStub.vue'
-
-import { useAuthStore } from '@/store/auth'
+import LazyPageWrapper from '@/pages/LazyPageWrapper.vue'
 
 const routes = [
     // SignOut
@@ -15,10 +12,9 @@ const routes = [
     // Main
     {
         path: '/',
-        component: Main,
-        beforeEnter: async () => {
-            const authStore = useAuthStore()
-            await authStore.updateAuthState()
+        component: LazyPageWrapper,
+        props: {
+            page: 'MainPage.vue'
         }
     },
     // Auth
@@ -30,7 +26,7 @@ const routes = [
             if (scope.indexOf('google')) {
                 return {
                     authService: 'google',
-                    authCode: route.query.code, 
+                    authCode: route.query.code,
                     sessionSecret: route.query.state
                 }
             }
@@ -40,16 +36,15 @@ const routes = [
     // Account
     {
         path: '/account',
-        component: User,
-        beforeEnter: async () => {
-            const authStore = useAuthStore()
-            await authStore.updateAuthState()
+        component: LazyPageWrapper,
+        props: {
+            page: 'UserPage.vue'
         }
     }
 ]
 
 const router = createRouter({
-    routes, 
+    routes,
     history: createWebHistory(),
 })
 export default router
