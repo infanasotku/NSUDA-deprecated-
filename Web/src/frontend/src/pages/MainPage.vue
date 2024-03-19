@@ -58,7 +58,7 @@
                     data-ty="input" 
                     data-ty-delay="1000"
                     :data-ty-prompt="'' + authStore.userModel.email + ' ~ %'"
-                    >Welcome to NSUDA webpage!</span>
+                    >Welcome to NSUDA team!</span>
                     <span
                     data-ty="output"
                     >Are you sure you want to redirect to account page?</span>
@@ -76,7 +76,7 @@
                     ></span>
                 </div>
             </transition>
-            <!-- NSUDA termynal -->
+            <!-- NSUDA info -->
             <transition
             leave-active-class="fade-leave-active"
             leave-to-class="fade-leave-to"
