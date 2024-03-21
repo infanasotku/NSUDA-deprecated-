@@ -3,6 +3,12 @@
     v-show="isInfoVisible"
     class="content"
     >
+        <div
+        class="glass-plate"
+        ></div>
+
+
+        <!-- skip button -->
         <transition
         leave-active-class="fade-leave-active"
         leave-to-class="fade-leave-to"
@@ -120,7 +126,6 @@
 import { Termynal } from '@/static/js/termynal'
 import { useAuthStore } from '@/store/auth'
 import { Action } from '@/types'
-import NsudaBanner from '@/components/UI/NsudaBanner.vue'
 
 export default {
     name: 'nsuda-info',
@@ -136,9 +141,6 @@ export default {
             isSkipButtonVisible: false
         }
     },
-    components: {
-        NsudaBanner
-    },
     props: {
         isInfoVisible: {
             type: Boolean,
@@ -147,11 +149,11 @@ export default {
     },
     methods: {
         start() {
-            this.isTermynalVisible = true
-            new Termynal('#info-termynal',  { 
-                startDelay: 600, 
-                callback: this.termynalCallback
-            })
+            // this.isTermynalVisible = true
+            // new Termynal('#info-termynal',  { 
+            //     startDelay: 600, 
+            //     callback: this.termynalCallback
+            // })
         },
         async wait(time: number, callback?: Action, ignoreSkip?: boolean) {
             if (this.isSkip && !ignoreSkip) {
@@ -162,58 +164,9 @@ export default {
         },
         async termynalCallback() {
             this.isTermynalVisible = false
-            await this.wait(1000, () => {
-                this.isSkipButtonVisible = true
-                this.isTextVisible = true
-            })
             
-            await this.wait(2000, () => this.isTextVisible = false)
-
-            await this.wait(1000, () => {
-                this.isTextVisible = true
-                this.textContent = 'is your daily routine'
-            })
-
-            await this.wait(2000, () => this.isTextVisible = false)
-            
-            await this.wait(1000, () => {
-                this.isTextVisible = true
-                this.textContent = 'with common proxy'
-            })
-
-            await this.wait(2000, () => {
-                this.isTextVisible = false
-                this.textContent = 'with common proxy'
-            })
-            
-            await this.wait(2000, () => {
-                this.isTextVisible = true
-                this.textContent = 'This'
-            })
-
-            await this.wait(2000, () => this.isTextVisible = false)
-            
-            await this.wait(1000, () => this.isViewVisible = true)
-            
-            await this.wait(1875, () => {
-                this.isViewVisible = false
-                this.textContent = 'with NSUDA'
-            })
-            
-            await this.wait(1000, () => this.isTextVisible = true)
-            
-            await this.wait(2000, () => this.isTextVisible = false)
-
-            await this.startFinalStage()
         },
-        async startFinalStage() {
-            this.isTextVisible = false
-            this.isViewVisible = false
-            this.isSkipButtonVisible = false
-            await this.wait(1000, () => this.isBannerVisible = true, true)
-            
-
-        }
+        
     },
     watch: {
         isInfoVisible: {
@@ -242,6 +195,32 @@ export default {
     height: 100%;
     position: relative;
 }
+
+
+.glass-plate
+{
+    width: 600px;
+    height: 400px;
+    background: rgba(255,255,255,.05);
+    border-radius: 5px;
+
+    position: relative;
+    left: 150px;
+
+    backdrop-filter: blur( 10px );
+    -webkit-backdrop-filter: blur( 10px );
+}
+
+
+
+
+
+
+
+
+
+
+
 .code-segment
 {
     width: 600px;
