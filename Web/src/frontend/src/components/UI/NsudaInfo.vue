@@ -6,36 +6,21 @@
         <div
         class="glass-plate"
         ></div>
-
-
-        <!-- skip button -->
-        <transition
-        leave-active-class="fade-leave-active"
-        leave-to-class="fade-leave-to"
-        enter-active-class="fade-enter-active"
-        enter-from-class="fade-enter"
-        enter-to-class="fade-enter-to"
-        >
-            <dark-button
-            v-if="isSkipButtonVisible"
-            class="skip-button"
-            @click="() => { isSkip = true; isSkipButtonVisible = false }"
-            >Skip</dark-button>
-        </transition>
-        <!-- text -->
-        <transition
-        leave-active-class="fade-leave-active"
-        leave-to-class="fade-leave-to"
-        enter-active-class="fade-enter-active"
-        enter-from-class="fade-enter"
-        enter-to-class="fade-enter-to"
-        >
-        <div
-        v-if="isTextVisible"
-        >
-            <h2>{{ textContent }}</h2>
-        </div>
-        </transition>
+        <dark-card 
+        title="Common proxy"
+        class="card">
+            
+        </dark-card>
+        <dark-card 
+        title="Common proxy"
+        class="card">
+            
+        </dark-card>
+        <dark-card 
+        title="Common proxy"
+        class="card">
+            
+        </dark-card>
         <!-- termynal -->
         <transition
         leave-active-class="fade-leave-active"
@@ -90,6 +75,7 @@
     A unified platform for anti-censorship.</span>
             </div>
         </transition>
+        
         <!-- nsuda view -->
         <transition
         enter-active-class="fade-enter-active"
@@ -108,37 +94,18 @@
                 </video>
             </div>
         </transition>
-        <!-- nsuda banner -->
-        <transition
-        leave-active-class="fade-leave-active"
-        leave-to-class="fade-leave-to"
-        enter-active-class="fade-enter-active"
-        enter-from-class="fade-enter"
-        enter-to-class="fade-enter-to"
-        >
-            <nsuda-banner
-            v-if="isBannerVisible"
-            ></nsuda-banner>
-        </transition>
     </div>
 </template>
 <script lang="ts">
 import { Termynal } from '@/static/js/termynal'
-import { useAuthStore } from '@/store/auth'
 import { Action } from '@/types'
 
 export default {
     name: 'nsuda-info',
     data() {
         return {
-            isBlackoutVisible: false,
             isTermynalVisible: false,
-            isTextVisible: false,
-            textContent: 'There',
             isViewVisible: false,
-            isSkip: false,
-            isBannerVisible: false,
-            isSkipButtonVisible: false
         }
     },
     props: {
@@ -156,14 +123,14 @@ export default {
             // })
         },
         async wait(time: number, callback?: Action, ignoreSkip?: boolean) {
-            if (this.isSkip && !ignoreSkip) {
+            if (!ignoreSkip) {
                 return
             }
             await new Promise(resolve => setTimeout(resolve, time));
             callback?.call(this)
         },
         async termynalCallback() {
-            this.isTermynalVisible = false
+            //this.isTermynalVisible = false
             
         },
         
@@ -177,15 +144,6 @@ export default {
             }
         }
     },
-    mounted() {
-        
-    },
-    setup() {
-        const authStore = useAuthStore()
-        return {
-            authStore
-        }
-    }
 }
 </script>
 <style scoped>
@@ -199,13 +157,13 @@ export default {
 
 .glass-plate
 {
-    width: 600px;
-    height: 400px;
+    width: 900px;
+    height: 450px;
     background: rgba(255,255,255,.05);
     border-radius: 5px;
 
     position: relative;
-    left: 150px;
+    left: 100px;
 
     backdrop-filter: blur( 10px );
     -webkit-backdrop-filter: blur( 10px );
@@ -228,7 +186,8 @@ export default {
 
 .termynal
 {
-    height: 360px;
+    height: inherit;
+    width: inherit;
     --tw-shadow: 7px 7px 15px 0 #000;
     box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
 }
@@ -264,11 +223,28 @@ h2
     width: 600px;
 }
 
-.skip-button
+.card
 {
     position: absolute;
-    right: 100px;
-    top: 200px;
 }
+
+.card:nth-child(2)
+{
+    top: 100px;
+    left: 200px;
+}
+.card:nth-child(3)
+{
+    top: 290px;
+    left: 280px;
+}
+.card:nth-child(4)
+{
+    top: 480px;
+    left: 160px;
+}
+
+
+
 
 </style>
