@@ -1,7 +1,8 @@
 <template>
 	<div>
-		<input type="checkbox" class="checkbox" id="checkbox">
-		<label class="toggle" for="checkbox">
+		<input type="checkbox" class="checkbox" :id="props.inputId"
+			@change="() => { $emit('change', { id: props.inputId, value: !check }); check = !check }">
+		<label class="toggle" :for="props.inputId" @change.stop>
 			<div class="bars" id="bar1"></div>
 			<div class="bars" id="bar2"></div>
 			<div class="bars" id="bar3"></div>
@@ -10,8 +11,22 @@
 </template>
 <script lang="ts">
 export default {
-	name: 'bright-checkbox'
+	name: 'bright-checkbox',
 }
+</script>
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const check = ref(false)
+const props = defineProps({
+	inputId: {
+		type: String,
+		required: true
+	}
+})
+defineEmits([
+	'change'
+])
 </script>
 <style scoped>
 .checkbox {
