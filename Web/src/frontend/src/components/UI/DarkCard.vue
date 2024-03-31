@@ -1,14 +1,15 @@
 <template>
     <div class="card">
         <div class="header">
-            <bright-checkbox class="figure">
+            <bright-checkbox :inputId="cardId" class="figure" @change="$emit('change', $event)">
             </bright-checkbox>
             <h2>
                 {{ props.title }}
             </h2>
         </div>
 
-        <slot></slot>
+        <slot>
+        </slot>
     </div>
 </template>
 <script lang="ts">
@@ -17,15 +18,19 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import { ref } from 'vue';
-
-const wrapperVisible = ref(true)
 const props = defineProps({
     title: {
         type: String,
         required: true
+    },
+    cardId: {
+        type: String,
+        required: true
     }
 })
+defineEmits([
+    'change'
+])
 </script>
 <style scoped>
 .card {
@@ -60,6 +65,7 @@ h2 {
     margin-left: 15px;
     font-size: 22px;
     font-weight: 600;
+    user-select: none;
 }
 
 .wrapper {
