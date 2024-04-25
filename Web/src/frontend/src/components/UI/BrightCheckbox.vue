@@ -1,11 +1,10 @@
 <template>
 	<div>
-		<input type="checkbox" class="checkbox" :id="props.inputId"
-			@change="() => { $emit('change', { id: props.inputId, value: !check }); check = !check }">
+		<input type="checkbox" class="checkbox" :id="props.inputId" v-model="model">
 		<label class="toggle" :for="props.inputId" @change.stop>
-			<div class="bars" id="bar1"></div>
-			<div class="bars" id="bar2"></div>
-			<div class="bars" id="bar3"></div>
+			<div :style="{ backgroundColor: props.color }" class="bars" id="bar1"></div>
+			<div :style="{ backgroundColor: props.color }" class="bars" id="bar2"></div>
+			<div :style="{ backgroundColor: props.color }" class="bars" id="bar3"></div>
 		</label>
 	</div>
 </template>
@@ -15,18 +14,22 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import { ref } from 'vue';
-
-const check = ref(false)
 const props = defineProps({
 	inputId: {
 		type: String,
 		required: true
+	},
+	color: {
+		type: String,
+		required: true
 	}
 })
-defineEmits([
+const emit = defineEmits([
 	'change'
 ])
+
+const model = defineModel()
+
 </script>
 <style scoped>
 .checkbox {

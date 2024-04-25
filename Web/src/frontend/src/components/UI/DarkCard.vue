@@ -1,15 +1,16 @@
 <template>
     <div class="card">
         <div class="header">
-            <bright-checkbox :inputId="cardId" class="figure" @change="$emit('change', $event)">
+            <bright-checkbox color="white" :inputId="cardId" class="figure" v-model="status">
             </bright-checkbox>
             <h2>
                 {{ props.title }}
             </h2>
         </div>
-
-        <slot>
-        </slot>
+        <div class="content">
+            <slot>
+            </slot>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -18,6 +19,8 @@ export default {
 }
 </script>
 <script setup lang="ts">
+import { watch } from 'vue';
+
 const props = defineProps({
     title: {
         type: String,
@@ -28,9 +31,11 @@ const props = defineProps({
         required: true
     }
 })
-defineEmits([
-    'change'
-])
+const emit = defineEmits(['change'])
+const status = defineModel()
+watch(status, () => {
+    emit('change', props.cardId)
+})
 </script>
 <style scoped>
 .card {
@@ -54,11 +59,13 @@ defineEmits([
 
 .header {
     width: 100%;
-    padding: 5px 10px 10px;
-    height: 30px;
+    padding: 5px 10px 5px 10px;
+    height: 35px;
     overflow: hidden;
     display: flex;
     flex-direction: row;
+    background-color: var(--pink-base);
+    color: white;
 }
 
 h2 {
@@ -74,5 +81,10 @@ h2 {
     position: absolute;
     width: 700px;
     height: 200px;
+}
+
+.content {
+    padding-left: 5px;
+    padding-top: 5px;
 }
 </style>
