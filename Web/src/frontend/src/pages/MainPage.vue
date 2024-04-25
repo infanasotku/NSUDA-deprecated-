@@ -111,7 +111,6 @@ export default defineComponent({
     NavigationPanel,
     LoginForm,
     ModalWindow,
-    NsudaInfo
 },
     data() {
         return {

@@ -1,5 +1,5 @@
 <template>
-    <div v-show="isInfoVisible" class="content">
+    <div class="content">
         <div class="glass-plate">
             <!-- termynal -->
             <transition leave-active-class="fade-leave-active" leave-to-class="fade-leave-to"
@@ -23,13 +23,13 @@
                 </div>
             </transition>
         </div>
-        <dark-card cardId="1" title="Common proxy" class="card" @change="cardChanged" v-model="firstCardOpen">
+        <dark-card cardId="1" title="Common proxy" class="card" @change="cardChanged">
             There is your daily routine with common app.
         </dark-card>
-        <dark-card cardId="2" title="Common proxy" class="card" @change="cardChanged" v-model="secondCardOpen">
+        <dark-card cardId="2" title="Common proxy" class="card" @change="cardChanged">
 
         </dark-card>
-        <dark-card cardId="3" title="Common proxy" class="card" @change="cardChanged" v-model="thirdCardOpen">
+        <dark-card cardId="3" title="Common proxy" class="card" @change="cardChanged">
 
         </dark-card>
 
@@ -46,6 +46,7 @@
     </div>
 </template>
 <script lang="ts">
+import { Termynal } from '@/static/js/termynal'
 import { Action } from '@/types'
 import { ref } from 'vue'
 
@@ -55,16 +56,6 @@ export default {
         return {
             isTermynalVisible: false,
             isViewVisible: false,
-            curOpenedCardId: -1,
-            firstCardOpen: false,
-            secondCardOpen: false,
-            thirdCardOpen: false,
-        }
-    },
-    props: {
-        isInfoVisible: {
-            type: Boolean,
-            required: true
         }
     },
     methods: {
@@ -86,19 +77,25 @@ export default {
             //this.isTermynalVisible = false
 
         },
-        async cardChanged(id: number) {
-            this.firstCardOpen = id === 1 && this.curOpenedCardId !== id
-            this.secondCardOpen = id === 2 && this.curOpenedCardId !== id
-            this.thirdCardOpen = id === 3 && this.curOpenedCardId !== id
-            this.curOpenedCardId = this.curOpenedCardId === id ? -1 : id
-        }
-    },
-    watch: {
-        isInfoVisible: {
-            handler(val) {
-                if (val) {
-                    this.start()
-                }
+        async cardChanged(data: { id: number, value: boolean }) {
+            console.log(data.value)
+            if (data.value) {
+                new Termynal('#info-termynal', {
+                    startDelay: 1900,
+                    callback: this.termynalCallback,
+                })
+                this.isTermynalVisible = true
+                this.window?.classList.add('move-right')
+                await this.wait(800);
+                this.window?.classList.add('scale')
+                await this.wait(1000);
+            }
+            else {
+                this.isTermynalVisible = false;
+                this.window?.classList.remove('scale')
+                await this.wait(800);
+                this.window?.classList.remove('move-right')
+                await this.wait(1000);
             }
         }
     },

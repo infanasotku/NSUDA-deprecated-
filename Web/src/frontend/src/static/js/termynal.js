@@ -49,6 +49,7 @@ export class Termynal {
         this.lineData = this.lineDataToElements(options.lineData || []);
         this.callback = options.callback ?? undefined;
         this.loadLines()
+        this.terminated = false;
         if (!options.noInit) this.init()
     }
 
@@ -103,6 +104,9 @@ export class Termynal {
         this.addFinish()
 
         for (let line of this.lines) {
+            if (this.terminated) {
+                break;
+            }
             const type = line.getAttribute(this.pfx);
             const delay = this.finishStatus ? 0 :
                 line.getAttribute(`${this.pfx}-delay`) || this.lineDelay;
@@ -137,9 +141,10 @@ export class Termynal {
         this.lineDelay = this.originalLineDelay
         this.typeDelay = this.originalTypeDelay
         this.startDelay = this.originalStartDelay
-        if (this.callback) {
+        if (this.callback && !this.terminated) {
             this.callback()
         }
+        this.terminated = false
     }
 
     generateRestart() {
@@ -274,5 +279,13 @@ export class Termynal {
         }
 
         return attrs;
+    }
+
+    /**
+     * Forces terminal finish.
+     */
+    terminate() {
+        this.terminated = true
+        while (this.terminated);
     }
 }
