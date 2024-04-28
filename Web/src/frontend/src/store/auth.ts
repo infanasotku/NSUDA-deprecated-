@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async updateAuthState() {
             let resp = await axios.get(globalEnv.apiUri +
-                `/auth/default`).catch(() => {
+                `/auth`).catch(() => {
                     this.authType = AuthType.NoAuth
                 })
             if (!resp) {
