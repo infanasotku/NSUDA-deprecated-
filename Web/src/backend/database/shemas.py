@@ -12,7 +12,7 @@ class BaseUserModel(BaseModel):
 
 
 class GoogleOIDCModel(BaseUserModel):
-    pass
+    service: str = "google"
 
 
 class GoogleOAuthModel(BaseUserModel):
