@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from api.auth.main import auth
+import api.auth as auth
 from starlette.middleware.sessions import SessionMiddleware
 from settings import get_settings
 
 
 def configure(app: FastAPI):
     # mounting apis
-    app.mount("/auth", auth)
+    app.mount("/auth", auth.create())
 
     # mounting middlewares
     app.add_middleware(
