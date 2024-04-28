@@ -1,5 +1,6 @@
-from typing import Any, Optional
+from typing import Optional
 from pydantic import BaseModel
+
 
 # Google shemas
 class BaseUserModel(BaseModel):
@@ -7,16 +8,14 @@ class BaseUserModel(BaseModel):
     surname: str
     email: str
     picture_uri: str
-    service:  Optional[str] = None
+    service: Optional[str]
+
 
 class GoogleOIDCModel(BaseUserModel):
-    def model_post_init(self, _: Any) -> None:
-        self.service = 'google'
+    pass
 
 
 class GoogleOAuthModel(BaseUserModel):
     # TODO:
     # make oauth
     pass
-
-#-

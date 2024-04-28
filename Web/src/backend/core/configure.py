@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from api.main import api
+import api
 from core.middlewares.setup import setup_core_middlewares
+
 
 def configure(app: FastAPI):
     '''Configures all app.
@@ -8,7 +9,7 @@ def configure(app: FastAPI):
     2) Mounts middlewares
     '''
     # mount api
-    app.mount("/api", api)
+    app.mount("/api", api.create())
 
     # mount core middlewares
     setup_core_middlewares(app)
