@@ -8,7 +8,7 @@ class BaseUserModel(BaseModel):
     surname: str
     email: str
     picture_uri: str
-    service: Optional[str]
+    service: Optional[str] = None
 
 
 class GoogleOIDCModel(BaseUserModel):

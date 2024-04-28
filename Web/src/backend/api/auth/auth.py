@@ -13,7 +13,7 @@ class Auth():
     async def __call__(self) -> BaseUserModel:
         return await self.auth(self.request)
 
-    async def auth(self, request: Request) -> BaseUserModel:
+    async def auth(self) -> BaseUserModel:
         """
         Provides auth by service.
 
@@ -26,7 +26,7 @@ class Auth():
 class GoogleAuth(Auth):
     def __init__(self, request: Request) -> None:
         super().__init__(request)
-        self.auth_code = None
+        self.auth_code = request.query_params.get('auth_code')
 
     async def auth(
         self
@@ -111,17 +111,31 @@ class GoogleAuth(Auth):
 
 class AuthFactory():
     @staticmethod
-    async def build(request: Request) -> Auth:
+    async def auth(request: Request) -> Auth:
         '''
-        Builds auth by user authed type in `request`.
-
-        Returns: auth handler.
+        Performs the authentication.
         '''
         if 'auth_service' not in request.session:
             raise HTTPException(status_code=401)
 
         service_name = request.session['auth_service']
+        return await AuthFactory._preform_auth(request, service_name)
 
+    @staticmethod
+    async def login(request: Request) -> Auth:
+        '''
+        Performs the login.
+        '''
+        if 'service_name' not in request.path_params:
+            raise HTTPException(status_code=403)
+        service_name = request.path_params['service_name']
+        return await AuthFactory._preform_auth(request, service_name)
+
+    @staticmethod
+    async def _preform_auth(request: Request, service_name: str):
+        '''
+        Performs the auth.
+        '''
         match service_name:
             case 'google':
                 handler = GoogleAuth(request)
