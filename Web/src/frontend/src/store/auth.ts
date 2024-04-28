@@ -65,7 +65,7 @@ export const useAuthStore = defineStore('auth', {
         },
         async signOutUser() {
             await axios.post(globalEnv.apiUri +
-                `/auth/default/signout`)
+                `/auth/signout`)
             this.authType = AuthType.NoAuth
         },
         async authenticateUser(authType: AuthType, authCode: string, _: string) {
@@ -82,7 +82,7 @@ export const useAuthStore = defineStore('auth', {
         },
         async authenticateUserByGoogle(authCode: string) {
             let resp = await axios.get(globalEnv.apiUri +
-                `/auth/google/?auth_code=${authCode}`)
+                `/auth/?auth_code=${authCode}`)
                 .catch(() => {
                     this.authType = AuthType.NoAuth
                 })
@@ -100,7 +100,7 @@ export const useAuthStore = defineStore('auth', {
         },
         async authenticateUserByVK(authCode: string) {
             let resp = await axios.get(globalEnv.apiUri +
-                `/auth/vk/?auth_code=${authCode}`)
+                `/auth/?auth_code=${authCode}`)
                 .catch(() => {
                     this.authType = AuthType.NoAuth
                 })
