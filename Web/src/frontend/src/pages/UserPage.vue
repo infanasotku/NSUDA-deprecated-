@@ -10,61 +10,46 @@
         </div>
     </div>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import { useAuthStore } from '@/store/auth';
-import { defineComponent } from 'vue'
 import router from '@/router/router'
 
 import NavigationPanel from '@/components/NavigationPanel.vue'
 import { AuthType } from '@/types';
 
-export default defineComponent({
-    components: {
-        NavigationPanel
+const navigationInfo = [
+    {
+        id: 1,
+        link: '/author',
+        content: 'Author',
     },
-    data() {
-        return {
-            navigationInfo: [
-                {
-                    id: 1,
-                    link: '/author',
-                    content: 'Author',
-                },
-                {
-                    id: 2,
-                    link: '/signout',
-                    content: 'Sign out',
-                },
-            ],
-        }
-        
+    {
+        id: 2,
+        link: '/signout',
+        content: 'Sign out',
     },
-    methods: {
-        async navPanelClicked(id: number) {
-            switch (id) {
-                // author
-                case 1:
-                    
-                    break;
-                // sign out
-                case 2:
-                    router.push(this.navigationInfo[id - 1].link)
-                    break;
-                default:
-                    break;
-            }
-        }
-    },
-    setup() {
-        const authStore = useAuthStore()
-        if (authStore.authType == AuthType.NoAuth) {
-            router.push('/')
-        }
-        return {
-            authStore
-        }
+]
+
+const authStore = useAuthStore()
+if (authStore.authType == AuthType.NoAuth) {
+    router.push('/')
+}
+
+const navPanelClicked = async (id: number) => {
+    switch (id) {
+        // author
+        case 1:
+
+            break;
+        // sign out
+        case 2:
+            router.push(navigationInfo[id - 1].link)
+            break;
+        default:
+            break;
     }
-})
+}
+
 </script>
 <style scoped>
     .hero

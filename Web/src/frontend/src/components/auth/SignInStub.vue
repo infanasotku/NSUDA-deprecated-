@@ -21,7 +21,7 @@ export default defineComponent({
     async mounted() {
         switch (this.authService) {
             case 'google':
-                await this.authStore.authenticateUser(
+                await this.authStore.loginUser(
                     AuthType.Google, 
                     this.authCode,
                     this.sessionSecret
