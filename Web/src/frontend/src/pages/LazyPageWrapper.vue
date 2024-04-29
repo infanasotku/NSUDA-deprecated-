@@ -26,7 +26,7 @@ const loaded = ref(false)
 const Page = defineAsyncComponent({
 
     loader: async () => {
-        await authStore.updateAuthState()
+        await authStore.authenticateUser()
         const component = await import(/* @vite-ignore */ pagePath)
         loaded.value = true
         while (!loadEnd.value) {

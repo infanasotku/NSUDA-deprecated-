@@ -13,9 +13,9 @@ export const useAuthStore = defineStore('auth', {
         }
     },
     actions: {
-        async updateAuthState() {
+        async authenticateUser() {
             let resp = await axios.get(globalEnv.apiUri +
-                `/auth/default`).catch(() => {
+                `/auth`).catch(() => {
                     this.authType = AuthType.NoAuth
                 })
             if (!resp) {
@@ -65,13 +65,13 @@ export const useAuthStore = defineStore('auth', {
         },
         async signOutUser() {
             await axios.post(globalEnv.apiUri +
-                `/auth/default/signout`)
+                `/auth/signout`)
             this.authType = AuthType.NoAuth
         },
-        async authenticateUser(authType: AuthType, authCode: string, _: string) {
+        async loginUser(authType: AuthType, authCode: string, _: string) {
             switch (authType) {
                 case AuthType.Google:
-                    this.authenticateUserByGoogle(authCode)
+                    this.loginUserByGoogle(authCode)
                     break
                 case AuthType.VK:
                     //this.authenticateUserByVK(authCode)
@@ -80,9 +80,9 @@ export const useAuthStore = defineStore('auth', {
                     throw new Error('401')
             }
         },
-        async authenticateUserByGoogle(authCode: string) {
+        async loginUserByGoogle(authCode: string) {
             let resp = await axios.get(globalEnv.apiUri +
-                `/auth/google/?auth_code=${authCode}`)
+                `/auth/login/google/?auth_code=${authCode}`)
                 .catch(() => {
                     this.authType = AuthType.NoAuth
                 })
@@ -98,9 +98,9 @@ export const useAuthStore = defineStore('auth', {
             )
             router.push('/')
         },
-        async authenticateUserByVK(authCode: string) {
+        async loginUserByVK(authCode: string) {
             let resp = await axios.get(globalEnv.apiUri +
-                `/auth/vk/?auth_code=${authCode}`)
+                `/login/vk/?auth_code=${authCode}`)
                 .catch(() => {
                     this.authType = AuthType.NoAuth
                 })
